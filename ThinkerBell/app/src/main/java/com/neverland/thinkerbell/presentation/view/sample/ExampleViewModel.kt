@@ -1,4 +1,4 @@
-package com.neverland.thinkerbell.presentation.view
+package com.neverland.thinkerbell.presentation.view.sample
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="pretendard_regular">
+        <item name="font">@font/pretendard</item>
+    </style>
+
+    <!-- Heading -->
+    <style name="Heading_XXXL">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">700</item>
+        <item name="android:textSize">50.52sp</item>
+        <item name="lineHeight">70.72sp</item>
+    </style>
+
+    <style name="Heading_XXL">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">700</item>
+        <item name="android:textSize">37.9sp</item>
+        <item name="lineHeight">53.06sp</item>
+    </style>
+
+    <style name="Heading_XL">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">700</item>
+        <item name="android:textSize">28.43sp</item>
+        <item name="lineHeight">39.8sp</item>
+    </style>
+
+    <style name="Heading_Large">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">700</item>
+        <item name="android:textSize">21.33sp</item>
+        <item name="lineHeight">29.86sp</item>
+    </style>
+
+    <style name="Heading_Medium">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">700</item>
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">22.4sp</item>
+    </style>
+
+    <style name="Heading_Small">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">700</item>
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">16.8sp</item>
+    </style>
+
+    <style name="Label_XXL">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">600</item>
+        <item name="android:textSize">37.9sp</item>
+        <item name="lineHeight">56.85sp</item>
+    </style>
+
+    <style name="Label_XL">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">600</item>
+        <item name="android:textSize">28.43sp</item>
+        <item name="lineHeight">42.65sp</item>
+    </style>
+
+    <style name="Label_Large">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">600</item>
+        <item name="android:textSize">21.33sp</item>
+        <item name="lineHeight">31.99sp</item>
+    </style>
+
+    <style name="Label_Medium">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">600</item>
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">24sp</item>
+    </style>
+
+    <style name="Label_Small">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">600</item>
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">18sp</item>
+    </style>
+
+    <style name="Paragraph_XL">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">28.43sp</item>
+        <item name="lineHeight">45.49sp</item>
+    </style>
+
+    <style name="Paragraph_Large">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">21.33sp</item>
+        <item name="lineHeight">34.12sp</item>
+    </style>
+
+    <style name="Paragraph_Medium">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">25.6sp</item>
+    </style>
+
+    <style name="Paragraph_Small">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">19.2sp</item>
+    </style>
+
+</resources>
