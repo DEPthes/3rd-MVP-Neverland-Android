@@ -1,6 +1,5 @@
-package com.neverland.thinkerbell.presentation.view
+package com.neverland.thinkerbell.presentation.view.sample
 
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope

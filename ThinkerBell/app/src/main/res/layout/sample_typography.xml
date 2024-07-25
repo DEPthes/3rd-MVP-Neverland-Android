@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
+    tools:ignore="HardcodedText">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Heading Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heading Styles"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:paddingBottom="8dp"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/textViewHeadingXXXL"
+            style="@style/Heading_XXXL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heading XXXL"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewHeadingXXL"
+            style="@style/Heading_XXL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heading XXL"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewHeadingXL"
+            style="@style/Heading_XL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heading XL"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewHeadingLarge"
+            style="@style/Heading_Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heading Large"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewHeadingMedium"
+            style="@style/Heading_Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heading Medium"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewHeadingSmall"
+            style="@style/Heading_Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heading Small"
+            android:textColor="#000000" />
+
+        <!-- Label Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Label Styles"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:paddingBottom="8dp"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/textViewLabelXXL"
+            style="@style/Label_XXL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Label XXL"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewLabelXL"
+            style="@style/Label_XL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Label XL"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewLabelLarge"
+            style="@style/Label_Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Label Large"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewLabelMedium"
+            style="@style/Label_Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Label Medium"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewLabelSmall"
+            style="@style/Label_Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Label Small"
+            android:textColor="#000000" />
+
+        <!-- Paragraph Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paragraph Styles"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:paddingBottom="8dp"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/textViewParagraphXL"
+            style="@style/Paragraph_XL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paragraph XL"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewParagraphLarge"
+            style="@style/Paragraph_Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paragraph Large"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewParagraphMedium"
+            style="@style/Paragraph_Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paragraph Medium"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewParagraphSmall"
+            style="@style/Paragraph_Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paragraph Small"
+            android:textColor="#000000" />
+
+    </LinearLayout>
+</ScrollView>
