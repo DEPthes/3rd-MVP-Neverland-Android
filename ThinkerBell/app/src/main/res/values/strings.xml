@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ThinkerBell</string>
+    <string name="desc_toolbar_home_btn">툴바 홈 버튼</string>
+    <string name="text_btn_fab">TOP</string>
+    <string name="text_btn_back">뒤로가기</string>
+    <string name="text_search_hint">검색어</string>
 </resources>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="desc_toolbar_menu_btn">툴바 메뉴 버튼</string>
+    <string name="desc_toolbar_app_logo">툴바 앱 로고</string>
+    <string name="desc_notice_page_left_2">페이지 이동 - 맨 앞으로</string>
+</resources>
