@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/primary2">
+
+    <!-- 이전 월 버튼 -->
+    <ImageButton
+        android:id="@+id/btn_prev_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_direaction_left_1"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:tint="@color/content_secondary"
+        android:contentDescription="Previous Month"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/tv_month"
+        app:layout_constraintEnd_toStartOf="@id/tv_month" />
+
+    <!--현재 날짜-->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_month"
+        android:text="OO월"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingHorizontal="21dp"
+        style="@style/Label_Large"
+        android:textColor="@color/primary3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAlignment="center" >
+    </androidx.appcompat.widget.AppCompatTextView>
+
+    <!-- 다음 월 버튼 -->
+    <ImageButton
+        android:id="@+id/btn_next_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_direaction_right_1"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:tint="@color/content_secondary"
+        android:contentDescription="Next Month"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/tv_month"
+        app:layout_constraintStart_toEndOf="@id/tv_month" />
+
+
+    <!--구분선-->
+    <View
+        android:id="@+id/v_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/content_tertiary"
+        app:layout_constraintTop_toBottomOf="@id/tv_month"
+        app:layout_constraintBottom_toTopOf="@id/ll_month"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="10dp"/>
+    
+    <!--요일-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="@color/primary2"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/v_divider"
+        app:layout_constraintBottom_toTopOf="@id/rv_month"
+        android:id="@+id/ll_month">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Sun"
+            style="@style/Paragraph_Small"
+            android:textColor="@color/primary3"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Mon"
+            android:textColor="@color/primary3"
+            style="@style/Paragraph_Small" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Tue"
+            android:textColor="@color/primary3"
+            style="@style/Paragraph_Small" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Wed"
+            android:textColor="@color/primary3"
+            style="@style/Paragraph_Small" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Thu"
+            android:textColor="@color/primary3"
+            style="@style/Paragraph_Small" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Fri"
+            android:textColor="@color/primary3"
+            style="@style/Paragraph_Small" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Sat"
+            style="@style/Paragraph_Small"
+            android:textColor="@color/primary3"/>
+    </LinearLayout>
+    <!--달력뷰-->
+
+    <!-- 요일이 보여질 리사이클러뷰-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rv_month"
+        app:layout_constraintTop_toBottomOf="@id/ll_month">
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

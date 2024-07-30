@@ -10,4 +10,6 @@
     <color name="content_primary">#000000</color>
     <color name="content_secondary">#6B6B6B</color>
     <color name="content_tertiary">#E1E1E1</color>
+
+    <color name="transparent">#00000000</color>
 </resources>
