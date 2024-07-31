@@ -4,9 +4,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentHomeNoticeBinding
 import com.neverland.thinkerbell.domain.model.Notice
-import com.neverland.thinkerbell.presentation.view.home.adapter.HomeNoticeAdapter
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.view.CustomDividerItemDecoration
+import com.neverland.thinkerbell.presentation.view.home.adapter.HomeNoticeAdapter
 
 
 class HomeNoticeFragment(

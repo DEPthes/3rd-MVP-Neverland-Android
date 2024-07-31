@@ -1,17 +1,15 @@
 package com.neverland.thinkerbell.presentation.view.home
 
-import android.os.Bundle
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentHomeCalendarBinding
 import com.neverland.thinkerbell.domain.model.MjuSchedule
-import com.neverland.thinkerbell.presentation.view.home.adapter.CalendarMonthAdapter
-import com.neverland.thinkerbell.presentation.view.home.adapter.CalendarScheduleAdapter
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.view.CustomLongDividerItemDecoration
+import com.neverland.thinkerbell.presentation.view.home.adapter.CalendarMonthAdapter
+import com.neverland.thinkerbell.presentation.view.home.adapter.CalendarScheduleAdapter
 import java.util.Calendar
 
 class HomeCalendarFragment : BaseFragment<FragmentHomeCalendarBinding>(R.layout.fragment_home_calendar) {
