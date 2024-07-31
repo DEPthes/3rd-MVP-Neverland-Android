@@ -1,9 +1,12 @@
-package com.neverland.thinkerbell.presentation.adapter
+package com.neverland.thinkerbell.presentation.view.home.adapter
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.domain.model.MjuSchedule
@@ -44,8 +47,10 @@ class CalendarDayAdapter(
         val scheduleForTheDay = scheduleList.find { it.date == dateString }
         if (scheduleForTheDay != null) {
             dayText.setTextColor(holder.layout.context.getColor(R.color.primary1))
+            TextViewCompat.setTextAppearance(dayText, R.style.Label_Small)
+            dayText.setTypeface(dayText.typeface, Typeface.BOLD)
         } else {
-            dayText.setTextColor(holder.layout.context.getColor(R.color.content_secondary)) // 기본 색상으로 변경
+            dayText.setTextColor(holder.layout.context.getColor(R.color.content_secondary))
         }
     }
 

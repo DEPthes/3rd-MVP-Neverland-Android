@@ -14,7 +14,7 @@
         android:theme="@style/Theme.ThinkerBell"
         tools:targetApi="34">
         <activity
-            android:name=".presentation.view.MainActivity"
+            android:name=".presentation.view.home.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

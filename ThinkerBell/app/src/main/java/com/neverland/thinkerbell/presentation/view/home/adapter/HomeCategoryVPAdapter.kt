@@ -1,10 +1,10 @@
-package com.neverland.thinkerbell.presentation.adapter
+package com.neverland.thinkerbell.presentation.view.home.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.neverland.thinkerbell.domain.model.Notice
-import com.neverland.thinkerbell.presentation.view.HomeNoticeFragment
+import com.neverland.thinkerbell.presentation.view.home.HomeNoticeFragment
 
 class HomeCategoryVPAdapter (
     fragmentActivity: FragmentActivity,
@@ -16,6 +16,6 @@ class HomeCategoryVPAdapter (
     }
 
     override fun createFragment(position: Int): Fragment {
-        return HomeNoticeFragment.newInstance(notices[position])
+        return HomeNoticeFragment(notices[position])
     }
 }

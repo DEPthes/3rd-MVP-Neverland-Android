@@ -1,4 +1,4 @@
-package com.neverland.thinkerbell.presentation.adapter
+package com.neverland.thinkerbell.presentation.view.home.adapter
 
 import android.view.LayoutInflater
 import android.view.View

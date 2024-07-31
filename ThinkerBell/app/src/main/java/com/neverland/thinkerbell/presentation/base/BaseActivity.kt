@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
+import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.core.utils.LoggerUtil
 
 abstract class BaseActivity<T: ViewDataBinding>(@LayoutRes private val layoutId: Int): AppCompatActivity() {
@@ -39,4 +42,14 @@ abstract class BaseActivity<T: ViewDataBinding>(@LayoutRes private val layoutId:
     protected open fun initListener() {}
     protected open fun setObserver() {}
 
+    protected fun setStatusBarColor(colorId: Int){
+        window.statusBarColor = ContextCompat.getColor(this, colorId)
+    }
+
+    protected fun replaceFragment(frameLayoutId: Int, fragment: Fragment, isAddBackStack: Boolean){
+        val ft = supportFragmentManager.beginTransaction()
+        ft.replace(frameLayoutId, fragment)
+        if (isAddBackStack) ft.addToBackStack(null)
+        ft.commit()
+    }
 }

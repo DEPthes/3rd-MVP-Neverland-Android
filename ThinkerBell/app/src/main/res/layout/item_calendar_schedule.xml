@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:padding="16dp">
 
@@ -10,8 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="07.06"
-        android:textSize="14sp"
+        style="@style/Paragraph_Small"
+        tools:text="07.06"
         android:textColor="@color/primary3" />
 
     <TextView
@@ -19,9 +20,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="학사 일정"
-        android:textSize="16sp"
-        android:textColor="@color/primary3" />
+        tools:text="학사 일정"
+        style="@style/Paragraph_Small"
+        android:textColor="@color/content_secondary" />
 
     <ImageButton
         android:id="@+id/btn_favorite"

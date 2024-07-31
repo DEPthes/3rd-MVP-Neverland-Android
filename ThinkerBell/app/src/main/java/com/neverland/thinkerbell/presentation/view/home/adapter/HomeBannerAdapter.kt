@@ -1,8 +1,9 @@
-package com.neverland.thinkerbell.presentation.adapter
+package com.neverland.thinkerbell.presentation.view.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.neverland.thinkerbell.databinding.ItemHomeBannerBinding
 
 class HomeBannerAdapter(private val banners: List<Int>) :
@@ -23,7 +24,9 @@ class HomeBannerAdapter(private val banners: List<Int>) :
 
     class BannerViewHolder(private val binding: ItemHomeBannerBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(imageResId: Int) {
-            binding.imageView.setImageResource(imageResId)
+            Glide.with(binding.imageView)
+                .load(imageResId)
+                .into(binding.imageView)
         }
     }
 }

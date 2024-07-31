@@ -5,13 +5,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.neverland.thinkerbell.R
-import com.neverland.thinkerbell.databinding.ActivityMainBinding
+import com.neverland.thinkerbell.databinding.ActivityHomeBinding
 import com.neverland.thinkerbell.presentation.base.BaseActivity
 import com.neverland.thinkerbell.presentation.utils.UiState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ExampleActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
+class ExampleActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
     private val viewModel: ExampleViewModel by viewModels()
 
     override fun initView() {
