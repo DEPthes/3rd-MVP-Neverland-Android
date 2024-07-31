@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        
+        <Toolbar
+            android:id="@+id/tb_notice"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:background="@color/primary1"
+            android:contentInsetStart="20dp">
+            
+            <ImageButton
+                android:id="@+id/ib_menu"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:contentDescription="@string/desc_toolbar_menu_btn"
+                android:src="@drawable/ic_underbar_menu"
+                android:backgroundTint="@color/transparent"
+                app:tint="@color/primary2" />
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="28dp"
+                android:contentDescription="@string/desc_toolbar_app_logo"
+                android:src="@drawable/logo_app"
+                android:layout_gravity="center"
+                app:tint="@color/primary2"/>
+
+            <ImageButton
+                android:id="@+id/ib_profile"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:contentDescription="@string/desc_toolbar_home_btn"
+                android:src="@drawable/ic_underbar_profile_2"
+                android:background="@color/transparent"
+                app:tint="@color/primary2"
+                android:layout_gravity="end"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="20dp" />
+
+            <ImageButton
+                android:id="@+id/ib_home"
+                android:layout_width="20dp"
+                android:layout_height="32dp"
+                android:contentDescription="@string/desc_toolbar_home_btn"
+                android:src="@drawable/ic_underbar_home"
+                android:background="@color/transparent"
+                app:tint="@color/primary2"
+                android:layout_gravity="end"
+                android:scaleType="centerInside" />
+        </Toolbar>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary1"
+            android:orientation="vertical"
+            android:gravity="center|top">
+
+            <TextView
+                android:id="@+id/tv_notice_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+
+                style="@style/Label_XL"
+                tools:text="일반공지"
+                android:textColor="@color/primary2"/>
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+
+                android:layout_marginHorizontal="40dp"
+                android:paddingHorizontal="16sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="28dp"
+
+                android:background="@drawable/search_edit_text_background"
+
+                android:inputType="textVisiblePassword|textNoSuggestions"
+                android:hint="@string/text_search_hint"
+                android:maxLines="1"
+                style="@style/Label_Medium"
+                android:textColor="@color/primary2"
+                android:textColorHint="@color/primary2"
+                android:drawableEnd="@drawable/ic_search"
+                android:drawablePadding="8dp"
+
+                android:imeOptions="actionSearch"
+                tools:ignore="Autofill"
+                />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_notice_search_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="tv_search_notice_result, btn_back, divider_search"/>
+                
+                <TextView
+                    android:id="@+id/tv_search_notice_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/rv_notice"
+                    android:layout_marginHorizontal="24dp"
+
+                    android:gravity="center_vertical"
+                    tools:text="'검색어'이(가) 포함된 공지사항 (3개)"
+                    style="@style/Pretendard_Text"
+                    android:textColor="@color/content_secondary"/>
+
+                <View
+                    android:id="@+id/divider_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/red_gray_700"
+                    app:layout_constraintTop_toBottomOf="@id/tv_search_notice_result"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="68dp"
+                    android:layout_height="24dp"
+
+                    app:layout_constraintTop_toBottomOf="@id/rv_notice"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="68dp"
+
+                    android:gravity="center"
+                    android:background="@drawable/search_result_back_btn_background"
+
+                    android:text="@string/text_btn_back"
+                    android:textColor="@color/red_gray_500"
+                    style="@style/Pretendard_Text"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_notice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    
+                    app:layout_constraintTop_toBottomOf="@id/tv_search_notice_result"
+                    
+                    tools:listitem="@layout/item_notice"
+                    tools:itemCount="3"/>
+                
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_fab"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    app:layout_constraintBottom_toBottomOf="@id/rv_notice"
+                    app:layout_constraintEnd_toEndOf="@id/rv_notice"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginBottom="32dp"
+
+                    android:background="@drawable/notice_list_fab_btn_background"
+                    android:gravity="center"
+
+                    android:translationZ="3dp"
+                    android:visibility="gone"
+
+                    android:text="@string/text_btn_fab"
+                    style="@style/Label_Medium"
+                    android:textColor="@color/gray_565656" />
+
+                <LinearLayout
+                    android:id="@+id/ll_notice_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    app:layout_constraintTop_toBottomOf="@id/rv_notice"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    
+                    <ImageButton
+                        android:id="@+id/ib_page_left_2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="4dp"
+                        android:contentDescription="@string/desc_notice_page_left_2"
+                        android:src="@drawable/ic_direaction_left_2"
+                        android:background="@color/transparent"/>
+
+                    <ImageButton
+                        android:id="@+id/ib_page_left_1"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/desc_notice_page_left_2"
+                        android:src="@drawable/ic_direaction_left_1"
+                        android:background="@color/transparent"/>
+
+                    <TextView
+                        android:id="@+id/tv_notice_page"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        tools:text="1/96"
+                        style="@style/Paragraph_Medium"
+                        android:textColor="@color/primary3"/>
+
+                    <ImageButton
+                        android:id="@+id/ib_page_right_1"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/desc_notice_page_left_2"
+                        android:src="@drawable/ic_direaction_right_1"
+                        android:background="@color/transparent"/>
+
+                    <ImageButton
+                        android:id="@+id/ib_page_right_2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/desc_notice_page_left_2"
+                        android:src="@drawable/ic_direaction_right_2"
+                        android:background="@color/transparent"/>
+                </LinearLayout>
+                    
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

@@ -48,6 +48,7 @@
         <item name="lineHeight">16.8sp</item>
     </style>
 
+    <!-- Label -->
     <style name="Label_XXL">
         <item name="fontFamily">@font/pretendard</item>
         <item name="fontWeight">600</item>
@@ -83,6 +84,7 @@
         <item name="lineHeight">18sp</item>
     </style>
 
+    <!-- Paragraph -->
     <style name="Paragraph_XL">
         <item name="fontFamily">@font/pretendard</item>
         <item name="fontWeight">400</item>
@@ -111,4 +113,11 @@
         <item name="lineHeight">19.2sp</item>
     </style>
 
+    <!-- etc -->
+    <style name="Pretendard_Text">
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">16.71sp</item>
+    </style>
 </resources>
