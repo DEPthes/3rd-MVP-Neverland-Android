@@ -4,4 +4,22 @@
     <string name="text_btn_fab">TOP</string>
     <string name="text_btn_back">뒤로가기</string>
     <string name="text_search_hint">검색어</string>
+    
+    <!-- category list -->
+    <string-array name="category_list">
+        <item>일반</item>
+        <item>행사</item>
+        <item>학사</item>
+        <item>장학</item>
+        <item>취업</item>
+        <item>학생할동</item>
+        <item>입찰</item>
+        <item>대학안전</item>
+        <item>학칙개정</item>
+        <item>현장실습지원</item>
+        <item>생활관</item>
+        <item>생활관 입퇴사</item>
+        <item>도서관</item>
+        <item>교직</item>
+    </string-array>
 </resources>
