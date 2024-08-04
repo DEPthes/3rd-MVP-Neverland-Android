@@ -62,4 +62,6 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.glide)
+
+    implementation(libs.androidx.datastore.preferences.v100)
 }
