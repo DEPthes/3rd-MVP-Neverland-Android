@@ -17,6 +17,7 @@ class DataStoreRepositoryImpl : DataStoreRepository {
 
     companion object {
         private val EXAMPLE_KEY = stringPreferencesKey("example_key")
+        private val RECENT_SEARCH_WORDS_KEY = stringPreferencesKey("recent_search_words")
     }
 
     override suspend fun clearData(): Result<Boolean> {
@@ -27,11 +28,10 @@ class DataStoreRepositoryImpl : DataStoreRepository {
                 preferences.clear()
             }
             Result.success(true)
-        } catch (e: Exception){
+        } catch (e: Exception) {
             Result.success(false)
         }
     }
-
 
     override suspend fun saveExampleData(value: String): Result<Boolean> {
         LoggerUtil.d("saveExampleData 호출")
@@ -41,17 +41,60 @@ class DataStoreRepositoryImpl : DataStoreRepository {
                 preferences[EXAMPLE_KEY] = value
             }
             Result.success(true)
-        } catch (e: Exception){
+        } catch (e: Exception) {
             Result.success(false)
         }
     }
 
     override fun readExampleData(): Flow<String?> {
-        LoggerUtil.d("saveExampleData 호출")
+        LoggerUtil.d("readExampleData 호출")
 
         return application.dataStore.data
             .map { preferences ->
                 preferences[EXAMPLE_KEY]
+            }
+    }
+
+    override suspend fun saveRecentSearchWord(word: String): Result<Boolean> {
+        LoggerUtil.d("saveRecentSearchWord 호출")
+
+        return try {
+            application.dataStore.edit { preferences ->
+                val currentWords = preferences[RECENT_SEARCH_WORDS_KEY]?.split(",")?.toMutableList() ?: mutableListOf()
+                currentWords.remove(word) // 중복 제거
+                currentWords.add(0, word) // 가장 뒤에 추가
+                if (currentWords.size > 9) {
+                    currentWords.removeAt(currentWords.size - 1) // 가장 오래된 항목 제거
+                }
+                preferences[RECENT_SEARCH_WORDS_KEY] = currentWords.joinToString(",")
+            }
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.success(false)
+        }
+    }
+
+    override suspend fun deleteRecentSearchWord(word: String): Result<Boolean> {
+        LoggerUtil.d("deleteRecentSearchWord 호출")
+
+        return try {
+            application.dataStore.edit { preferences ->
+                val currentWords = preferences[RECENT_SEARCH_WORDS_KEY]?.split(",")?.toMutableList() ?: mutableListOf()
+                currentWords.remove(word) // 해당 단어 제거
+                preferences[RECENT_SEARCH_WORDS_KEY] = currentWords.joinToString(",")
+            }
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.success(false)
+        }
+    }
+
+    override fun readRecentSearchWords(): Flow<List<String>> {
+        LoggerUtil.d("readRecentSearchWords 호출")
+
+        return application.dataStore.data
+            .map { preferences ->
+                preferences[RECENT_SEARCH_WORDS_KEY]?.split(",")?.filter { it.isNotEmpty() } ?: emptyList()
             }
     }
 }

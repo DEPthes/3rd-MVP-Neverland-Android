@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary2"
+        android:paddingHorizontal="24dp">
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_close"
+
+            android:paddingHorizontal="16sp"
+            android:layout_marginTop="42dp"
+            android:layout_marginBottom="28dp"
+
+            android:background="@drawable/search_edit_text_background_2"
+
+            android:inputType="text"
+            android:hint="@string/text_search_hint"
+            android:maxLines="1"
+            style="@style/Label_Medium"
+            android:textColor="@color/primary3"
+            android:textColorHint="@color/primary3"
+            android:drawableEnd="@drawable/ic_search"
+            android:drawableTint="@color/primary3"
+            android:drawablePadding="8dp"
+
+            android:imeOptions="actionSearch"
+            tools:ignore="Autofill"
+            />
+        
+        <Button
+            android:id="@+id/btn_close"
+            android:layout_width="28dp"
+            android:layout_height="wrap_content"
+            android:text="닫기"
+            style="@style/Pretendard_Text"
+            android:textColor="@color/content_secondary"
+            android:background="@color/primary2"
+            android:outlineProvider="none"
+            android:layout_marginStart="20dp"
+
+            app:layout_constraintTop_toTopOf="@id/et_search"
+            app:layout_constraintStart_toEndOf="@id/et_search"
+            app:layout_constraintBottom_toBottomOf="@id/et_search"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_recent_search_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="최근 검색어"
+            style="@style/Label_Large"
+            android:textColor="@color/primary3"
+            app:layout_constraintTop_toBottomOf="@id/et_search"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="49dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recent_search_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_search_recent"
+            tools:itemCount="9"
+            app:layout_constraintTop_toBottomOf="@id/tv_recent_search_word"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

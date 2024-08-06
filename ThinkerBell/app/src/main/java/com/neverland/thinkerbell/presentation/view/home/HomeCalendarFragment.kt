@@ -19,7 +19,7 @@ class HomeCalendarFragment : BaseFragment<FragmentHomeCalendarBinding>(R.layout.
     private val scheduleList = listOf(
         MjuSchedule("08.06", "학사 일정 1", false),
         MjuSchedule("08.09", "학사 일정 2", false),
-        MjuSchedule("08.18", "학사 일정 3", true),
+        MjuSchedule("08.11", "학사 일정 3", true),
         MjuSchedule("07.18", "학사 일정 3", true),
         MjuSchedule("09.18", "학사 일정 3", true),
         MjuSchedule("06.18", "학사 일정 3", true)

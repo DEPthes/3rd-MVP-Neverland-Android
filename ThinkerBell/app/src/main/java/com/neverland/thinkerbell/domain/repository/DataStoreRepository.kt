@@ -9,4 +9,10 @@ interface DataStoreRepository {
     suspend fun saveExampleData(value: String): Result<Boolean>
 
     fun readExampleData(): Flow<String?>
+
+    suspend fun saveRecentSearchWord(word: String): Result<Boolean>
+
+    fun readRecentSearchWords(): Flow<List<String>>
+
+    suspend fun deleteRecentSearchWord(word: String): Result<Boolean>
 }

@@ -45,7 +45,7 @@ abstract class BaseActivity<T: ViewDataBinding>(@LayoutRes private val layoutId:
         window.statusBarColor = ContextCompat.getColor(this, colorId)
     }
 
-    protected fun replaceFragment(frameLayoutId: Int, fragment: Fragment, isAddBackStack: Boolean){
+     fun replaceFragment(frameLayoutId: Int, fragment: Fragment, isAddBackStack: Boolean){
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(frameLayoutId, fragment)
         if (isAddBackStack) ft.addToBackStack(null)

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/recent_search_word_background"
+    android:paddingVertical="10dp"
+    android:layout_marginBottom="12dp">
+
+    <TextView
+        android:id="@+id/tv_recent_search_word"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        tools:text="최근 검색어"
+        style="@style/Label_Medium"
+        android:textColor="@color/content_secondary"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="15dp"/>
+
+    <ImageButton
+        android:id="@+id/ib_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_cancel"
+        android:background="@color/transparent"
+        android:layout_marginEnd="12dp"/>
+</LinearLayout>

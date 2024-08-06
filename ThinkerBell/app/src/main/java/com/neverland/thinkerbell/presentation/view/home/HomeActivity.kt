@@ -1,8 +1,11 @@
 package com.neverland.thinkerbell.presentation.view.home
 
+import android.view.View
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.ActivityHomeBinding
+import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.presentation.base.BaseActivity
+import com.neverland.thinkerbell.presentation.view.notice.CommonNoticeFragment
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
 
@@ -21,7 +24,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
                     true
                 }
                 R.id.navigation_dashboard -> {
-                    //replaceFragment(R.id.fl_home, DashboardFragment(), false)
+                    replaceFragment(R.id.fl_home, CommonNoticeFragment(NoticeType.STUDENT_ACTIVITIES), false)
                     true
                 }
                 R.id.navigation_notifications -> {
@@ -34,4 +37,13 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
 
         binding.bottomNavigation.setOnItemReselectedListener {  }
     }
+
+    fun hideBottomNavigation() {
+        findViewById<View>(R.id.bottom_navigation).visibility = View.GONE
+    }
+
+    fun showBottomNavigation() {
+        findViewById<View>(R.id.bottom_navigation).visibility = View.VISIBLE
+    }
+
 }

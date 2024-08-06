@@ -16,7 +16,8 @@ import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.UiState
 
 @SuppressLint("SetTextI18n")
-class CommonNoticeFragment(
+class
+CommonNoticeFragment(
     private val noticeType: NoticeType
 ) : BaseFragment<FragmentCommonNoticeBinding>(R.layout.fragment_common_notice) {
 
