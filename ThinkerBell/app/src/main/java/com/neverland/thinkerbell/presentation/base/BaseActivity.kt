@@ -5,9 +5,11 @@ import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.neverland.thinkerbell.core.utils.LoggerUtil
 
 abstract class BaseActivity<T: ViewDataBinding>(@LayoutRes private val layoutId: Int): AppCompatActivity() {
@@ -41,14 +43,20 @@ abstract class BaseActivity<T: ViewDataBinding>(@LayoutRes private val layoutId:
     protected open fun initListener() {}
     protected open fun setObserver() {}
 
-    protected fun setStatusBarColor(colorId: Int){
+    fun setStatusBarColor(colorId: Int, isLightIcon: Boolean){
         window.statusBarColor = ContextCompat.getColor(this, colorId)
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = !isLightIcon
+        }
     }
 
-     fun replaceFragment(frameLayoutId: Int, fragment: Fragment, isAddBackStack: Boolean){
-        val ft = supportFragmentManager.beginTransaction()
-        ft.replace(frameLayoutId, fragment)
-        if (isAddBackStack) ft.addToBackStack(null)
-        ft.commit()
+     fun replaceFragment(frameLayoutId: Int, fragment: Fragment, isAddBackStack: Boolean, isStackClear: Boolean = false){
+         val fragmentManager = supportFragmentManager
+         if(isStackClear) fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+
+         val ft = fragmentManager.beginTransaction()
+         ft.replace(frameLayoutId, fragment)
+         if (isAddBackStack) ft.addToBackStack(null)
+         ft.commit()
     }
 }

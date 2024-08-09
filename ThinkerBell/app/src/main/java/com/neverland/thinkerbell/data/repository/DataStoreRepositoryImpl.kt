@@ -3,6 +3,7 @@ package com.neverland.thinkerbell.data.repository
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.neverland.thinkerbell.core.utils.LoggerUtil
+import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.repository.DataStoreRepository
 import com.neverland.thinkerbell.presentation.base.ThinkerBellApplication.Companion.application
 import com.neverland.thinkerbell.presentation.base.dataStore
@@ -18,6 +19,7 @@ class DataStoreRepositoryImpl : DataStoreRepository {
     companion object {
         private val EXAMPLE_KEY = stringPreferencesKey("example_key")
         private val RECENT_SEARCH_WORDS_KEY = stringPreferencesKey("recent_search_words")
+        private val CATEGORY_ORDER_KEY = stringPreferencesKey("category_order_key")
     }
 
     override suspend fun clearData(): Result<Boolean> {
@@ -97,4 +99,29 @@ class DataStoreRepositoryImpl : DataStoreRepository {
                 preferences[RECENT_SEARCH_WORDS_KEY]?.split(",")?.filter { it.isNotEmpty() } ?: emptyList()
             }
     }
+
+    override suspend fun saveCategoryOrder(list: List<NoticeType>): Result<Boolean> {
+        LoggerUtil.d("saveRecentSearchWord 호출")
+
+        return try {
+            application.dataStore.edit { preferences ->
+                preferences[CATEGORY_ORDER_KEY] = list.joinToString(",")
+            }
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.success(false)
+        }
+    }
+
+    override fun readCategoryOrder(): Flow<List<NoticeType>> {
+        LoggerUtil.d("readRecentSearchWords 호출")
+
+        return application.dataStore.data
+            .map { preferences ->
+                val data = preferences[CATEGORY_ORDER_KEY]?.split(",")?.filter { it.isNotEmpty() } ?: emptyList()
+                data.map { NoticeType.valueOf(it) }
+            }
+    }
+
+
 }

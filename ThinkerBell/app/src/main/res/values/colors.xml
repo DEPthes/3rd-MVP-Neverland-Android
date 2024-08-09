@@ -19,4 +19,6 @@
     <color name="gray_ACACAD">#ACACAD</color>
     <color name="gray_898989">#898989</color>
     <color name="gray_E4E9EF">#C4E4E9EF</color>
+
+    <color name="category_bg">#E4E9EF</color>
 </resources>

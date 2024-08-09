@@ -7,7 +7,7 @@ import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentHomeCalendarBinding
 import com.neverland.thinkerbell.domain.model.MjuSchedule
 import com.neverland.thinkerbell.presentation.base.BaseFragment
-import com.neverland.thinkerbell.presentation.view.CustomLongDividerItemDecoration
+import com.neverland.thinkerbell.presentation.utils.CustomLongDividerItemDecoration
 import com.neverland.thinkerbell.presentation.view.home.adapter.CalendarMonthAdapter
 import com.neverland.thinkerbell.presentation.view.home.adapter.CalendarScheduleAdapter
 import java.util.Calendar
