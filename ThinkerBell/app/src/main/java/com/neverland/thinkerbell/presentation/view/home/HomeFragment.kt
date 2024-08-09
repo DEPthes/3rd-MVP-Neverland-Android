@@ -89,6 +89,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     )
 
     override fun initView() {
+        (requireActivity() as HomeActivity).apply {
+            showBottomNavigation()
+            setStatusBarColor(R.color.primary1, true)
+        }
         setBanner()
         setHomeNoticeRv()
     }

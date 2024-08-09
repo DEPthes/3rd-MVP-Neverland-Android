@@ -14,6 +14,8 @@ import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.notice.CommonNotice
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.UiState
+import com.neverland.thinkerbell.presentation.view.home.HomeActivity
+import com.neverland.thinkerbell.presentation.view.home.HomeFragment
 
 @SuppressLint("SetTextI18n")
 class
@@ -25,6 +27,10 @@ CommonNoticeFragment(
     private val commonNoticeAdapter: CommonRvAdapter by lazy { CommonRvAdapter() }
 
     override fun initView() {
+        (requireActivity() as HomeActivity).apply{
+            hideBottomNavigation()
+            setStatusBarColor(R.color.primary1, true)
+        }
         binding.tvNoticeTitle.text = noticeType.title
         binding.groupNoticeSearchView.visibility = View.GONE
         setupRecyclerView()
@@ -45,8 +51,17 @@ CommonNoticeFragment(
     }
 
     private fun setupButtonListeners() {
-        binding.btnFab.setOnClickListener {
+        binding.ibMenu.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
 
+        binding.ibHome.setOnClickListener {
+            (requireActivity() as HomeActivity).replaceFragment(
+                frameLayoutId = R.id.fl_home,
+                fragment = HomeFragment(),
+                isAddBackStack = false,
+                isStackClear = true
+            )
         }
 
         binding.btnBack.setOnClickListener {

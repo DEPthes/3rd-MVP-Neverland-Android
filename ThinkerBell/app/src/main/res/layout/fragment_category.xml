@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary2">
+
+        <Toolbar
+            android:id="@+id/tb_category"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/category_bg"
+            android:contentInsetStart="0dp">
+
+            <TextView
+                android:id="@+id/tv_category_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+
+                android:gravity="center_vertical"
+                android:text="카테고리"
+                style="@style/Label_Medium"
+                android:textColor="@color/primary3"/>
+        </Toolbar>
+
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/rv_category"
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           app:layout_constraintTop_toBottomOf="@id/tb_category"
+           app:layout_constraintBottom_toBottomOf="parent"
+
+           tools:listitem="@layout/item_category"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
