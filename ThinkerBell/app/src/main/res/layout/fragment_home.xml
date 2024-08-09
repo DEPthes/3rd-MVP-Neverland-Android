@@ -160,6 +160,8 @@
                     android:gravity="fill_vertical"
                     android:outlineProvider="none"
                     android:paddingHorizontal="17dp"
+
+                    android:textColor="@color/primary3"
                     android:text="부서별 연락처"
                     style="@style/Paragraph_Small" />
 
@@ -173,6 +175,7 @@
                     android:gravity="fill_vertical"
                     android:outlineProvider="none"
                     android:paddingHorizontal="17dp"
+                    android:textColor="@color/primary3"
                     android:text="부서별 홈페이지"
                     style="@style/Paragraph_Small" />
             </LinearLayout>

@@ -6,6 +6,7 @@ import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentHomeBinding
 import com.neverland.thinkerbell.domain.model.Notice
 import com.neverland.thinkerbell.presentation.base.BaseFragment
+import com.neverland.thinkerbell.presentation.view.contact.ContactsFragment
 import com.neverland.thinkerbell.presentation.view.home.adapter.HomeBannerAdapter
 import com.neverland.thinkerbell.presentation.view.home.adapter.HomeCategoryVPAdapter
 import com.neverland.thinkerbell.presentation.view.search.SearchFragment
@@ -127,6 +128,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         super.initListener()
         binding.ivHomeSearchIcon.setOnClickListener {
             (requireActivity() as HomeActivity).replaceFragment(R.id.fl_home, SearchFragment(), true)
+        }
+
+        binding.btnHomeDeptPhone.setOnClickListener {
+            (requireActivity() as HomeActivity).replaceFragment(R.id.fl_home, ContactsFragment(), true)
         }
     }
 
