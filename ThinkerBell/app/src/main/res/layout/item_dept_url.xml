@@ -1,44 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="44dp"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/primary2">
     
     <TextView
-        android:id="@+id/tv_contact_title"
+        android:id="@+id/tv_dept_url_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_contact"
+        app:layout_constraintEnd_toStartOf="@id/ib_load_page"
         android:layout_marginStart="24dp"
+        android:layout_marginEnd="12dp"
 
-        style="@style/Paragraph_Medium"
+        style="@style/Paragraph_Large"
         android:textColor="@color/primary3"
         tools:text="창의융합인재학부 / 멀티디자인"/>
 
-    <TextView
-        android:id="@+id/tv_contact"
-        android:layout_width="124dp"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/ib_load_page"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
 
+        android:contentDescription="@null"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_contact_title"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="28dp"
+        app:layout_constraintStart_toEndOf="@id/tv_dept_url_title"
+        app:layout_constraintHorizontal_bias="1"
+        android:layout_marginEnd="24dp"
 
-        android:maxLength="13"
-
-        android:gravity="end"
-        android:fontFamily="@font/pretendard_regular"
-        android:textSize="16sp"
-        android:textColor="@color/content_secondary"
-        tools:text="031-0000-0000"/>
+        android:src="@drawable/ic_direaction_right_1"
+        app:tint="#6B6B6B"
+        android:background="@color/transparent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

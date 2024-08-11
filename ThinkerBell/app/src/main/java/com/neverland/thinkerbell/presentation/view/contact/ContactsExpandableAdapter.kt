@@ -1,5 +1,6 @@
 package com.neverland.thinkerbell.presentation.view.contact
 
+import android.annotation.SuppressLint
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
@@ -13,9 +14,10 @@ import com.neverland.thinkerbell.databinding.ItemSubGroupBinding
 import com.neverland.thinkerbell.domain.model.group.ContactItem
 import com.neverland.thinkerbell.domain.model.group.Group
 import com.neverland.thinkerbell.domain.model.group.SubGroup
+import com.neverland.thinkerbell.domain.model.univ.DeptContact
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 
-class ContactsExpandableAdapter(private val groups: List<Group<ContactItem>>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ContactsExpandableAdapter(private val groups: List<Group<DeptContact>>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_GROUP = 0
@@ -68,6 +70,7 @@ class ContactsExpandableAdapter(private val groups: List<Group<ContactItem>>) : 
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var currentPosition = 0
         groups.forEach { group ->
@@ -122,7 +125,7 @@ class ContactsExpandableAdapter(private val groups: List<Group<ContactItem>>) : 
     }
 
     inner class GroupViewHolder(private val binding: ItemGroupBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(group: Group<ContactItem>) {
+        fun bind(group: Group<DeptContact>) {
             binding.tvGroupTitle.text = group.name
 
             if(group.isExpanded){
@@ -134,7 +137,7 @@ class ContactsExpandableAdapter(private val groups: List<Group<ContactItem>>) : 
     }
 
     inner class SubgroupViewHolder(private val binding: ItemSubGroupBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(subgroup: SubGroup<ContactItem>) {
+        fun bind(subgroup: SubGroup<DeptContact>) {
             binding.tvSubGroupTitle.text = subgroup.name
 
             if(subgroup.isExpanded){
@@ -148,8 +151,8 @@ class ContactsExpandableAdapter(private val groups: List<Group<ContactItem>>) : 
     }
 
     inner class ItemViewHolder(private val binding: ItemContactBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ContactItem) {
-            binding.tvContactTitle.text = item.name
+        fun bind(item: DeptContact) {
+            binding.tvContactTitle.text = item.major
 
             val underlineContact = SpannableString(item.contact)
             underlineContact.setSpan(
@@ -164,9 +167,9 @@ class ContactsExpandableAdapter(private val groups: List<Group<ContactItem>>) : 
         }
     }
 
-    private lateinit var rvItemClickListener: OnRvItemClickListener<ContactItem>
+    private lateinit var rvItemClickListener: OnRvItemClickListener<DeptContact>
 
-    fun setOnRvItemClickListener(rvItemClickListener: OnRvItemClickListener<ContactItem>){
+    fun setOnRvItemClickListener(rvItemClickListener: OnRvItemClickListener<DeptContact>){
         this.rvItemClickListener = rvItemClickListener
     }
 }

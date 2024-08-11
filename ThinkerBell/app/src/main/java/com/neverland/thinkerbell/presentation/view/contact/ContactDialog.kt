@@ -16,14 +16,15 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.neverland.thinkerbell.databinding.DialogContactBinding
 import com.neverland.thinkerbell.domain.model.group.ContactItem
+import com.neverland.thinkerbell.domain.model.univ.DeptContact
 import com.neverland.thinkerbell.presentation.utils.DisplayUtils
 
 class ContactDialog(
-    private val contactItem: ContactItem
+    private val contactItem: DeptContact
 ) : DialogFragment() {
 
     companion object {
-        fun newInstance(contactItem: ContactItem): ContactDialog {
+        fun newInstance(contactItem: DeptContact): ContactDialog {
             return ContactDialog(contactItem)
         }
     }
@@ -61,7 +62,7 @@ class ContactDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tvDialogContactTitle.text = contactItem.name
+        binding.tvDialogContactTitle.text = contactItem.major
         binding.tvDialogContactContact.text = contactItem.contact
         binding.btnDialogContactCopy.setOnClickListener { copyToClipboard() }
         binding.btnDialogContactCall.setOnClickListener { callPhone() }
@@ -70,7 +71,7 @@ class ContactDialog(
     private fun copyToClipboard() {
         val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
-        val clip = ClipData.newPlainText("${contactItem.name} 연락처", contactItem.contact)
+        val clip = ClipData.newPlainText("${contactItem.major} 연락처", contactItem.contact)
         clipboard.setPrimaryClip(clip)
         Toast.makeText(context, "클립보드에 복사되었습니다.", Toast.LENGTH_SHORT).show()
     }
