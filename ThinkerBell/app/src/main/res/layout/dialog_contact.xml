@@ -51,6 +51,8 @@
         android:background="@drawable/shape_dialog_contact_btn_bg"
         android:elevation="0dp"
 
+        android:stateListAnimator="@null"
+
         android:text="복사하기"
         style="@style/Label_Medium"
         android:textColor="@color/red_gray_400"/>
@@ -68,6 +70,8 @@
 
         android:background="@drawable/shape_dialog_contact_btn_bg"
         android:elevation="0dp"
+
+        android:stateListAnimator="@null"
 
         android:text="전화걸기"
         style="@style/Label_Medium"
