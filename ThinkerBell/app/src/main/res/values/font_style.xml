@@ -116,4 +116,10 @@
         <item name="android:textSize">14sp</item>
         <item name="lineHeight">16.71sp</item>
     </style>
+
+    <style name="Pretendard_Text_Light">
+        <item name="fontFamily">@font/pretendard_light</item>
+        <item name="android:textSize">11sp</item>
+        <item name="lineHeight">13.13sp</item>
+    </style>
 </resources>
