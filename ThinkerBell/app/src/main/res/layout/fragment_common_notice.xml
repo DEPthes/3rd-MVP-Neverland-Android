@@ -118,25 +118,48 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:constraint_referenced_ids="tv_search_notice_result, btn_back, divider_search"/>
-                
-                <TextView
-                    android:id="@+id/tv_search_notice_result"
-                    android:layout_width="match_parent"
-                    android:layout_height="58dp"
+
+                <Spinner
+                    android:id="@+id/spinner_campus"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="30dp"
+
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/rv_notice"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginVertical="12dp"
+
+                    android:dropDownWidth="80dp"
+                    android:background="@drawable/selector_spinner_campus_bg"
+                    tools:listitem="@layout/item_spinner_campus"/>
+
+
+                <TextView
+                    android:id="@+id/tv_search_notice_result"
+                    style="@style/Pretendard_Text"
+                    android:layout_width="0dp"
+                    android:layout_height="58dp"
                     android:layout_marginHorizontal="24dp"
 
+                    android:layout_marginStart="24dp"
                     android:gravity="center_vertical"
-                    tools:text="'검색어'이(가) 포함된 공지사항 (3개)"
-                    style="@style/Pretendard_Text"
-                    android:textColor="@color/content_secondary"/>
+                    android:textColor="@color/content_secondary"
+                    app:layout_constraintBottom_toTopOf="@id/rv_notice"
+                    app:layout_constraintEnd_toStartOf="@+id/spinner_campus"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="'검색어'이(가) 포함된 공지사항 (3개)" />
 
                 <View
                     android:id="@+id/divider_search"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/red_gray_700"
+                    android:translationZ="1dp"
                     app:layout_constraintTop_toBottomOf="@id/tv_search_notice_result"/>
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -162,6 +185,7 @@
                     android:layout_height="wrap_content"
                     
                     app:layout_constraintTop_toBottomOf="@id/tv_search_notice_result"
+                    app:layout_goneMarginTop="12dp"
                     
                     tools:listitem="@layout/item_notice"
                     tools:itemCount="3"/>

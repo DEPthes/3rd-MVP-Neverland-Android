@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/primary2"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ToggleButton
+        android:id="@+id/tb_favorites"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="24dp"
+
+        android:background="@drawable/favorites_background"
+
+        android:text="@null"
+        android:textOn="@null"
+        android:textOff="@null" />
+
+    <TextView
+        android:id="@+id/tv_job_company"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="@id/tb_favorites"
+        app:layout_constraintBottom_toBottomOf="@id/tb_favorites"
+        app:layout_constraintStart_toEndOf="@id/tb_favorites"
+        app:layout_constraintEnd_toStartOf="@id/tv_notice_status"
+        android:layout_marginHorizontal="20dp"
+
+        tools:text="(주)위즈코리아"
+        style="@style/Pretendard_Text"
+        android:textColor="@color/primary3"/>
+
+    <TextView
+        android:id="@+id/tv_notice_status"
+        android:layout_width="52dp"
+        android:layout_height="20dp"
+
+        app:layout_constraintTop_toTopOf="@id/tb_favorites"
+        app:layout_constraintBottom_toBottomOf="@id/tb_favorites"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="20dp"
+
+        android:gravity="center"
+        android:background="@color/category_bg"
+        tools:text="진행중"
+        style="@style/Paragraph_Small"
+        android:textColor="@color/primary3"/>
+
+    <TextView
+        android:id="@+id/tv_job_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="@id/tb_favorites"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toBottomOf="@id/tb_favorites"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@id/tv_notice_status"
+
+        tools:text="[채용연계] 데이터센터 엔지니어 모집"
+        android:textColor="@color/primary3"
+        style="@style/Pretendard_Text_Light"/>
+
+    <TextView
+        android:id="@+id/tv_job_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="@id/tv_job_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_job_title"
+        app:layout_constraintEnd_toStartOf="@+id/tv_job_term"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginEnd="16dp"
+
+        tools:text="2024년도"
+        android:textColor="@color/primary3"
+        style="@style/Pretendard_Text_Light"/>
+
+    <TextView
+        android:id="@+id/tv_job_term"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toEndOf="@id/tv_job_year"
+        app:layout_constraintTop_toTopOf="@id/tv_job_year"
+        app:layout_constraintBottom_toBottomOf="@id/tv_job_year"
+        app:layout_constraintEnd_toStartOf="@+id/tv_job_period"
+        android:layout_marginEnd="16dp"
+
+        tools:text="2학기"
+        android:textColor="@color/primary3"
+        style="@style/Pretendard_Text_Light"/>
+
+    <TextView
+        android:id="@+id/tv_job_period"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toEndOf="@id/tv_job_term"
+        app:layout_constraintTop_toTopOf="@id/tv_job_year"
+        app:layout_constraintBottom_toBottomOf="@id/tv_job_year"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        tools:text="24.09.01~24.12.13"
+        android:textColor="@color/primary3"
+        style="@style/Pretendard_Text_Light"/>
+
+    <TextView
+        android:id="@+id/tv_job_major"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_job_year"
+        app:layout_constraintStart_toStartOf="@id/tv_job_year"
+        app:layout_constraintEnd_toStartOf="@id/tv_job_num_of_people"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+
+        tools:text="국제학부/미디어커뮤니케이션학과/상경계열/예체능 디자인계열"
+        android:textColor="@color/primary3"
+        style="@style/Pretendard_Text_Light"/>
+
+    <TextView
+        android:id="@+id/tv_job_num_of_people"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="@id/tv_job_major"
+        app:layout_constraintStart_toEndOf="@id/tv_job_major"
+        app:layout_constraintEnd_toEndOf="@id/tv_notice_status"
+
+        tools:text="2명"
+        android:textColor="@color/primary3"
+        style="@style/Pretendard_Text_Light"/>
+
+    <TextView
+        android:id="@+id/tv_job_deadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_job_major"
+        app:layout_constraintBottom_toBottomOf="@id/divider"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@id/tv_job_major"
+        app:layout_constraintEnd_toStartOf="@id/tv_job_date"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginBottom="12dp"
+
+        android:text="접수마감일자"
+        android:fontFamily="@font/pretendard_medium"
+        android:textSize="11sp"
+        android:textColor="@color/primary3"/>
+
+    <TextView
+        android:id="@+id/tv_job_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="@id/tv_job_deadline"
+        app:layout_constraintBottom_toBottomOf="@id/tv_job_deadline"
+        app:layout_constraintStart_toEndOf="@id/tv_job_deadline"
+        app:layout_constraintEnd_toEndOf="@id/tv_notice_status"
+        android:layout_marginStart="16dp"
+
+        android:text="2024.07.26. 17시00분"
+        style="@style/Pretendard_Text_Light"
+        android:textColor="@color/primary3"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/red_gray_700"
+
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
