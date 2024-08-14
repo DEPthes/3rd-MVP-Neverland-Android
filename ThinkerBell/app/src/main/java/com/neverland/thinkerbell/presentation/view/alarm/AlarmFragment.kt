@@ -42,15 +42,20 @@ class AlarmFragment : BaseFragment<FragmentAlarmBinding>(R.layout.fragment_alarm
             tabTitle.text = keywords[position]
 
             // 알림이 있는 경우
-            //if (/* 키워드에 해당하는 알림이 있다면 */) {
+            if (hasNotificationForKeyword(keywords[position])) {
                 redDot.visibility = View.VISIBLE
-            //} else {
-                //redDot.visibility = View.GONE
-            //}
+            } else {
+                redDot.visibility = View.GONE
+            }
 
             tab.customView = tabView
         }.attach()
     }
 
+    // 특정 키워드에 대한 알림이 있는지 확인하는 로직
+    private fun hasNotificationForKeyword(keyword: String): Boolean {
+        // 예를 들어, 알림 데이터를 가지고 특정 키워드에 알림이 있는지 확인
+        return true /* 키워드에 해당하는 알림이 있으면 true 반환 */
+    }
 
 }

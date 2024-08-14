@@ -1,5 +1,6 @@
 package com.neverland.thinkerbell.presentation.view.alarm.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -31,7 +32,22 @@ class AlarmNoticeAdapter : ListAdapter<CommonNotice, AlarmNoticeAdapter.NoticeVi
             binding.tbFavorites.setOnCheckedChangeListener { _, isChecked ->
                 // 좋아요 상태 변경 처리 (예: 데이터 저장, UI 업데이트 등)
             }
+
+            // 읽음 여부에 따라 배경색 설정
+            if (isNoticeRead(notice)) {
+                binding.root.setBackgroundColor(Color.parseColor("#E4E9EF")) // 읽은 공지 배경색
+            } else {
+                binding.root.setBackgroundColor(Color.WHITE) // 기본 배경색
+            }
         }
+
+        // 공지가 읽혔는지 여부를 확인하는 함수 (서버 연동 시 구현)
+        private fun isNoticeRead(notice: CommonNotice): Boolean {
+            // 서버 연동 또는 로컬 데이터 확인을 통해 읽음 여부를 판단하는 로직
+            // TODO: 서버 연동 시 구현
+            return false
+        }
+
     }
 
     class DiffCallback : DiffUtil.ItemCallback<CommonNotice>() {
