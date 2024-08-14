@@ -6,6 +6,7 @@ import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentHomeBinding
 import com.neverland.thinkerbell.domain.model.Notice
 import com.neverland.thinkerbell.presentation.base.BaseFragment
+import com.neverland.thinkerbell.presentation.view.alarm.AlarmFragment
 import com.neverland.thinkerbell.presentation.view.home.adapter.HomeBannerAdapter
 import com.neverland.thinkerbell.presentation.view.home.adapter.HomeCategoryVPAdapter
 import com.neverland.thinkerbell.presentation.view.search.SearchFragment
@@ -121,6 +122,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     override fun initListener() {
         super.initListener()
+        // 알림 버튼 클릭 시
+        binding.ivHomeNotificationIcon.setOnClickListener {
+            (requireActivity() as HomeActivity).replaceFragment(R.id.fl_home, AlarmFragment(), true)
+        }
+        // 검색 버튼 클릭 시
         binding.ivHomeSearchIcon.setOnClickListener {
             (requireActivity() as HomeActivity).replaceFragment(R.id.fl_home, SearchFragment(), true)
         }
