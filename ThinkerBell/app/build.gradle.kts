@@ -80,4 +80,7 @@ dependencies {
     // LoggingInterceptor
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
+
+    // Fcm
+    implementation(libs.firebase.messaging)
 }
