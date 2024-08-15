@@ -1,5 +1,3 @@
-import org.gradle.api.internal.DocumentationRegistry.BASE_URL
-import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import java.util.Properties
 
 plugins {
@@ -7,6 +5,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -80,4 +79,10 @@ dependencies {
     // LoggingInterceptor
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
+
+    // Fcm
+    implementation(libs.firebase.messaging)
+
+    // WorkManager
+    implementation(libs.androidx.work.runtime.ktx)
 }
