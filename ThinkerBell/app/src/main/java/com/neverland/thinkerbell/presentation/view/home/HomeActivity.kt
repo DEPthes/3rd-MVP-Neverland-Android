@@ -5,12 +5,14 @@ import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.ActivityHomeBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.presentation.base.BaseActivity
+import com.neverland.thinkerbell.presentation.view.category.CategoryFragment
 import com.neverland.thinkerbell.presentation.view.notice.CommonNoticeFragment
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
 
     override fun initView() {
-        setStatusBarColor(R.color.primary1)
+        showBottomNavigation()
+        setStatusBarColor(R.color.primary1, true)
         replaceFragment(R.id.fl_home, HomeFragment(), false)
     }
 
@@ -24,7 +26,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
                     true
                 }
                 R.id.navigation_dashboard -> {
-                    replaceFragment(R.id.fl_home, CommonNoticeFragment(NoticeType.STUDENT_ACTIVITIES), false)
+                    replaceFragment(R.id.fl_home, CategoryFragment(), false)
                     true
                 }
                 R.id.navigation_notifications -> {
@@ -39,11 +41,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
     }
 
     fun hideBottomNavigation() {
-        findViewById<View>(R.id.bottom_navigation).visibility = View.GONE
+        binding.bottomNavigation.visibility = View.GONE
     }
 
     fun showBottomNavigation() {
-        findViewById<View>(R.id.bottom_navigation).visibility = View.VISIBLE
+        binding.bottomNavigation.visibility = View.VISIBLE
     }
-
 }

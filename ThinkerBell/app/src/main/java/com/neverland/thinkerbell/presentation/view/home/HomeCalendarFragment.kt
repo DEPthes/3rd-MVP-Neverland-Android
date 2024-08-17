@@ -1,33 +1,57 @@
 package com.neverland.thinkerbell.presentation.view.home
 
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentHomeCalendarBinding
 import com.neverland.thinkerbell.domain.model.MjuSchedule
+import com.neverland.thinkerbell.domain.model.group.Group
+import com.neverland.thinkerbell.domain.model.univ.AcademicSchedule
 import com.neverland.thinkerbell.presentation.base.BaseFragment
-import com.neverland.thinkerbell.presentation.view.CustomLongDividerItemDecoration
+import com.neverland.thinkerbell.presentation.utils.CustomLongDividerItemDecoration
+import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.home.adapter.CalendarMonthAdapter
 import com.neverland.thinkerbell.presentation.view.home.adapter.CalendarScheduleAdapter
 import java.util.Calendar
 
 class HomeCalendarFragment : BaseFragment<FragmentHomeCalendarBinding>(R.layout.fragment_home_calendar) {
+    private val viewModel: HomeCalendarViewModel by viewModels()
     private lateinit var monthAdapter: CalendarMonthAdapter
     private lateinit var scheduleAdapter: CalendarScheduleAdapter
 
-    private val scheduleList = listOf(
-        MjuSchedule("08.06", "학사 일정 1", false),
-        MjuSchedule("08.09", "학사 일정 2", false),
-        MjuSchedule("08.11", "학사 일정 3", true),
-        MjuSchedule("07.18", "학사 일정 3", true),
-        MjuSchedule("09.18", "학사 일정 3", true),
-        MjuSchedule("06.18", "학사 일정 3", true)
-    )
-
     override fun initView() {
+        setupObservers()
+        fetchSchedulesForCurrentMonth()
         setCalendarRv()
         setScheduleRv()
+    }
+
+    private fun setupObservers() {
+        viewModel.uiState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    // Handle loading state if necessary
+                }
+                is UiState.Success -> {
+                    // 성공 상태에서만 업데이트 수행
+                    monthAdapter.setData(state.data)
+                    updateSchedules(state.data)
+                }
+                is UiState.Error -> {
+                    // Handle error state if necessary
+                }
+                UiState.Empty -> {
+                    // Handle empty state if necessary
+                }
+            }
+        }
+    }
+    private fun fetchSchedulesForCurrentMonth() {
+        val calendar = Calendar.getInstance()
+        val currentMonth = calendar.get(Calendar.MONTH) + 1
+        viewModel.fetchData(currentMonth)
     }
 
     private fun setScheduleRv() {
@@ -42,9 +66,12 @@ class HomeCalendarFragment : BaseFragment<FragmentHomeCalendarBinding>(R.layout.
     }
 
     private fun setCalendarRv() {
-        monthAdapter = CalendarMonthAdapter(scheduleList) { newPosition ->
-            binding.rvCalendar.smoothScrollToPosition(newPosition)
-            updateSchedule(newPosition)
+        monthAdapter = CalendarMonthAdapter(emptyList()) { newPosition ->
+            binding.rvCalendar.scrollToPosition(newPosition)
+            val calendar = monthAdapter.baseCalendar.clone() as Calendar
+            calendar.add(Calendar.MONTH, newPosition - Int.MAX_VALUE / 2)
+            val month = calendar.get(Calendar.MONTH) + 1
+            viewModel.fetchData(month)
         }
         binding.rvCalendar.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvCalendar.adapter = monthAdapter
@@ -68,12 +95,19 @@ class HomeCalendarFragment : BaseFragment<FragmentHomeCalendarBinding>(R.layout.
         })
     }
 
+    private fun updateSchedules(schedules: List<AcademicSchedule>) {
+        scheduleAdapter.updateSchedules(schedules)
+    }
+
     private fun updateSchedule(position: Int) {
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.MONTH, position - Int.MAX_VALUE / 2)
         val month = calendar.get(Calendar.MONTH) + 1
 
-        val filteredSchedules = scheduleList.filter { it.date.startsWith(String.format("%02d", month)) }
+        val filteredSchedules = when (val state = viewModel.uiState.value) {
+            is UiState.Success -> state.data.filter { it.startDate.startsWith(String.format("%02d", month)) }
+            else -> emptyList() // 성공 상태가 아니면 빈 리스트 반환
+        }
         scheduleAdapter.updateSchedules(filteredSchedules)
     }
 }

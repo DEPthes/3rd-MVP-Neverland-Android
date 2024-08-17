@@ -4,16 +4,20 @@ import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.AdapterView
 import android.widget.ImageButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neverland.thinkerbell.R
+import com.neverland.thinkerbell.core.utils.LoggerUtil
 import com.neverland.thinkerbell.databinding.FragmentCommonNoticeBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
-import com.neverland.thinkerbell.domain.model.notice.CommonNotice
+import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.UiState
+import com.neverland.thinkerbell.presentation.view.home.HomeActivity
+import com.neverland.thinkerbell.presentation.view.home.HomeFragment
 
 @SuppressLint("SetTextI18n")
 class
@@ -22,12 +26,20 @@ CommonNoticeFragment(
 ) : BaseFragment<FragmentCommonNoticeBinding>(R.layout.fragment_common_notice) {
 
     private val viewModel: CommonNoticeViewModel by viewModels()
-    private val commonNoticeAdapter: CommonRvAdapter by lazy { CommonRvAdapter() }
+    private val commonNoticeAdapter: CommonRvAdapter by lazy { CommonRvAdapter(noticeType) }
+    private lateinit var spinnerAdapter: CampusSpinnerAdapter
+    private val spinnerRequiredNotices = listOf(NoticeType.DORMITORY_NOTICE, NoticeType.DORMITORY_ENTRY_NOTICE, NoticeType.LIBRARY_NOTICE)
 
     override fun initView() {
-        binding.tvNoticeTitle.text = noticeType.title
+        (requireActivity() as HomeActivity).apply{
+            hideBottomNavigation()
+            setStatusBarColor(R.color.primary1, true)
+        }
+        binding.tvNoticeTitle.text = noticeType.koName
         binding.groupNoticeSearchView.visibility = View.GONE
         setupRecyclerView()
+
+        if(spinnerRequiredNotices.contains(noticeType)) setCampusSpinner() else binding.spinnerCampus.visibility = View.GONE
     }
 
     private fun setupRecyclerView() {
@@ -45,8 +57,17 @@ CommonNoticeFragment(
     }
 
     private fun setupButtonListeners() {
-        binding.btnFab.setOnClickListener {
+        binding.ibMenu.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
 
+        binding.ibHome.setOnClickListener {
+            (requireActivity() as HomeActivity).replaceFragment(
+                frameLayoutId = R.id.fl_home,
+                fragment = HomeFragment(),
+                isAddBackStack = false,
+                isStackClear = true
+            )
         }
 
         binding.btnBack.setOnClickListener {
@@ -85,7 +106,7 @@ CommonNoticeFragment(
         viewModel.currentPage.observe(viewLifecycleOwner, ::updatePageButtons)
     }
 
-    private fun handleUiState(state: UiState<List<CommonNotice>>) {
+    private fun handleUiState(state: UiState<List<NoticeItem>>) {
         when (state) {
             is UiState.Loading -> { /* Show loading state if needed */ }
             is UiState.Error -> { /* Show error state if needed */ }
@@ -97,7 +118,7 @@ CommonNoticeFragment(
         }
     }
 
-    private fun handleSearchState(state: UiState<List<CommonNotice>>) {
+    private fun handleSearchState(state: UiState<List<NoticeItem>>) {
         when (state) {
             is UiState.Loading -> { /* Show loading state if needed */ }
             is UiState.Error -> { /* Show error state if needed */ }
@@ -163,5 +184,22 @@ CommonNoticeFragment(
     private fun setButtonState(button: ImageButton, color: Int) {
         button.imageTintList = ColorStateList.valueOf(color)
         button.isClickable = color == ContextCompat.getColor(requireContext(), R.color.red_gray_700)
+    }
+
+    private fun setCampusSpinner() {
+        val categories = listOf("전체", "인문", "자연")
+
+        spinnerAdapter = CampusSpinnerAdapter(requireContext(), binding.spinnerCampus, R.layout.item_spinner_campus, categories)
+        binding.spinnerCampus.adapter = spinnerAdapter
+        binding.spinnerCampus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val value = binding.spinnerCampus.getItemAtPosition(position).toString()
+                LoggerUtil.i(value)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        binding.spinnerCampus.dropDownVerticalOffset = 110
+        binding.spinnerCampus.dropDownHorizontalOffset = -30
     }
 }

@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    android:padding="16dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="@color/primary2">
 
     <TextView
         android:id="@+id/tv_schedule_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         style="@style/Paragraph_Small"
         tools:text="07.06"
-        android:textColor="@color/primary3" />
+        android:textColor="@color/primary3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_schedule_title"/>
 
     <TextView
         android:id="@+id/tv_schedule_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_marginHorizontal="16dp"
         tools:text="학사 일정"
         style="@style/Paragraph_Small"
-        android:textColor="@color/content_secondary" />
+        android:textColor="@color/content_secondary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_schedule_date"
+        app:layout_constraintEnd_toStartOf="@id/btn_favorite"/>
 
     <ImageButton
         android:id="@+id/btn_favorite"
@@ -30,5 +38,9 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_clipping_outline"
-        android:contentDescription="favorite_button" />
-</LinearLayout>
+        android:contentDescription="favorite_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_schedule_title"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
