@@ -28,14 +28,14 @@ CommonNoticeFragment(
     private val viewModel: CommonNoticeViewModel by viewModels()
     private val commonNoticeAdapter: CommonRvAdapter by lazy { CommonRvAdapter(noticeType) }
     private lateinit var spinnerAdapter: CampusSpinnerAdapter
-    private val spinnerRequiredNotices = listOf(NoticeType.DORMITORY, NoticeType.DORMITORY_ENTRANCE_EXIT, NoticeType.LIBRARY)
+    private val spinnerRequiredNotices = listOf(NoticeType.DORMITORY_NOTICE, NoticeType.DORMITORY_ENTRY_NOTICE, NoticeType.LIBRARY_NOTICE)
 
     override fun initView() {
         (requireActivity() as HomeActivity).apply{
             hideBottomNavigation()
             setStatusBarColor(R.color.primary1, true)
         }
-        binding.tvNoticeTitle.text = noticeType.title
+        binding.tvNoticeTitle.text = noticeType.koName
         binding.groupNoticeSearchView.visibility = View.GONE
         setupRecyclerView()
 

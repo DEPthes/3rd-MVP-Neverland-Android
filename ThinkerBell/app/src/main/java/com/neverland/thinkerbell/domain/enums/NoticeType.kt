@@ -1,18 +1,18 @@
 package com.neverland.thinkerbell.domain.enums
 
-enum class NoticeType(val title: String) {
-    GENERAL("일반공지"),
-    EVENT("행사공지"),
-    ACADEMIC("학사공지"),
-    SCHOLARSHIP_STUDENT_LOAN("장학/학자금공지"),
-    CAREER_EMPLOYMENT("진로/취업/창업공지"),
-    STUDENT_ACTIVITIES("학생활동공지"),
-    BIDDING("입찰공지"),
-    UNIV_SAFETY("대학안전공지"),
-    REGULATION("학칙개정 사전공고"),
-    DORMITORY("[생활관] 공지사항"),
-    DORMITORY_ENTRANCE_EXIT("[생활관] 입퇴사공지사항"),
-    LIBRARY("[도서관] 공지사항"),
-    TEACHING("[교직] 공지사항"),
-    JOB_TRAINING("현장실습지원 참여기업 안내")
+enum class NoticeType(val koName: String, val enName: String) {
+    NORMAL_NOTICE("일반공지", "NormalNotice"),
+    EVENT_NOTICE("행사공지", "EventNotice"),
+    ACADEMIC_NOTICE("학사공지", "AcademicNotice"),
+    SCHOLARSHIP_NOTICE("장학/학자금공지", "ScholarshipNotice"),
+    CAREER_NOTICE("진로/취업/창업공지", "CareerNotice"),
+    STUDENT_ACTS_NOTICE("학생활동공지", "StudentActsNotice"),
+    BIDDING_NOTICE("입찰공지", "BiddingNotice"),
+    SAFETY_NOTICE("대학안전공지", "SafetyNotice"),
+    REVISION_NOTICE("학칙개정 사전공고", "RevisionNotice"),
+    DORMITORY_NOTICE("[생활관] 공지사항", "DormitoryNotice"),
+    DORMITORY_ENTRY_NOTICE("[생활관] 입퇴사공지사항", "DormitoryEntryNotice"),
+    LIBRARY_NOTICE("[도서관] 공지사항", "LibraryNotice"),
+    TEACHING_NOTICE("[교직] 공지사항", "TeachingNotice"),
+    JOB_TRAINING_NOTICE("현장실습지원 참여기업 안내", "JobTrainingNotice")
 }

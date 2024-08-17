@@ -112,20 +112,20 @@ class CommonNoticeViewModel: ViewModel() {
 
         viewModelScope.launch {
             when (noticeType) {
-                NoticeType.GENERAL -> generalNotice(page)
-                NoticeType.EVENT -> eventNotice(page)
-                NoticeType.ACADEMIC -> academicNotice(page)
-                NoticeType.SCHOLARSHIP_STUDENT_LOAN -> scholarshipStudentLoanNotice(page)
-                NoticeType.CAREER_EMPLOYMENT -> careerEmploymentNotice(page)
-                NoticeType.STUDENT_ACTIVITIES -> studentActivitiesNotice(page)
-                NoticeType.BIDDING -> biddingNotice(page)
-                NoticeType.UNIV_SAFETY -> univSafetyNotice(page)
-                NoticeType.REGULATION -> regulationNotice(page)
-                NoticeType.DORMITORY -> dormitoryNotice(page)
-                NoticeType.DORMITORY_ENTRANCE_EXIT -> dormitoryEntranceExitNotice(page)
-                NoticeType.LIBRARY -> libraryNotice(page)
-                NoticeType.TEACHING -> teachingNotice(page)
-                NoticeType.JOB_TRAINING -> jobTrainingNotice(page)
+                NoticeType.NORMAL_NOTICE -> normalNotice(page)
+                NoticeType.EVENT_NOTICE -> eventNotice(page)
+                NoticeType.ACADEMIC_NOTICE -> academicNotice(page)
+                NoticeType.SCHOLARSHIP_NOTICE -> scholarshipNotice(page)
+                NoticeType.CAREER_NOTICE -> careerNotice(page)
+                NoticeType.STUDENT_ACTS_NOTICE -> studentActsNotice(page)
+                NoticeType.BIDDING_NOTICE -> biddingNotice(page)
+                NoticeType.SAFETY_NOTICE -> safetyNotice(page)
+                NoticeType.REVISION_NOTICE -> revisionNotice(page)
+                NoticeType.DORMITORY_NOTICE -> dormitoryNotice(page)
+                NoticeType.DORMITORY_ENTRY_NOTICE -> dormitoryEntryNotice(page)
+                NoticeType.LIBRARY_NOTICE -> libraryNotice(page)
+                NoticeType.TEACHING_NOTICE -> teachingNotice(page)
+                NoticeType.JOB_TRAINING_NOTICE -> jobTrainingNotice(page)
             }
         }
     }
@@ -136,7 +136,7 @@ class CommonNoticeViewModel: ViewModel() {
         _searchState.value = UiState.Success(dummyNotice2)
     }
 
-    private fun generalNotice(page: Int){
+    private fun normalNotice(page: Int){
         _uiState.value = UiState.Success(dummyNotice)
     }
 
@@ -150,17 +150,17 @@ class CommonNoticeViewModel: ViewModel() {
 
     }
 
-    private fun scholarshipStudentLoanNotice(page: Int){
+    private fun scholarshipNotice(page: Int){
         _uiState.value = UiState.Success(dummyNotice)
 
     }
 
-    private fun careerEmploymentNotice(page: Int){
+    private fun careerNotice(page: Int){
         _uiState.value = UiState.Success(dummyNotice)
 
     }
 
-    private fun studentActivitiesNotice(page: Int){
+    private fun studentActsNotice(page: Int){
         _uiState.value = UiState.Success(dummyNotice)
 
     }
@@ -170,12 +170,12 @@ class CommonNoticeViewModel: ViewModel() {
 
     }
 
-    private fun univSafetyNotice(page: Int){
+    private fun safetyNotice(page: Int){
         _uiState.value = UiState.Success(dummyNotice)
 
     }
 
-    private fun regulationNotice(page: Int){
+    private fun revisionNotice(page: Int){
         _uiState.value = UiState.Success(dummyNotice)
 
     }
@@ -194,7 +194,7 @@ class CommonNoticeViewModel: ViewModel() {
         }
     }
 
-    private fun dormitoryEntranceExitNotice(page: Int){
+    private fun dormitoryEntryNotice(page: Int){
         _uiState.value = UiState.Loading
 
         viewModelScope.launch {

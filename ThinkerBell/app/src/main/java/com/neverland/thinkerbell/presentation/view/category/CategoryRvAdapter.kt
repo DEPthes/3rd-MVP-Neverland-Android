@@ -27,7 +27,7 @@ class CategoryRvAdapter: ListAdapter<NoticeType, RecyclerView.ViewHolder>(catego
 
     inner class CategoryViewHolder(private val binding: ItemCategoryBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(data: NoticeType){
-            binding.tvCategory.text = data.title
+            binding.tvCategory.text = data.koName
             itemView.setOnClickListener { rvItemClickListener.onClick(data) }
         }
     }
