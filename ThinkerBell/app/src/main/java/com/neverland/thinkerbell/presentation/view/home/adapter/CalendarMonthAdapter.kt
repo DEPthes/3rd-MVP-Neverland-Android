@@ -8,15 +8,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.R
+import com.neverland.thinkerbell.core.utils.LoggerUtil
 import com.neverland.thinkerbell.domain.model.MjuSchedule
+import com.neverland.thinkerbell.domain.model.univ.AcademicSchedule
 import java.util.Calendar
 import java.util.Date
 
 class CalendarMonthAdapter(
-    private val scheduleList: List<MjuSchedule>,
+    private var scheduleList: List<AcademicSchedule>,
     private val onMonthChange: (Int) -> Unit
 ) : RecyclerView.Adapter<CalendarMonthAdapter.Month>() {
-    private val baseCalendar: Calendar = Calendar.getInstance()
+    val baseCalendar: Calendar = Calendar.getInstance()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Month {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_calendar_month, parent, false)
@@ -50,7 +52,7 @@ class CalendarMonthAdapter(
 
         listLayout.layoutManager = GridLayoutManager(holder.view.context, 7)
         listLayout.adapter = CalendarDayAdapter(tempMonth, dayList, scheduleList)
-
+        LoggerUtil.d(scheduleList.size.toString())
         // 화살표 버튼 클릭 이벤트 처리
         val btnPrevMonth: ImageButton = holder.view.findViewById(R.id.btn_prev_month)
         val btnNextMonth: ImageButton = holder.view.findViewById(R.id.btn_next_month)
@@ -68,6 +70,11 @@ class CalendarMonthAdapter(
 
     override fun getItemCount(): Int {
         return Int.MAX_VALUE
+    }
+
+    fun setData(newList: List<AcademicSchedule>) {
+        scheduleList = newList
+        notifyDataSetChanged()
     }
 
     class Month(val view: View) : RecyclerView.ViewHolder(view)

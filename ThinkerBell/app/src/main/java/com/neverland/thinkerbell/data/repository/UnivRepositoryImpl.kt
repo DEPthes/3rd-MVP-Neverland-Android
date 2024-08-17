@@ -2,6 +2,8 @@ package com.neverland.thinkerbell.data.repository
 
 import com.neverland.thinkerbell.data.remote.RetrofitClient
 import com.neverland.thinkerbell.data.remote.service.UnivService
+import com.neverland.thinkerbell.domain.model.univ.AcademicSchedule
+import com.neverland.thinkerbell.domain.model.univ.Banner
 import com.neverland.thinkerbell.domain.model.univ.DeptContact
 import com.neverland.thinkerbell.domain.model.univ.DeptUrl
 import com.neverland.thinkerbell.domain.repository.UnivRepository
@@ -42,6 +44,44 @@ class UnivRepositoryImpl: UnivRepository {
                 val jsonObject = JSONObject(res.errorBody().toString())
                 val msg = jsonObject.getString("message")
                 Result.failure(Exception("Get department contact failed: $msg"))
+            }
+        } catch (e : Exception){
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getMonthlyAcademicSchedule(month: Int): Result<List<AcademicSchedule>> {
+        return try {
+            val res = service.getMonthlyAcademicSchedule(month)
+            if(res.isSuccessful){
+                if(res.body() != null){
+                    Result.success(res.body()!!.data.map { AcademicSchedule(id = it.id, title = it.title, univId = it.univId, startDate = it.startDate, endDate = it.endDate) })
+                } else {
+                    Result.failure(Exception("Get monthly academic schedule failed: response is null data"))
+                }
+            } else {
+                val jsonObject = JSONObject(res.errorBody().toString())
+                val msg = jsonObject.getString("message")
+                Result.failure(Exception("Get monthly academic schedule failed: $msg"))
+            }
+        } catch (e : Exception){
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getBanner(): Result<List<Banner>> {
+        return try {
+            val res = service.getBanner()
+            if(res.isSuccessful){
+                if(res.body() != null){
+                    Result.success(res.body()!!.data.map { Banner(id = it.id, title = it.title, s3Url = it.s3Url) })
+                } else {
+                    Result.failure(Exception("Get banner failed: response is null data"))
+                }
+            } else {
+                val jsonObject = JSONObject(res.errorBody().toString())
+                val msg = jsonObject.getString("message")
+                Result.failure(Exception("Get banner failed: $msg"))
             }
         } catch (e : Exception){
             Result.failure(e)
