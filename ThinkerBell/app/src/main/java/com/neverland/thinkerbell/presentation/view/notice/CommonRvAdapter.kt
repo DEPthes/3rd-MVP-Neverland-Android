@@ -47,7 +47,7 @@ class CommonRvAdapter(private val noticeType: NoticeType) : ListAdapter<NoticeIt
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(noticeType == NoticeType.JOB_TRAINING){
+        return if(noticeType == NoticeType.JOB_TRAINING_NOTICE){
             VIEW_TYPE_JOB
         } else {
             VIEW_TYPE_COMMON
