@@ -8,7 +8,10 @@ import android.widget.TextView
 import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.R
+import com.neverland.thinkerbell.core.utils.LoggerUtil
+import com.neverland.thinkerbell.databinding.ItemCalendarDayBinding
 import com.neverland.thinkerbell.domain.model.MjuSchedule
+import com.neverland.thinkerbell.domain.model.univ.AcademicSchedule
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -16,40 +19,45 @@ import java.util.Locale
 class CalendarDayAdapter(
     val tempMonth: Int,
     val dayList: MutableList<Date>,
-    val scheduleList: List<MjuSchedule>
+    val scheduleList: List<AcademicSchedule>
 ) : RecyclerView.Adapter<CalendarDayAdapter.DayView>() {
 
-    class DayView(val layout: View): RecyclerView.ViewHolder(layout)
+    class DayView(val binding: ItemCalendarDayBinding): RecyclerView.ViewHolder(binding.root)
 
-    private val dateFormat = SimpleDateFormat("MM.dd", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayView {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_calendar_day, parent, false)
-        return DayView(view)
+        val binding = ItemCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return DayView(binding)
     }
 
     override fun onBindViewHolder(holder: DayView, position: Int) {
         // 초기화
-        val dayText: TextView = holder.layout.findViewById(R.id.tv_day)
+
         val date = dayList[position]
 
         // 날짜 표시
-        dayText.text = date.date.toString()
+        holder.binding.tvDay.text = date.date.toString()
         if (tempMonth != date.month) {
-            dayText.alpha = 0f
+            holder.binding.tvDay.alpha = 0f
         } else {
-            dayText.alpha = 1f
+            holder.binding.tvDay.alpha = 1f
         }
 
         // 일정이 있는 날짜 강조
         val dateString = dateFormat.format(date)
-        val scheduleForTheDay = scheduleList.find { it.date == dateString }
+        LoggerUtil.d(scheduleList.size.toString())
+        for (schedule in scheduleList ) {
+            LoggerUtil.d("${schedule.startDate} / ${dateString} / ${schedule.startDate==dateString}")
+
+        }
+        val scheduleForTheDay = scheduleList.find { it.startDate == dateString }
         if (scheduleForTheDay != null) {
-            dayText.setTextColor(holder.layout.context.getColor(R.color.primary1))
-            TextViewCompat.setTextAppearance(dayText, R.style.Label_Small)
-            dayText.setTypeface(dayText.typeface, Typeface.BOLD)
+            holder.binding.tvDay.setTextColor(holder.itemView.context.getColor(R.color.primary1))
+            TextViewCompat.setTextAppearance(holder.binding.tvDay, R.style.Label_Small)
+            holder.binding.tvDay.setTypeface(holder.binding.tvDay.typeface, Typeface.BOLD)
         } else {
-            dayText.setTextColor(holder.layout.context.getColor(R.color.content_secondary))
+            holder.binding.tvDay.setTextColor(holder.itemView.context.getColor(R.color.content_secondary))
         }
     }
 

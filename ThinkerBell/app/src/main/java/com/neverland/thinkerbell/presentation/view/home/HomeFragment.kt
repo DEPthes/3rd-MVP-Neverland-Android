@@ -1,11 +1,14 @@
 package com.neverland.thinkerbell.presentation.view.home
 
 import android.os.Handler
+import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentHomeBinding
 import com.neverland.thinkerbell.domain.model.Notice
+import com.neverland.thinkerbell.domain.model.univ.Banner
 import com.neverland.thinkerbell.presentation.base.BaseFragment
+import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.contact.ContactsFragment
 import com.neverland.thinkerbell.presentation.view.deptUrl.DeptUrlFragment
 import com.neverland.thinkerbell.presentation.view.home.adapter.HomeBannerAdapter
@@ -13,6 +16,7 @@ import com.neverland.thinkerbell.presentation.view.home.adapter.HomeCategoryVPAd
 import com.neverland.thinkerbell.presentation.view.search.SearchFragment
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+    private val viewModel: HomeViewModel by viewModels()
     private lateinit var bannerAdapter: HomeBannerAdapter
     private lateinit var handler: Handler
     private lateinit var runnable: Runnable
@@ -95,14 +99,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             showBottomNavigation()
             setStatusBarColor(R.color.primary1, true)
         }
-        setBanner()
+        setupObservers()
+        viewModel.fetchBanners()
         setHomeNoticeRv()
     }
 
-    private fun setBanner(){
+    private fun setupObservers() {
+        viewModel.banners.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    // Handle loading state
+                }
+                is UiState.Success -> {
+                    setBanner(state.data)
+                }
+                is UiState.Error -> {
+                    // Handle error state
+                }
+                UiState.Empty -> {
+
+                }
+            }
+        }
+    }
+
+    private fun setBanner(banners: List<Banner>){
         // 배너 설정
-        val bannerImages = listOf(R.drawable.img_sample_banner, R.drawable.img_sample_banner, R.drawable.img_sample_banner) // 배너 이미지 리소스 ID 리스트
-        bannerAdapter = HomeBannerAdapter(bannerImages)
+        bannerAdapter = HomeBannerAdapter(banners)
         binding.vpHomeBanner.adapter = bannerAdapter
 
         // 페이지 인디케이터 설정

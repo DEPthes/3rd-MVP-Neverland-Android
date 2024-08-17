@@ -8,12 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.domain.model.MjuSchedule
+import com.neverland.thinkerbell.domain.model.univ.AcademicSchedule
 
 class CalendarScheduleAdapter : RecyclerView.Adapter<CalendarScheduleAdapter.ScheduleViewHolder>() {
 
-    private var schedules: List<MjuSchedule> = listOf()
+    private var schedules: List<AcademicSchedule> = listOf()
 
-    fun updateSchedules(newSchedules: List<MjuSchedule>) {
+    fun updateSchedules(newSchedules: List<AcademicSchedule>) {
         schedules = newSchedules
         notifyDataSetChanged()
     }
@@ -25,16 +26,16 @@ class CalendarScheduleAdapter : RecyclerView.Adapter<CalendarScheduleAdapter.Sch
 
     override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
         val schedule = schedules[position]
-        holder.scheduleDate.text = schedule.date
+        holder.scheduleDate.text = schedule.startDate
         holder.scheduleTitle.text = schedule.title
-        holder.favoriteButton.setImageResource(
-            if (schedule.isFavorite) R.drawable.ic_clipping_filled else R.drawable.ic_clipping_outline
-        )
-
-        holder.favoriteButton.setOnClickListener {
-            schedule.isFavorite = !schedule.isFavorite
-            notifyItemChanged(position)
-        }
+//        holder.favoriteButton.setImageResource(
+//            if (schedule.isFavorite) R.drawable.ic_clipping_filled else R.drawable.ic_clipping_outline
+//        )
+//
+//        holder.favoriteButton.setOnClickListener {
+//            schedule.isFavorite = !schedule.isFavorite
+//            notifyItemChanged(position)
+//        }
     }
 
     override fun getItemCount(): Int {
