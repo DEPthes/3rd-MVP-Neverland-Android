@@ -105,7 +105,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(0, notificationBuilder.build())
+        notificationManager.notify((System.currentTimeMillis()).toInt(), notificationBuilder.build())
     }
 
     internal class MyWorker(appContext: Context, workerParams: WorkerParameters) :
