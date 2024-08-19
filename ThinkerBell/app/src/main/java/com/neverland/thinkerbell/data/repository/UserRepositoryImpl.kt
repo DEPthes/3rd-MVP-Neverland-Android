@@ -2,11 +2,7 @@ package com.neverland.thinkerbell.data.repository
 
 import com.neverland.thinkerbell.data.remote.RetrofitClient
 import com.neverland.thinkerbell.data.remote.model.user.PostUserInfoReqDTO
-import com.neverland.thinkerbell.data.remote.service.UnivService
 import com.neverland.thinkerbell.data.remote.service.UserService
-import com.neverland.thinkerbell.domain.model.univ.DeptContact
-import com.neverland.thinkerbell.domain.model.univ.DeptUrl
-import com.neverland.thinkerbell.domain.repository.UnivRepository
 import com.neverland.thinkerbell.domain.repository.UserRepository
 import org.json.JSONObject
 
@@ -15,7 +11,7 @@ class UserRepositoryImpl: UserRepository {
 
     override suspend fun postUserInfo(ssaId: String, fcmToken: String): Result<Boolean> {
         return try {
-            val res = service.postUserInfo(PostUserInfoReqDTO(ssaId, fcmToken))
+            val res = service.postUserInfo(PostUserInfoReqDTO(ssaId = ssaId, deviceToken = fcmToken))
             if(res.isSuccessful){
                 if(res.body() != null){
                     Result.success(true)

@@ -11,7 +11,7 @@ class BookmarkRepositoryImpl: BookmarkRepository {
 
     override suspend fun postNoticeBookmark(
         category: String,
-        noticeId: String,
+        noticeId: Int,
         ssaId: String
     ): Result<Boolean> {
         return try {
@@ -34,7 +34,7 @@ class BookmarkRepositoryImpl: BookmarkRepository {
 
     override suspend fun deleteNoticeBookmark(
         category: String,
-        noticeId: String,
+        noticeId: Int,
         ssaId: String
     ): Result<Boolean> {
         return try {

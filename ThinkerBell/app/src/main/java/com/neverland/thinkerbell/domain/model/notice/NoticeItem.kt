@@ -1,7 +1,5 @@
 package com.neverland.thinkerbell.domain.model.notice
 
-import com.google.gson.annotations.SerializedName
-
 sealed class NoticeItem {
     data class CommonNotice(
         val id: Int,
@@ -10,9 +8,11 @@ sealed class NoticeItem {
         val url: String,
         val campus: String? = null,
         val important: Boolean = false,
+        val marked: Boolean = false,
     ): NoticeItem()
 
     data class JobNotice(
+        val id: Int,
         val company: String,
         val year: String,
         val semester: String,
@@ -20,8 +20,7 @@ sealed class NoticeItem {
         val major: String,
         val deadline: String,
         val period: String,
-        val jobName: String
+        val jobName: String,
+        val marked: Boolean = false
     ) : NoticeItem()
-
-
 }
