@@ -2,44 +2,105 @@ package com.neverland.thinkerbell.presentation.view.notice
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.ItemNoticeBinding
+import com.neverland.thinkerbell.databinding.ItemNoticeJobBinding
+import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.notice.CommonNotice
+import com.neverland.thinkerbell.domain.model.notice.NoticeItem
+import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 
-class SearchResultNoticeAdapter : ListAdapter<CommonNotice, SearchResultNoticeAdapter.NoticeViewHolder>(DiffCallback()) {
+class SearchResultNoticeAdapter(
+    private val noticeType: NoticeType
+) : ListAdapter<NoticeItem, RecyclerView.ViewHolder>(noticeDiffUtil) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder {
-        val binding = ItemNoticeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NoticeViewHolder(binding)
-    }
+    companion object {
+        private const val VIEW_TYPE_COMMON = 1
+        private const val VIEW_TYPE_JOB = 2
 
-    override fun onBindViewHolder(holder: NoticeViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        private val noticeDiffUtil = object : DiffUtil.ItemCallback<NoticeItem>() {
+            override fun areItemsTheSame(oldItem: NoticeItem, newItem: NoticeItem): Boolean =
+                oldItem == newItem
+
+            override fun areContentsTheSame(oldItem: NoticeItem, newItem: NoticeItem): Boolean =
+                oldItem == newItem
+        }
     }
 
     inner class NoticeViewHolder(private val binding: ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(notice: CommonNotice) {
-            binding.tvNoticeTitle.text = notice.title
-            binding.tvNoticeDate.text = notice.date
-            // 좋아요 버튼 설정 (기본적으로 false로 설정)
-            binding.tbFavorites.isChecked = notice.isImportant ?: false
+        fun bind(data: NoticeItem.CommonNotice) {
+            binding.tvNoticeTitle.text = data.title
+            binding.tvNoticeDate.text = data.pubDate
+            binding.tbFavorites.isChecked = data.marked
 
-            // 좋아요 버튼 클릭 이벤트 설정
             binding.tbFavorites.setOnCheckedChangeListener { _, isChecked ->
-                // 좋아요 상태 변경 처리 (예: 데이터 저장, UI 업데이트 등)
+                bookmarkClickListener.onClick(Pair(data.id, isChecked))
+            }
+
+            binding.root.setOnClickListener {
+                rvItemClickListener.onClick(data.url)
             }
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<CommonNotice>() {
-        override fun areItemsTheSame(oldItem: CommonNotice, newItem: CommonNotice): Boolean {
-            return oldItem.url == newItem.url
-        }
+    inner class JobNoticeViewHolder(private val binding: ItemNoticeJobBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: NoticeItem.JobNotice) {
+            binding.tvJobCompany.text = data.company
+            binding.tvNoticeStatus.text = "진행중"
+            binding.tvJobYear.text = data.year
+            binding.tvJobTerm.text = data.semester
+            binding.tvJobNumOfPeople.text = data.recruitingNum
+            binding.tvJobMajor.text = data.major
+            binding.tvJobDate.text = data.deadline
+            binding.tvJobPeriod.text = data.period
+            binding.tvJobTitle.text = data.jobName
+            binding.tbFavorites.isChecked = data.marked
 
-        override fun areContentsTheSame(oldItem: CommonNotice, newItem: CommonNotice): Boolean {
-            return oldItem == newItem
+            binding.tbFavorites.setOnCheckedChangeListener { _, isChecked ->
+                bookmarkClickListener.onClick(Pair(data.id, isChecked))
+            }
         }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if(noticeType == NoticeType.JOB_TRAINING_NOTICE){
+            VIEW_TYPE_JOB
+        } else {
+            VIEW_TYPE_COMMON
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            VIEW_TYPE_JOB -> JobNoticeViewHolder(
+                ItemNoticeJobBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+            VIEW_TYPE_COMMON -> NoticeViewHolder(
+                ItemNoticeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is NoticeViewHolder -> holder.bind(getItem(position) as NoticeItem.CommonNotice)
+            is JobNoticeViewHolder -> holder.bind(getItem(position) as NoticeItem.JobNotice)
+        }
+    }
+
+    private lateinit var rvItemClickListener: OnRvItemClickListener<String>
+    private lateinit var bookmarkClickListener: OnRvItemClickListener<Pair<Int, Boolean>>
+
+    fun setRvItemClickListener(rvItemClickListener: OnRvItemClickListener<String>){
+        this.rvItemClickListener = rvItemClickListener
+    }
+
+    fun setBookmarkClickListener(bookmarkClickListener: OnRvItemClickListener<Pair<Int, Boolean>>){
+        this.bookmarkClickListener = bookmarkClickListener
     }
 }

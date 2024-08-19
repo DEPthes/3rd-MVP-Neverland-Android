@@ -62,5 +62,4 @@ class CategoryFragment: BaseFragment<FragmentCategoryBinding>(R.layout.fragment_
             }
         }
     }
-
 }

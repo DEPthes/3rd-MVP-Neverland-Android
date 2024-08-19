@@ -8,41 +8,59 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neverland.thinkerbell.R
+import com.neverland.thinkerbell.core.utils.LoggerUtil
 import com.neverland.thinkerbell.databinding.FragmentSearchResultBinding
+import com.neverland.thinkerbell.domain.enums.NoticeType
+import com.neverland.thinkerbell.domain.model.notice.AllNotices
+import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.presentation.base.BaseFragment
+import com.neverland.thinkerbell.presentation.utils.UiState
+import com.neverland.thinkerbell.presentation.view.home.HomeActivity
 import com.neverland.thinkerbell.presentation.view.search.adapter.SearchResultVPAdapter
 
-class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(R.layout.fragment_search_result) {
+class SearchResultFragment(
+    private val searchWord: String,
+    private val allNotices: Map<NoticeType, List<NoticeItem>>
+) : BaseFragment<FragmentSearchResultBinding>(R.layout.fragment_search_result) {
 
     private val searchViewModel: SearchViewModel by viewModels()
-
     private lateinit var adapter: SearchResultVPAdapter
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
-        val categories = resources.getStringArray(R.array.category_list).toList()
-        val searchWord = arguments?.getString(ARG_SEARCH_WORD) ?: ""
-        adapter = SearchResultVPAdapter(this, categories, searchWord) { count ->
-            updateSearchResultCount(count)
+        (requireActivity() as HomeActivity).apply {
+            setStatusBarColor(R.color.primary1, true)
+            showBottomNavigation()
         }
+
+        binding.etSearch.setText(searchWord)
+        binding.tvSearchResultCount.text = "검색 결과 : 총 ${allNotices.values.sumOf { it.size }}개"
+
+        setRecyclerView(allNotices.keys.toList(), allNotices)
+    }
+
+    private fun setRecyclerView(categories: List<NoticeType>, allNotices: Map<NoticeType, List<NoticeItem>>){
+        adapter = SearchResultVPAdapter(this, categories = categories, allNotices)
 
         binding.vpSearchNotice.adapter = adapter
 
         TabLayoutMediator(binding.tlSearchCategoryTab, binding.vpSearchNotice) { tab, position ->
-            tab.text = categories[position]
+            tab.text = categories[position].tabName
         }.attach()
+    }
 
-        binding.etSearch.setText(searchWord)
+    override fun initListener() {
+        super.initListener()
 
-        // EditText의 EditorActionListener를 설정하여 검색 버튼 클릭 시 이벤트 처리
         binding.etSearch.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
+            ) {
                 val newSearchWord = binding.etSearch.text.toString()
                 if (newSearchWord.isNotEmpty()) {
                     // 검색어를 ViewModel에 추가
                     searchViewModel.addSearchWord(newSearchWord)
-                    updateSearchWord(newSearchWord)
+                    searchViewModel.searchAllNotices(newSearchWord)
                 }
                 true
             } else {
@@ -58,51 +76,34 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(R.layout.
                 val padding = binding.etSearch.paddingEnd
 
                 if (event.rawX >= (binding.etSearch.right - drawableEndWidth - padding) &&
-                    event.rawX <= (binding.etSearch.right - padding)) {
+                    event.rawX <= (binding.etSearch.right - padding)
+                ) {
                     val newSearchWord = binding.etSearch.text.toString()
                     if (newSearchWord.isNotEmpty()) {
                         // 검색어를 ViewModel에 추가
                         searchViewModel.addSearchWord(newSearchWord)
-                        updateSearchWord(newSearchWord)
+                        searchViewModel.searchAllNotices(newSearchWord)
                     }
                     return@setOnTouchListener true
                 }
             }
             return@setOnTouchListener false
         }
-
-        // 검색 결과 개수를 업데이트
-        searchViewModel.searchResultCount.observe(viewLifecycleOwner) { count ->
-            binding.tvSearchResultCount.text = "검색 결과 : 총 ${count}개"
-        }
     }
 
-    private fun updateSearchWord(newSearchWord: String) {
-        val categories = resources.getStringArray(R.array.category_list).toList()
-        adapter = SearchResultVPAdapter(this, categories, newSearchWord) { count ->
-            updateSearchResultCount(count)
-        }
-        binding.vpSearchNotice.adapter = adapter
+    override fun setObserver() {
+        super.setObserver()
 
-        TabLayoutMediator(binding.tlSearchCategoryTab, binding.vpSearchNotice) { tab, position ->
-            tab.text = categories[position]
-        }.attach()
-    }
-
-    private fun updateSearchResultCount(count: Int) {
-        searchViewModel.updateSearchResultCount(count)
-    }
-
-    companion object {
-        private const val ARG_SEARCH_WORD = "search_word"
-
-        fun newInstance(searchWord: String): SearchResultFragment {
-            val fragment = SearchResultFragment()
-            val args = Bundle().apply {
-                putString(ARG_SEARCH_WORD, searchWord)
+        searchViewModel.uiState.observe(viewLifecycleOwner){
+            when(it){
+                is UiState.Loading -> {}
+                is UiState.Error -> {}
+                is UiState.Empty -> {}
+                is UiState.Success -> {
+                    binding.tvSearchResultCount.text = "검색 결과 : 총 ${it.data.second.values.sumOf { value -> value.size }}개"
+                    setRecyclerView(it.data.second.keys.toList(), it.data.second)
+                }
             }
-            fragment.arguments = args
-            return fragment
         }
     }
 }

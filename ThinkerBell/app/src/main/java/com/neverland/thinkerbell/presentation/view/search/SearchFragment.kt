@@ -18,29 +18,24 @@ import com.neverland.thinkerbell.presentation.view.search.adapter.SearchRecentWo
 
 @SuppressLint("SetTextI18n")
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
-
-    private val dataStoreRepository by lazy { DataStoreRepositoryImpl() }
-
-    private val searchViewModel: SearchViewModel by lazy {
-        SearchViewModel(requireActivity().application)
-    }
+    private val searchViewModel: SearchViewModel by lazy { SearchViewModel() }
     private lateinit var adapter: SearchRecentWordAdapter
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
-        // 상단 상태 표시줄 색상 변경
-        val window = requireActivity().window
-        window.statusBarColor = resources.getColor(R.color.primary2, null)
-        val decorView = window.decorView
-        val windowInsetsController = ViewCompat.getWindowInsetsController(decorView)
-        windowInsetsController?.isAppearanceLightStatusBars = true // 상태 표시줄 아이콘 색상을 흰색으로 설정
+        (requireActivity() as HomeActivity).apply {
+            hideBottomNavigation()
+            setStatusBarColor(R.color.primary2, false)
+        }
 
-        // 바텀 내비게이션 숨기기
-        (requireActivity() as HomeActivity).hideBottomNavigation()
+        setRecyclerView()
+    }
 
+    private fun setRecyclerView(){
         adapter = SearchRecentWordAdapter(
             wordClickListener = { word ->
                 binding.etSearch.setText(word)
+                showKeyboardAndFocus(binding.etSearch)
             },
             deleteClickListener = { word ->
                 searchViewModel.deleteSearchWord(word)
@@ -48,8 +43,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         )
         binding.rvRecentSearchWord.layoutManager = LinearLayoutManager(context)
         binding.rvRecentSearchWord.adapter = adapter
+    }
 
-        // 소프트 키보드의 검색 버튼 클릭 시 이벤트 처리
+    override fun initListener() {
+        super.initListener()
+
+        binding.btnClose.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
         binding.etSearch.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                 (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
@@ -60,8 +62,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                     // EditText를 초기화
                     binding.etSearch.text.clear()
                     // 검색어를 전달하며 SearchResultFragment로 이동
-                    val fragment = SearchResultFragment.newInstance(searchWord)
-                    (requireActivity() as HomeActivity).replaceFragment(R.id.fl_home, fragment, true)
+                    searchViewModel.searchAllNotices(searchWord)
                 }
                 true
             } else {
@@ -70,7 +71,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         }
 
         // 터치 리스너를 추가하여 drawableEnd 클릭 이벤트 처리
-        binding.etSearch.setOnTouchListener { v, event ->
+        binding.etSearch.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 // EditText의 오른쪽 패딩 값을 고려하여 터치 위치를 계산
                 val drawableEndWidth = binding.etSearch.compoundDrawables[2]?.bounds?.width() ?: 0
@@ -85,62 +86,46 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                         // EditText를 초기화
                         binding.etSearch.text.clear()
                         // 검색어를 전달하며 SearchResultFragment로 이동
-                        val fragment = SearchResultFragment.newInstance(searchWord)
-                        (requireActivity() as HomeActivity).replaceFragment(R.id.fl_home, fragment, true)
+                        searchViewModel.searchAllNotices(searchWord)
                     }
                     return@setOnTouchListener true
                 }
             }
             return@setOnTouchListener false
         }
+    }
 
-        // TextWatcher를 추가하여 텍스트 변경 시 이벤트 처리
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                // 현재 터치 리스너는 이미 추가되어 있으므로 필요하지 않음
-            }
-        })
+    override fun setObserver() {
+        super.setObserver()
 
         searchViewModel.recentSearchWords.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    // Handle loading state
                 }
                 is UiState.Empty -> {
-                    // Handle empty state
                     adapter.submitList(emptyList())
                 }
                 is UiState.Success -> {
-                    // Handle success state
                     adapter.submitList(state.data)
                 }
                 is UiState.Error -> {
-                    // Handle error state
-                    // Show error message or similar
+
                 }
             }
         }
 
-        // btn_close 클릭 시 뒤로 가기 기능
-        binding.btnClose.setOnClickListener {
-            requireActivity().onBackPressed()
+        searchViewModel.uiState.observe(viewLifecycleOwner){
+            when(it){
+                is UiState.Loading -> {
+                }
+                is UiState.Empty -> {}
+                is UiState.Success -> {
+                    searchViewModel.setUiStateLoading()
+                    val fragment = SearchResultFragment(it.data.first, it.data.second)
+                    (requireActivity() as HomeActivity).replaceFragment(R.id.fl_home, fragment, true)
+                }
+                is UiState.Error -> {}
+            }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // 다른 프래그먼트로 이동 시 상태 표시줄 색상 원래대로 돌리기
-        val window = requireActivity().window
-        window.statusBarColor = resources.getColor(R.color.primary1, null)
-        val decorView = window.decorView
-        val windowInsetsController = ViewCompat.getWindowInsetsController(decorView)
-        windowInsetsController?.isAppearanceLightStatusBars = false // 상태 표시줄 아이콘 색상을 기본 색상으로 설정
-
-        // 바텀 내비게이션 다시 보이게 하기
-        (requireActivity() as HomeActivity).showBottomNavigation()
     }
 }
