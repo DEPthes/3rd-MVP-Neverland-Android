@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentHomeCalendarBinding
-import com.neverland.thinkerbell.domain.model.MjuSchedule
-import com.neverland.thinkerbell.domain.model.group.Group
 import com.neverland.thinkerbell.domain.model.univ.AcademicSchedule
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.CustomLongDividerItemDecoration

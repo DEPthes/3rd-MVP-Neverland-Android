@@ -7,7 +7,6 @@ import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentCategoryBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.presentation.base.BaseFragment
-import com.neverland.thinkerbell.presentation.utils.CustomLongDividerItemDecoration
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.home.HomeActivity
@@ -62,5 +61,4 @@ class CategoryFragment: BaseFragment<FragmentCategoryBinding>(R.layout.fragment_
             }
         }
     }
-
 }

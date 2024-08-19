@@ -1,11 +1,9 @@
 package com.neverland.thinkerbell.presentation.view.contact
 
-import android.service.controls.actions.ControlAction
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentContactsBinding
-import com.neverland.thinkerbell.domain.model.group.ContactItem
 import com.neverland.thinkerbell.domain.model.group.Group
 import com.neverland.thinkerbell.domain.model.univ.DeptContact
 import com.neverland.thinkerbell.presentation.base.BaseFragment

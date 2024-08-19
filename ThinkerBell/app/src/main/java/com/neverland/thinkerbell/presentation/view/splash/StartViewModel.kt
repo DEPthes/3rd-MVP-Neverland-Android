@@ -1,7 +1,6 @@
 package com.neverland.thinkerbell.presentation.view.splash
 
 import android.annotation.SuppressLint
-import android.provider.Settings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

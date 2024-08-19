@@ -1,6 +1,5 @@
 package com.neverland.thinkerbell.presentation.view.notice
 
-import android.provider.Contacts.Intents.UI
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,7 +27,6 @@ import com.neverland.thinkerbell.domain.usecase.notice.SearchNoticesByCategoryUs
 import com.neverland.thinkerbell.presentation.base.ThinkerBellApplication.Companion.application
 import com.neverland.thinkerbell.presentation.utils.UiState
 import kotlinx.coroutines.launch
-import retrofit2.http.DELETE
 import kotlin.math.ceil
 
 class CommonNoticeViewModel: ViewModel() {

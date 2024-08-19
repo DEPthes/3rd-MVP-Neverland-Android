@@ -13,6 +13,7 @@ class StartActivity: BaseActivity<ActivityStartBinding>(R.layout.activity_start)
 
     override fun initView() {
         viewModel.saveDeviceInfo()
+        setStatusBarColor(R.color.primary2, false)
     }
 
     override fun setObserver() {

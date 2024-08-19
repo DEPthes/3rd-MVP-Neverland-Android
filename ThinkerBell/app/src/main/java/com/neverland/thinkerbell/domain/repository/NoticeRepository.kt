@@ -2,6 +2,7 @@ package com.neverland.thinkerbell.domain.repository
 
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.PageableNotice
+import com.neverland.thinkerbell.domain.model.notice.AllNotices
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.domain.model.notice.RecentNotices
 
@@ -36,6 +37,8 @@ interface NoticeRepository {
     suspend fun getBiddingNotices(page: Int, ssaId: String): Result<PageableNotice<NoticeItem.CommonNotice>>
 
     suspend fun searchNoticesByCategory(noticeType: NoticeType, keyword: String, ssaId: String): Result<List<NoticeItem>>
+
+    suspend fun searchAllNoticesByCategory(keyword: String, ssaId: String): Result<AllNotices>
 
     suspend fun getRecentNotices(ssaId: String): Result<RecentNotices>
 }
