@@ -11,7 +11,7 @@ interface UnivRepository {
 
     suspend fun getDeptContact(): Result<List<DeptContact>>
 
-    suspend fun getMonthlyAcademicSchedule(month: Int): Result<List<AcademicSchedule>>
+    suspend fun getMonthlyAcademicSchedule(month: Int, ssaId: String): Result<List<AcademicSchedule>>
 
     suspend fun getBanner(): Result<List<Banner>>
 }
