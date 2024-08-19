@@ -4,13 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neverland.thinkerbell.core.utils.LoggerUtil
-import com.neverland.thinkerbell.data.repository.DataStoreRepositoryImpl
-import com.neverland.thinkerbell.domain.enums.NoticeType
-import com.neverland.thinkerbell.domain.model.group.ContactItem
 import com.neverland.thinkerbell.domain.model.group.Group
-import com.neverland.thinkerbell.domain.model.group.SubGroup
-import com.neverland.thinkerbell.domain.model.notice.CommonNotice
 import com.neverland.thinkerbell.domain.model.univ.DeptUrl
 import com.neverland.thinkerbell.domain.usecase.univ.GetDeptUrlUseCase
 import com.neverland.thinkerbell.presentation.utils.UiState

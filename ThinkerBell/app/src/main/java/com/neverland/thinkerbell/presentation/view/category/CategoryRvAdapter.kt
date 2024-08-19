@@ -1,16 +1,12 @@
 package com.neverland.thinkerbell.presentation.view.category
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.databinding.ItemCategoryBinding
-import com.neverland.thinkerbell.databinding.ItemNoticeBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
-import com.neverland.thinkerbell.domain.model.notice.CommonNotice
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import java.util.Collections
 

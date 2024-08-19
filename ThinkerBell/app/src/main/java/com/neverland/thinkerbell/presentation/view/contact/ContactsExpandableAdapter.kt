@@ -11,7 +11,6 @@ import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.ItemContactBinding
 import com.neverland.thinkerbell.databinding.ItemGroupBinding
 import com.neverland.thinkerbell.databinding.ItemSubGroupBinding
-import com.neverland.thinkerbell.domain.model.group.ContactItem
 import com.neverland.thinkerbell.domain.model.group.Group
 import com.neverland.thinkerbell.domain.model.group.SubGroup
 import com.neverland.thinkerbell.domain.model.univ.DeptContact

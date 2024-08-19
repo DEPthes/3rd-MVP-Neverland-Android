@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.core.utils.LoggerUtil
-import com.neverland.thinkerbell.domain.model.MjuSchedule
 import com.neverland.thinkerbell.domain.model.univ.AcademicSchedule
 import java.util.Calendar
 import java.util.Date

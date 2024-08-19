@@ -1,15 +1,12 @@
 package com.neverland.thinkerbell.data.repository
 
 import com.neverland.thinkerbell.data.remote.RetrofitClient
-import com.neverland.thinkerbell.data.remote.model.PageableResponse
-import com.neverland.thinkerbell.data.remote.model.notice.CommonNoticeDTO
 import com.neverland.thinkerbell.data.remote.service.NoticeService
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.PageableNotice
 import com.neverland.thinkerbell.domain.model.notice.AllNotices
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.domain.model.notice.RecentNotices
-import com.neverland.thinkerbell.domain.model.univ.DeptContact
 import com.neverland.thinkerbell.domain.repository.NoticeRepository
 import org.json.JSONObject
 

@@ -2,15 +2,12 @@ package com.neverland.thinkerbell.presentation.view.notice
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.ItemNoticeBinding
 import com.neverland.thinkerbell.databinding.ItemNoticeJobBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
-import com.neverland.thinkerbell.domain.model.notice.CommonNotice
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 

@@ -14,7 +14,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.core.utils.LoggerUtil
-import com.neverland.thinkerbell.data.repository.BookmarkRepositoryImpl
 import com.neverland.thinkerbell.databinding.FragmentCommonNoticeBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem

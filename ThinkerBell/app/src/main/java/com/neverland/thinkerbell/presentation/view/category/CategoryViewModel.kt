@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.neverland.thinkerbell.core.utils.LoggerUtil
 import com.neverland.thinkerbell.data.repository.DataStoreRepositoryImpl
 import com.neverland.thinkerbell.domain.enums.NoticeType
-import com.neverland.thinkerbell.domain.model.notice.CommonNotice
 import com.neverland.thinkerbell.presentation.utils.UiState
 import kotlinx.coroutines.launch
 

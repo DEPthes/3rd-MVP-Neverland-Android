@@ -1,17 +1,14 @@
 package com.neverland.thinkerbell.presentation.view.search
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neverland.thinkerbell.R
-import com.neverland.thinkerbell.core.utils.LoggerUtil
 import com.neverland.thinkerbell.databinding.FragmentSearchResultBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
-import com.neverland.thinkerbell.domain.model.notice.AllNotices
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.UiState

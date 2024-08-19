@@ -1,15 +1,11 @@
 package com.neverland.thinkerbell.presentation.view.search
 
 import android.annotation.SuppressLint
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neverland.thinkerbell.R
-import com.neverland.thinkerbell.data.repository.DataStoreRepositoryImpl
 import com.neverland.thinkerbell.databinding.FragmentSearchBinding
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.UiState
