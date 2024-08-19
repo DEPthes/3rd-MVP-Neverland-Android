@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
-import com.neverland.thinkerbell.domain.usecase.notice.GetBookmarkNoticeUseCase
+import com.neverland.thinkerbell.domain.usecase.bookmark.GetBookmarkNoticeUseCase
 import com.neverland.thinkerbell.presentation.base.ThinkerBellApplication.Companion.application
 import com.neverland.thinkerbell.presentation.utils.UiState
 import kotlinx.coroutines.launch

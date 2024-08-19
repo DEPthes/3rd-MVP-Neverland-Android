@@ -1,6 +1,5 @@
-package com.neverland.thinkerbell.domain.usecase.notice
+package com.neverland.thinkerbell.domain.usecase.bookmark
 
-import android.adservices.adid.AdId
 import com.neverland.thinkerbell.data.repository.BookmarkRepositoryImpl
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.notice.BookmarkNotice

@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.databinding.ItemMyNoticeBinding
 import com.neverland.thinkerbell.domain.model.notice.CommonNotice
+import com.neverland.thinkerbell.domain.model.notice.RecentBookmarkNotice
 
-class MyPageFavoriteNoticeAdapter(private val notices: List<CommonNotice>) :
+class MyPageFavoriteNoticeAdapter(private val notices: List<RecentBookmarkNotice>) :
     RecyclerView.Adapter<MyPageFavoriteNoticeAdapter.MyPageFavoriteNoticeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPageFavoriteNoticeViewHolder {
@@ -25,9 +26,9 @@ class MyPageFavoriteNoticeAdapter(private val notices: List<CommonNotice>) :
     class MyPageFavoriteNoticeViewHolder(private val binding: ItemMyNoticeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(notice: CommonNotice) {
+        fun bind(notice: RecentBookmarkNotice) {
             binding.tvNoticeTitle.text = notice.title
-            binding.tvNoticeDate.text = notice.date
+            binding.tvNoticeDate.text = notice.pubDate
         }
     }
 }

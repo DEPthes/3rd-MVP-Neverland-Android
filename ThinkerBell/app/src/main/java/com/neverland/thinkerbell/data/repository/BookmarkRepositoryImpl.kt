@@ -5,6 +5,7 @@ import com.neverland.thinkerbell.data.remote.model.user.PostUserInfoReqDTO
 import com.neverland.thinkerbell.data.remote.service.BookmarkService
 import com.neverland.thinkerbell.domain.model.notice.BookmarkNotice
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
+import com.neverland.thinkerbell.domain.model.notice.RecentBookmarkNotice
 import com.neverland.thinkerbell.domain.repository.BookmarkRepository
 import org.json.JSONObject
 
@@ -31,8 +32,8 @@ class BookmarkRepositoryImpl: BookmarkRepository {
                             careerNotice = data.careerNotice?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)},
                             biddingNotice = data.biddingNotice?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)},
                             dormitoryEntryNotice = data.dormitoryEntryNotice?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked, important = it.important?:false, campus = it.campus)},
-                            scholarshipNotice = data.scholarshipNotice?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)}
-
+                            scholarshipNotice = data.scholarshipNotice?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)},
+                            normalNotice = data.normalNotice?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)},
                         )
                         Result.success(bookmarkNotice)
                     } else {
@@ -47,6 +48,30 @@ class BookmarkRepositoryImpl: BookmarkRepository {
                 Result.failure(Exception("Get BookmarkNotices failed: $msg"))
             }
         } catch (e : Exception){
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getRecentNoticeBookmark(ssaId: String): Result<List<RecentBookmarkNotice>> {
+        return try {
+            val res = service.getRecentNoticeBookmark(ssaId)
+            if(res.isSuccessful){
+                if(res.body() != null) {
+                    val data = res.body()!!.data
+                    if(data != null) {
+                        Result.success(res.body()!!.data.map { RecentBookmarkNotice(category = it.category, title = it.title, pubDate = it.pubDate, url = it.url) })
+                    } else {
+                        Result.success(emptyList())
+                    }
+                } else {
+                    Result.failure(Exception("Get Recent Bookmark failed: response is null data"))
+                }
+            } else {
+                val jsonObject = JSONObject(res.errorBody().toString())
+                val msg = jsonObject.getString("message")
+                Result.failure(Exception("Get Recent Bookmark failed: $msg"))
+            }
+        } catch (e : Exception) {
             Result.failure(e)
         }
     }

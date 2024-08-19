@@ -6,6 +6,7 @@ import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentMyPageBinding
 import com.neverland.thinkerbell.domain.model.notice.CommonNotice
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
+import com.neverland.thinkerbell.domain.model.notice.RecentBookmarkNotice
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.home.HomeActivity
@@ -15,14 +16,36 @@ import com.neverland.thinkerbell.presentation.view.myPage.adapter.MyPageKeywordA
 
 class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
 
-    private val viewModel: MyPageViewModel by viewModels()
-    private lateinit var favoriteNoticeAdapter: MyPageFavoriteNoticeAdapter
+    private val myPageviewModel: MyPageViewModel by viewModels()
+    private lateinit var myPageFavoriteNoticeAdapter: MyPageFavoriteNoticeAdapter
     private lateinit var keywordAdapter: MyPageKeywordAdapter
 
     override fun initView() {
-        setupKeywordRecyclerView()
-        //setupFavoriteNoticesRecyclerView()
-        observeFavoriteNotices()
+
+    }
+
+    override fun setObserver() {
+        super.setObserver()
+        myPageviewModel.recentFavoriteNotices.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Loading -> {
+                    // Handle loading state
+                }
+
+                is UiState.Success -> {
+                    setupFavoriteNoticesRecyclerView(it.data)
+                    setupKeywordRecyclerView()
+                }
+
+                is UiState.Error -> {
+                    // Handle error state
+                }
+
+                UiState.Empty -> {
+
+                }
+            }
+        }
     }
 
     private fun setupKeywordRecyclerView() {
@@ -30,46 +53,29 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
 
         keywordAdapter = MyPageKeywordAdapter(keywords)
         binding.rvMyPageKeyword.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = keywordAdapter
         }
     }
 
-//    private fun setupFavoriteNoticesRecyclerView(list: List<NoticeItem>) {
-//        val favoriteNotices = list.sortedByDescending { it. }.take(3) // 최신순으로 3개 가져오기
-//
-//        favoriteNoticeAdapter = MyPageFavoriteNoticeAdapter(favoriteNotices)
-//        binding.rvMyPageFavorite.apply {
-//            layoutManager = LinearLayoutManager(requireContext())
-//            adapter = favoriteNoticeAdapter
-//        }
-//    }
-
-    private fun observeFavoriteNotices() {
-        viewModel.favoriteNotices.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is UiState.Loading -> {
-                    // 로딩 상태일 때 필요한 처리 (예: 로딩 스피너 표시)
-                }
-                is UiState.Success -> {
-                    // API 응답이 성공적으로 반환되었을 때 RecyclerView 업데이트
-                    //val favoriteNotices = state.data.getAllNotices().sortedByDescending { it.pubDate }.take(3)
-                    //favoriteNoticeAdapter.updateNotices(favoriteNotices)
-                }
-                is UiState.Error -> {
-                    // 에러 처리 (예: 에러 메시지 표시)
-                }
-                UiState.Empty -> {
-                    // 빈 상태 처리 (예: 빈 화면 표시)
-                }
-            }
+    private fun setupFavoriteNoticesRecyclerView(list: List<RecentBookmarkNotice>) {
+        myPageFavoriteNoticeAdapter =
+            MyPageFavoriteNoticeAdapter(if (list.size >= 3) list.subList(0, 3) else list)
+        binding.rvMyPageFavorite.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = myPageFavoriteNoticeAdapter
         }
     }
 
     override fun initListener() {
         super.initListener()
         binding.ibPageRightFavorite.setOnClickListener {
-            (requireActivity() as HomeActivity).replaceFragment(R.id.fl_home, FavoriteFragment(), true)
+            (requireActivity() as HomeActivity).replaceFragment(
+                R.id.fl_home,
+                FavoriteFragment(),
+                true
+            )
         }
     }
 
