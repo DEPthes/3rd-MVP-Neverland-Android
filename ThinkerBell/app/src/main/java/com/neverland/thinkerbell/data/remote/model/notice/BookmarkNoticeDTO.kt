@@ -15,5 +15,6 @@ data class BookmarkNoticeDTO(
     @SerializedName("CareerNotice") val careerNotice: List<CommonNoticeDTO>?,
     @SerializedName("BiddingNotice") val biddingNotice: List<CommonNoticeDTO>?,
     @SerializedName("DormitoryEntryNotice") val dormitoryEntryNotice: List<CommonNoticeDTO>?,
-    @SerializedName("ScholarshipNotice") val scholarshipNotice: List<CommonNoticeDTO>?
+    @SerializedName("ScholarshipNotice") val scholarshipNotice: List<CommonNoticeDTO>?,
+    @SerializedName("NormalNotice") val normalNotice: List<CommonNoticeDTO>?,
 )

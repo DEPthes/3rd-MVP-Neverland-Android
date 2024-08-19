@@ -73,6 +73,10 @@ class GetBookmarkNoticeUseCase {
             nonEmptyListsWithItems[NoticeType.SCHOLARSHIP_NOTICE] = bookmarkNotice.scholarshipNotice
         }
 
+        if (!bookmarkNotice.normalNotice.isNullOrEmpty()) {
+            nonEmptyListsWithItems[NoticeType.NORMAL_NOTICE] = bookmarkNotice.normalNotice
+        }
+
         return nonEmptyListsWithItems
     }
 

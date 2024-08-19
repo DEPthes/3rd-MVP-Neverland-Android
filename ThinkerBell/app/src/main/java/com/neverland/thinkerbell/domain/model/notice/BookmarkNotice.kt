@@ -13,5 +13,6 @@ data class BookmarkNotice(
     val careerNotice: List<NoticeItem>?,
     val biddingNotice: List<NoticeItem>?,
     val dormitoryEntryNotice: List<NoticeItem>?,
-    val scholarshipNotice: List<NoticeItem>?
+    val scholarshipNotice: List<NoticeItem>?,
+    val normalNotice: List<NoticeItem>?,
 )
