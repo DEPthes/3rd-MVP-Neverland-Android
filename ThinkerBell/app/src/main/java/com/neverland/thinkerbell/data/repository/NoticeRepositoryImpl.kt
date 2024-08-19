@@ -6,6 +6,7 @@ import com.neverland.thinkerbell.data.remote.model.notice.CommonNoticeDTO
 import com.neverland.thinkerbell.data.remote.service.NoticeService
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.PageableNotice
+import com.neverland.thinkerbell.domain.model.notice.AllNotices
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.domain.model.notice.RecentNotices
 import com.neverland.thinkerbell.domain.model.univ.DeptContact
@@ -659,6 +660,50 @@ class NoticeRepositoryImpl : NoticeRepository {
                 Result.failure(Exception("Get Recent failed: $msg"))
             }
         } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun searchAllNoticesByCategory(
+        keyword: String,
+        ssaId: String
+    ): Result<AllNotices> {
+        return try {
+            val res = service.searchNotices(keyword = keyword, ssaId = ssaId)
+            if(res.isSuccessful){
+                if(res.body() != null){
+                    val data = res.body()!!.data
+
+                    if(data != null){
+                        val bookmarkNotice = AllNotices(
+                            safetyNotice = data.safetyNotices?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)},
+                            revisionNotice = data.revisionNotices?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)},
+                            libraryNotice = data.libraryNotices?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked, important = it.important?:false, campus = it.campus)},
+                            dormitoryNotice = data.dormitoryNotices?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked, important = it.important?:false, campus = it.campus)},
+                            teachingNotice = data.teachingNotices?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked, important = it.important?:false)},
+                            jobTrainingNotice = data.jobTrainingNotices?.map{NoticeItem.JobNotice(id = it.id, company = it.company, year = it.year, semester = it.semester, recruitingNum = it.recrutingNum, major = it.major, deadline = it.deadline, period = it.period, jobName = it.jobName, marked = it.marked)},
+                            eventNotice = data.eventNotices?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)},
+                            studentActsNotice = data.studentActsNotices?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)},
+                            academicNotice = data.academicNotices?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked, important = it.important?:false)},
+                            careerNotice = data.careerNotices?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)},
+                            biddingNotice = data.biddingNotices?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)},
+                            dormitoryEntryNotice = data.dormitoryEntryNotices?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked, important = it.important?:false, campus = it.campus)},
+                            scholarshipNotice = data.scholarshipNotices?.map{NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)},
+                            normalNotice = data.normalNotices?.map {NoticeItem.CommonNotice(id = it.id, title = it.title, pubDate = it.pubDate, url = it.url, marked = it.marked)}
+                        )
+                        Result.success(bookmarkNotice)
+                    } else {
+                        Result.failure(Exception("Search failed: response is null data"))
+                    }
+                } else {
+                    Result.failure(Exception("Search failed: response is null data"))
+                }
+            } else {
+                val jsonObject = JSONObject(res.errorBody().toString())
+                val msg = jsonObject.getString("message")
+                Result.failure(Exception("Get BookmarkNotices failed: $msg"))
+            }
+        } catch (e : Exception){
             Result.failure(e)
         }
     }
