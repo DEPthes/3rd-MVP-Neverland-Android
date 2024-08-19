@@ -74,7 +74,7 @@ class UnivRepositoryImpl: UnivRepository {
             val res = service.getBanner()
             if(res.isSuccessful){
                 if(res.body() != null){
-                    Result.success(res.body()!!.data.map { Banner(id = it.id, title = it.title, s3Url = it.s3Url) })
+                    Result.success(res.body()!!.data.map { Banner(id = it.id, title = it.title, s3Url = it.s3Url, noticeUrl = it.noticeUrl) })
                 } else {
                     Result.failure(Exception("Get banner failed: response is null data"))
                 }
