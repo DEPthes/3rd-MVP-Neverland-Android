@@ -12,6 +12,5 @@ data class JobTrainingNoticeDTO(
     @SerializedName("period") val period: String,
     @SerializedName("recrutingNum") val recrutingNum: String,
     @SerializedName("semester") val semester: String,
-    @SerializedName("year") val year: String,
-    @SerializedName("marked") val marked: Boolean
+    @SerializedName("year") val year: String
 )
