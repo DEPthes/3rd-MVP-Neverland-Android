@@ -7,6 +7,7 @@ import com.neverland.thinkerbell.data.remote.service.NoticeService
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.PageableNotice
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
+import com.neverland.thinkerbell.domain.model.notice.RecentNotices
 import com.neverland.thinkerbell.domain.model.univ.DeptContact
 import com.neverland.thinkerbell.domain.repository.NoticeRepository
 import org.json.JSONObject
@@ -627,6 +628,35 @@ class NoticeRepositoryImpl : NoticeRepository {
             } else {
                 val errorMsg = JSONObject(res.errorBody()?.string() ?: "{}").optString("message", "Unknown error")
                 Result.failure(Exception("Failed to Search notices: $errorMsg"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getRecentNotices(ssaId: String): Result<RecentNotices> {
+        return try {
+            val res = service.getRecentNotices(ssaId)
+            if (res.isSuccessful) {
+                if (res.body() != null) {
+                    val data = res.body()!!.data
+
+                    val normalNotices = data.normalNotices?.map { NoticeItem.CommonNotice(id = it.id, pubDate = it.pubDate, url = it.url, title = it.title) } ?: emptyList()
+                    val academicNotices = data.academicNotices?.map { NoticeItem.CommonNotice(id = it.id, pubDate = it.pubDate, url = it.url, title = it.title) } ?: emptyList()
+                    val scholarshipNotices = data.scholarshipNotices?.map { NoticeItem.CommonNotice(id = it.id, pubDate = it.pubDate, url = it.url, title = it.title) } ?: emptyList()
+                    val careerNotices = data.careerNotices?.map { NoticeItem.CommonNotice(id = it.id, pubDate = it.pubDate, url = it.url, title = it.title) } ?: emptyList()
+                    val eventNotices = data.eventNotices?.map { NoticeItem.CommonNotice(id = it.id, pubDate = it.pubDate, url = it.url, title = it.title) } ?: emptyList()
+
+                    Result.success(RecentNotices(
+                        academicNotices = academicNotices, careerNotices = careerNotices, scholarshipNotices = scholarshipNotices, eventNotices = eventNotices, normalNotices = normalNotices
+                    ))
+                } else {
+                    Result.failure(Exception("Get Recent failed: response is null data"))
+                }
+            } else {
+                val jsonObject = JSONObject(res.errorBody().toString())
+                val msg = jsonObject.getString("message")
+                Result.failure(Exception("Get Recent failed: $msg"))
             }
         } catch (e: Exception) {
             Result.failure(e)
