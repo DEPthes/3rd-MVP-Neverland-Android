@@ -1,7 +1,5 @@
 package com.neverland.thinkerbell.domain.model.notice
 
-import com.neverland.thinkerbell.domain.model.Notice
-
 data class BookmarkNotice(
     val safetyNotice: List<NoticeItem>?,
     val revisionNotice: List<NoticeItem>?,
