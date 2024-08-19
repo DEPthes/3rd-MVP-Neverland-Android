@@ -107,7 +107,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         binding.ibHomeCategory.setOnClickListener {
-            (requireActivity() as HomeActivity).binding.bottomNavigation.selectedItemId = R.id.navigation_dashboard
+            (requireActivity() as HomeActivity).binding.bottomNavigation.selectedItemId = R.id.navigation_category
         }
     }
 
