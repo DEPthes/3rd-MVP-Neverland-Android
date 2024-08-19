@@ -1,7 +1,5 @@
 package com.neverland.thinkerbell.domain.model.notice
 
-import com.google.gson.annotations.SerializedName
-
 sealed class NoticeItem {
     data class CommonNotice(
         val id: Int,

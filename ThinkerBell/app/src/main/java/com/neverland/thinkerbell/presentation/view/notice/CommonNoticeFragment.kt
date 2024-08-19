@@ -1,7 +1,9 @@
 package com.neverland.thinkerbell.presentation.view.notice
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
@@ -11,11 +13,13 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.core.utils.LoggerUtil
+import com.neverland.thinkerbell.data.repository.BookmarkRepositoryImpl
 import com.neverland.thinkerbell.databinding.FragmentCommonNoticeBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.UiState
+import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.home.HomeActivity
 import com.neverland.thinkerbell.presentation.view.home.HomeFragment
 
@@ -26,7 +30,25 @@ CommonNoticeFragment(
 ) : BaseFragment<FragmentCommonNoticeBinding>(R.layout.fragment_common_notice) {
 
     private val viewModel: CommonNoticeViewModel by viewModels()
-    private val commonNoticeAdapter: CommonRvAdapter by lazy { CommonRvAdapter(noticeType) }
+    private val commonNoticeAdapter: CommonRvAdapter by lazy { CommonRvAdapter(noticeType).apply {
+        setRvItemClickListener(object : OnRvItemClickListener<String>{
+            override fun onClick(item: String) {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(item)
+                }
+                startActivity(intent)
+            }
+        })
+        setBookmarkClickListener(object : OnRvItemClickListener<Pair<Int, Boolean>>{
+            override fun onClick(item: Pair<Int, Boolean>) {
+                if(item.second){
+                    viewModel.postBookmark(category = noticeType, noticeId = item.first)
+                } else {
+                    viewModel.deleteBookmark(category = noticeType, noticeId = item.first)
+                }
+            }
+        })
+    } }
     private lateinit var spinnerAdapter: CampusSpinnerAdapter
     private val spinnerRequiredNotices = listOf(NoticeType.DORMITORY_NOTICE, NoticeType.DORMITORY_ENTRY_NOTICE, NoticeType.LIBRARY_NOTICE)
 
@@ -46,8 +68,9 @@ CommonNoticeFragment(
         binding.rvNotice.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = commonNoticeAdapter
+            itemAnimator = null
         }
-        viewModel.fetchData(noticeType, 1)
+        viewModel.fetchData(noticeType, 0)
     }
 
     override fun initListener() {
@@ -84,7 +107,7 @@ CommonNoticeFragment(
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 viewModel.currentNotice = commonNoticeAdapter.currentList
-                viewModel.searchNotice(noticeType)
+                viewModel.searchNotice(noticeType, binding.etSearch.text.toString())
                 true
             } else {
                 false
@@ -95,7 +118,7 @@ CommonNoticeFragment(
     private fun showNoticePage() {
         binding.groupNoticeSearchView.visibility = View.GONE
         binding.llNoticePage.visibility = View.VISIBLE
-        binding.tvNoticePage.text = "${viewModel.currentPage.value}/${viewModel.totalPage}"
+        binding.tvNoticePage.text = "${viewModel.currentPage.value!!+1}/${viewModel.totalPage}"
         commonNoticeAdapter.submitList(viewModel.currentNotice)
     }
 
@@ -103,17 +126,34 @@ CommonNoticeFragment(
         super.setObserver()
         viewModel.uiState.observe(viewLifecycleOwner, ::handleUiState)
         viewModel.searchState.observe(viewLifecycleOwner, ::handleSearchState)
-        viewModel.currentPage.observe(viewLifecycleOwner, ::updatePageButtons)
+        viewModel.currentPage.observe(viewLifecycleOwner){
+            updatePageButtons(it + 1)
+        }
+        viewModel.toastState.observe(viewLifecycleOwner, ::handleToastState)
+    }
+
+    private fun handleToastState(state: UiState<String>){
+        when (state) {
+            is UiState.Loading -> {}
+            is UiState.Error -> {}
+            is UiState.Empty -> {}
+            is UiState.Success -> {
+                showToast(state.data)
+            }
+        }
     }
 
     private fun handleUiState(state: UiState<List<NoticeItem>>) {
         when (state) {
-            is UiState.Loading -> { /* Show loading state if needed */ }
-            is UiState.Error -> { /* Show error state if needed */ }
-            is UiState.Empty -> { /* Show empty state if needed */ }
+            is UiState.Loading -> {}
+            is UiState.Error -> {
+                showToast("공지 조회 실패")
+            }
+            is UiState.Empty -> {}
             is UiState.Success -> {
                 commonNoticeAdapter.submitList(state.data)
-                binding.tvNoticePage.text = "${viewModel.currentPage.value}/${viewModel.totalPage}"
+                binding.tvNoticePage.text = "${viewModel.currentPage.value!! + 1}/${viewModel.totalPage}"
+                updatePageButtons(viewModel.currentPage.value!! + 1)
             }
         }
     }
@@ -134,6 +174,7 @@ CommonNoticeFragment(
     }
 
     private fun updatePageButtons(currentPage: Int) {
+        LoggerUtil.i(currentPage.toString())
         when {
             currentPage == 1 -> setClickablePageButtons(1)
             currentPage / 10 == 0 -> setClickablePageButtons(2)
@@ -151,6 +192,7 @@ CommonNoticeFragment(
             when (type) {
                 1 -> {
                     // 첫 페이지 일 때
+                    LoggerUtil.i("btn type: 1")
                     setButtonState(ibPageLeft1, grayColor)
                     setButtonState(ibPageLeft2, grayColor)
                     setButtonState(ibPageRight1, if (viewModel.totalPage >= 2) redColor else grayColor)
@@ -158,22 +200,25 @@ CommonNoticeFragment(
                 }
                 2 -> {
                     // 현재 페이지 숫자가 한 자리 일 때
+                    LoggerUtil.i("btn type: 2")
                     setButtonState(ibPageLeft1, redColor)
                     setButtonState(ibPageLeft2, grayColor)
-                    setButtonState(ibPageRight1, if (viewModel.totalPage > viewModel.currentPage.value!!) redColor else grayColor)
-                    setButtonState(ibPageRight2, if (viewModel.totalPage - viewModel.currentPage.value!! >= 10) redColor else grayColor)
+                    setButtonState(ibPageRight1, if (viewModel.totalPage > viewModel.currentPage.value!!+1) redColor else grayColor)
+                    setButtonState(ibPageRight2, if (viewModel.totalPage - viewModel.currentPage.value!!+1 >= 10) redColor else grayColor)
                 }
                 3 -> {
                     // 현재 페이지 숫자가 두 자리 이상 일 때
+                    LoggerUtil.i("btn type: 3")
                     setButtonState(ibPageLeft1, redColor)
-                    setButtonState(ibPageLeft2, if (viewModel.currentPage.value!! / 11 >= 1) redColor else grayColor)
-                    setButtonState(ibPageRight1, if (viewModel.totalPage > viewModel.currentPage.value!!) redColor else grayColor)
-                    setButtonState(ibPageRight2, if (viewModel.totalPage - viewModel.currentPage.value!! >= 10) redColor else grayColor)
+                    setButtonState(ibPageLeft2, if (viewModel.currentPage.value!!+1 / 11 >= 1) redColor else grayColor)
+                    setButtonState(ibPageRight1, if (viewModel.totalPage > viewModel.currentPage.value!!+1) redColor else grayColor)
+                    setButtonState(ibPageRight2, if (viewModel.totalPage - viewModel.currentPage.value!!+1 >= 10) redColor else grayColor)
                 }
                 4 -> {
                     // 마지막 페이지 일 때
+                    LoggerUtil.i("btn type: 4")
                     setButtonState(ibPageLeft1, redColor)
-                    setButtonState(ibPageLeft2, if (viewModel.currentPage.value!! / 11 >= 1) redColor else grayColor)
+                    setButtonState(ibPageLeft2, if (viewModel.currentPage.value!!+1 / 11 >= 1) redColor else grayColor)
                     setButtonState(ibPageRight1, grayColor)
                     setButtonState(ibPageRight2, grayColor)
                 }

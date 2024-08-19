@@ -2,11 +2,7 @@ package com.neverland.thinkerbell.data.repository
 
 import com.neverland.thinkerbell.data.remote.RetrofitClient
 import com.neverland.thinkerbell.data.remote.model.user.PostUserInfoReqDTO
-import com.neverland.thinkerbell.data.remote.service.UnivService
 import com.neverland.thinkerbell.data.remote.service.UserService
-import com.neverland.thinkerbell.domain.model.univ.DeptContact
-import com.neverland.thinkerbell.domain.model.univ.DeptUrl
-import com.neverland.thinkerbell.domain.repository.UnivRepository
 import com.neverland.thinkerbell.domain.repository.UserRepository
 import org.json.JSONObject
 

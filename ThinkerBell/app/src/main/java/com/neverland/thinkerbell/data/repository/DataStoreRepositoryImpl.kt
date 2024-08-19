@@ -114,7 +114,7 @@ class DataStoreRepositoryImpl : DataStoreRepository {
     }
 
     override fun readCategoryOrder(): Flow<List<NoticeType>> {
-        LoggerUtil.d("readRecentSearchWords 호출")
+        LoggerUtil.d("readCategoryOrder 호출")
 
         return application.dataStore.data
             .map { preferences ->
@@ -122,6 +122,4 @@ class DataStoreRepositoryImpl : DataStoreRepository {
                 data.map { NoticeType.valueOf(it) }
             }
     }
-
-
 }
