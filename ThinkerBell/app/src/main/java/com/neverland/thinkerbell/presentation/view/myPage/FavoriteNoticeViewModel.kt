@@ -1,41 +1,51 @@
 package com.neverland.thinkerbell.presentation.view.myPage
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neverland.thinkerbell.domain.enums.NoticeType
-import com.neverland.thinkerbell.domain.model.notice.BookmarkNotice
-import com.neverland.thinkerbell.domain.model.notice.CommonNotice
-import com.neverland.thinkerbell.domain.model.notice.NoticeItem
-import com.neverland.thinkerbell.domain.usecase.notice.GetBookmarkNoticeUseCase
+import com.neverland.thinkerbell.domain.usecase.bookmark.DeleteBookmarkUseCase
+import com.neverland.thinkerbell.domain.usecase.bookmark.PostBookmarkUseCase
 import com.neverland.thinkerbell.presentation.base.ThinkerBellApplication.Companion.application
 import com.neverland.thinkerbell.presentation.utils.UiState
 import kotlinx.coroutines.launch
 
 class FavoriteNoticeViewModel : ViewModel() {
 
-    private val getBookmarkNoticeUseCase = GetBookmarkNoticeUseCase()
+    private val postBookmarkNoticeUseCase = PostBookmarkUseCase()
 
-    private val _notices = MutableLiveData<UiState<Map<NoticeType, List<NoticeItem>>>>(UiState.Loading)
-    val notices: LiveData<UiState<Map<NoticeType, List<NoticeItem>>>> get() = _notices
+    private val deleteBookmarkNoticeUseCase = DeleteBookmarkUseCase()
 
-    init {
-        fetchNotices(application.getAndroidId())
-    }
+    private val _bookmarkState = MutableLiveData<UiState<Unit>>(UiState.Loading)
+    val bookmarkState: LiveData<UiState<Unit>> get() = _bookmarkState
 
-    private fun fetchNotices(ssaId: String) {
+    fun postBookmark(noticeId: Int, noticeType: NoticeType) {
+        _bookmarkState.value = UiState.Loading
+
         viewModelScope.launch {
-            getBookmarkNoticeUseCase.invoke(ssaId)
+            postBookmarkNoticeUseCase.invoke(noticeId = noticeId, category = noticeType, ssaId = application.getAndroidId())
                 .onSuccess { bookmarkNotice ->
-                    _notices.value = UiState.Success(bookmarkNotice)
+                    _bookmarkState.value = UiState.Success(Unit)
                 }
                 .onFailure { exception ->
-                    _notices.value = UiState.Error(exception)
+                    _bookmarkState.value = UiState.Error(exception)
                 }
-            //_notices.value = dummyNotices
         }
     }
+
+    fun deleteBookmark(noticeId: Int, noticeType: NoticeType) {
+        _bookmarkState.value = UiState.Loading
+
+        viewModelScope.launch {
+            deleteBookmarkNoticeUseCase.invoke(noticeId = noticeId, category = noticeType, ssaId = application.getAndroidId())
+                .onSuccess { bookmarkNotice ->
+                    _bookmarkState.value = UiState.Success(Unit)
+                }
+                .onFailure { exception ->
+                    _bookmarkState.value = UiState.Error(exception)
+                }
+        }
+    }
+
 }
