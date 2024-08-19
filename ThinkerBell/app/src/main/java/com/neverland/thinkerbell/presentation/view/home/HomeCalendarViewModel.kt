@@ -8,6 +8,7 @@ import com.neverland.thinkerbell.domain.model.group.Group
 import com.neverland.thinkerbell.domain.model.univ.AcademicSchedule
 import com.neverland.thinkerbell.domain.model.univ.DeptUrl
 import com.neverland.thinkerbell.domain.usecase.univ.GetAcademicScheduleUseCase
+import com.neverland.thinkerbell.presentation.base.ThinkerBellApplication.Companion.application
 import com.neverland.thinkerbell.presentation.utils.UiState
 import kotlinx.coroutines.launch
 
@@ -22,7 +23,7 @@ class HomeCalendarViewModel: ViewModel() {
         _uiState.value = UiState.Loading
 
         viewModelScope.launch {
-            getAcademicScheduleUseCase.invoke(month)
+            getAcademicScheduleUseCase.invoke(month, ssaId = application.getAndroidId())
                 .onSuccess { schedules ->
                     _uiState.value = UiState.Success(schedules)
                 }

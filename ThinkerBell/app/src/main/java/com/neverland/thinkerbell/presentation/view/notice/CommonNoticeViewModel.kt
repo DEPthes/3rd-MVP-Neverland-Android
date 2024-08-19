@@ -62,6 +62,7 @@ class CommonNoticeViewModel: ViewModel() {
     private val dummyNotice2 = listOf(
 
         NoticeItem.JobNotice(
+            id = 1,
             company = "크리에이티브 솔루션스",
             year = "2024",
             semester = "2학기",
@@ -72,6 +73,7 @@ class CommonNoticeViewModel: ViewModel() {
             jobName = "그래픽 디자이너"
         ),
         NoticeItem.JobNotice(
+            id = 2,
             company = "그린테크",
             year = "2024",
             semester = "2학기",
@@ -82,6 +84,7 @@ class CommonNoticeViewModel: ViewModel() {
             jobName = "[채용연계] 데이터센터 엔지니어 모집"
         ),
         NoticeItem.JobNotice(
+            id = 3,
             company = "테크코프",
             year = "2024",
             semester = "2학기",
@@ -92,6 +95,7 @@ class CommonNoticeViewModel: ViewModel() {
             jobName = "소프트웨어 개발자"
         ),
         NoticeItem.JobNotice(
+            id = 4,
             company = "이노테크",
             year = "2024",
             semester = "2학기",

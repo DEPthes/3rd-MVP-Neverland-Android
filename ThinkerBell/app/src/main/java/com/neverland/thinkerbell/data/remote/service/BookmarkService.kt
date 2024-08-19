@@ -1,15 +1,22 @@
 package com.neverland.thinkerbell.data.remote.service
 
 import com.neverland.thinkerbell.data.remote.model.BaseResponse
+import com.neverland.thinkerbell.data.remote.model.notice.BookmarkNoticeDTO
 import com.neverland.thinkerbell.data.remote.model.user.PostUserInfoReqDTO
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface BookmarkService {
+
+    @GET("/api/bookmark")
+    suspend fun getNoticeBookmark(
+        @Query("ssaid") ssaId: String
+    ): Response<BaseResponse<BookmarkNoticeDTO>>
 
     @POST("/api/bookmark")
     suspend fun postNoticeBookmark(

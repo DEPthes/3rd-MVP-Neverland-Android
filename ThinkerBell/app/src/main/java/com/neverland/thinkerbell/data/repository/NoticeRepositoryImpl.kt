@@ -68,6 +68,7 @@ class NoticeRepositoryImpl: NoticeRepository {
             if(res.isSuccessful){
                 if(res.body() != null){
                     Result.success(res.body()!!.data.map { NoticeItem.JobNotice(
+                        id = it.id,
                         company = it.company,
                         year = it.year,
                         semester = it.semester,
