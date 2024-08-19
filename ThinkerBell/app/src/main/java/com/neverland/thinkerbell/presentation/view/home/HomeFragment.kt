@@ -5,7 +5,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentHomeBinding
-import com.neverland.thinkerbell.domain.model.Notice
+import com.neverland.thinkerbell.domain.model.notice.RecentNotices
 import com.neverland.thinkerbell.domain.model.univ.Banner
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.view.alarm.AlarmFragment
@@ -14,6 +14,7 @@ import com.neverland.thinkerbell.presentation.view.contact.ContactsFragment
 import com.neverland.thinkerbell.presentation.view.deptUrl.DeptUrlFragment
 import com.neverland.thinkerbell.presentation.view.home.adapter.HomeBannerAdapter
 import com.neverland.thinkerbell.presentation.view.home.adapter.HomeCategoryVPAdapter
+import com.neverland.thinkerbell.presentation.view.home.adapter.HomeNoticeAdapter
 import com.neverland.thinkerbell.presentation.view.search.SearchFragment
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -22,104 +23,41 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private lateinit var handler: Handler
     private lateinit var runnable: Runnable
 
-    private val notices = listOf(
-        listOf(
-            Notice("일반 공지 1", "07.06"),
-            Notice("일반 공지 2", "07.06"),
-            Notice("일반 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("행사 공지 1", "07.06"),
-            Notice("행사 공지 2", "07.06"),
-            Notice("행사 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("학사 공지 1", "07.06"),
-            Notice("학사 공지 2", "07.06"),
-            Notice("학사 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("장학 공지 1", "07.06"),
-            Notice("장학 공지 2", "07.06"),
-            Notice("장학 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("취업 공지 1", "07.06"),
-            Notice("취업 공지 2", "07.06"),
-            Notice("취업 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("학생활동 공지 1", "07.06"),
-            Notice("학생활동 공지 2", "07.06"),
-            Notice("학생활동 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("입찰 공지 1", "07.06"),
-            Notice("입찰 공지 2", "07.06"),
-            Notice("입찰 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("대학안전 공지 1", "07.06"),
-            Notice("대학안전 공지 2", "07.06"),
-            Notice("대학안전 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("학칙개정 공지 1", "07.06"),
-            Notice("학칙개정 공지 2", "07.06"),
-            Notice("학칙개정 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("현장실습지원 공지 1", "07.06"),
-            Notice("현장실습지원 공지 2", "07.06"),
-            Notice("현장실습지원 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("생활관 공지 1", "07.06"),
-            Notice("생활관 공지 2", "07.06"),
-            Notice("생활관 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("생활관 입퇴사 공지 1", "07.06"),
-            Notice("생활관 입퇴사 공지 2", "07.06"),
-            Notice("생활관 입퇴사 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("도서관 공지 1", "07.06"),
-            Notice("도서관 공지 2", "07.06"),
-            Notice("도서관 공지 3", "07.06")
-        ),
-        listOf(
-            Notice("교직 공지 1", "07.06"),
-            Notice("교직 공지 2", "07.06"),
-            Notice("교직 공지 3", "07.06")
-        )
-    )
-
     override fun initView() {
         (requireActivity() as HomeActivity).apply {
             showBottomNavigation()
             setStatusBarColor(R.color.primary1, true)
         }
-        setupObservers()
         viewModel.fetchBanners()
-        setHomeNoticeRv()
+        viewModel.fetchRecentNotices()
     }
 
-    private fun setupObservers() {
+    override fun setObserver() {
+        super.setObserver()
+
         viewModel.banners.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is UiState.Loading -> {
-                    // Handle loading state
-                }
+                is UiState.Loading -> {}
                 is UiState.Success -> {
                     setBanner(state.data)
                 }
                 is UiState.Error -> {
-                    // Handle error state
+                    showToast("배너 조회 실패")
                 }
-                UiState.Empty -> {
+                is UiState.Empty -> {}
+            }
+        }
 
+        viewModel.uiState.observe(viewLifecycleOwner){
+            when (it) {
+                is UiState.Loading -> {}
+                is UiState.Success -> {
+                    setHomeNoticeRv(it.data)
                 }
+                is UiState.Error -> {
+                    showToast("최근 공지 조회 실패")
+                }
+                is UiState.Empty -> {}
             }
         }
     }
@@ -136,7 +74,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         autoSlideBanner()
     }
 
-    private fun setHomeNoticeRv(){
+    private fun setHomeNoticeRv(notices: RecentNotices){
         val categories = resources.getStringArray(R.array.category_list)
 
         // ViewPager2에 어댑터 설정
@@ -166,6 +104,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         binding.btnHomeDeptHomepage.setOnClickListener {
             (requireActivity() as HomeActivity).replaceFragment(R.id.fl_home, DeptUrlFragment(), true)
+        }
+
+        binding.ibHomeCategory.setOnClickListener {
+            (requireActivity() as HomeActivity).binding.bottomNavigation.selectedItemId = R.id.navigation_dashboard
         }
     }
 
