@@ -1,7 +1,10 @@
 package com.neverland.thinkerbell.presentation.view.home.adapter
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.neverland.thinkerbell.databinding.ItemHomeBannerBinding
@@ -16,7 +19,7 @@ class HomeBannerAdapter(private val banners: List<Banner>) :
     }
 
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
-        holder.bind(banners[position].s3Url)
+        holder.bind(banners[position])
     }
 
     override fun getItemCount(): Int {
@@ -24,9 +27,15 @@ class HomeBannerAdapter(private val banners: List<Banner>) :
     }
 
     class BannerViewHolder(private val binding: ItemHomeBannerBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(imageUrl: String) {
+        fun bind(item: Banner) {
+
+            binding.root.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.noticeUrl))
+                ContextCompat.startActivity(binding.root.context, intent, null)
+            }
+
             Glide.with(binding.imageView)
-                .load(imageUrl)
+                .load(item.s3Url)
                 .into(binding.imageView)
         }
     }

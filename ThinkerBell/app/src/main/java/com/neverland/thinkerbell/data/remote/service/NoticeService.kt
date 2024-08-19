@@ -17,6 +17,11 @@ interface NoticeService {
         @Query("ssaid") ssaId: String
     ): Response<BaseResponse<SearchNoticeResultDTO>>
 
+    @GET("/api/notices/recent")
+    suspend fun getRecentNotices(
+        @Query("ssaid") ssaId: String
+    ): Response<BaseResponse<SearchNoticeResultDTO>>
+
     @GET("/api/dormitory/notices")
     suspend fun getDormitoryNotices(
         @Query("page") page: Int,

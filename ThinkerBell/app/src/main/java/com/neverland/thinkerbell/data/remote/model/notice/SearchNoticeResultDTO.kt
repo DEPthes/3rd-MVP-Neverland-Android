@@ -9,7 +9,7 @@ data class SearchNoticeResultDTO(
     val eventNotices: List<CommonNoticeDTO>?,
     @SerializedName("AcademicNotice")
     val academicNotices: List<CommonNoticeDTO>?,
-    @SerializedName("ScholarshipNotice")
+    @SerializedName("ScholarshipNotices")
     val scholarshipNotices: List<CommonNoticeDTO>?,
     @SerializedName("CareerNotice")
     val careerNotices: List<CommonNoticeDTO>?,

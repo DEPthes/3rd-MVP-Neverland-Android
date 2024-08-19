@@ -2,7 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,16 +51,12 @@
             android:id="@+id/tl_home_categoryTab"
             android:layout_width="0dp"
             android:layout_height="60dp"
-
             android:background="@color/primary1"
             android:paddingVertical="14dp"
-
             style="@style/Label_Medium"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/ib_home_category"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-
             app:tabIndicator="@drawable/category_tab_indicator_home"
             app:tabIndicatorColor="@color/primary2"
             app:tabIndicatorFullWidth="false"
@@ -69,23 +64,22 @@
             app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/primary2"
             app:tabTextAppearance="@style/TabTextStyle"
-            app:tabTextColor="#BABABA"/>
+            app:tabTextColor="#BABABA" />
 
         <ImageButton
             android:id="@+id/ib_home_category"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginEnd="-27dp"
             android:background="@color/primary1"
             android:backgroundTint="@color/primary1"
             android:contentDescription="@null"
             android:padding="8dp"
             android:src="@drawable/ic_underbar_menu"
             android:scaleType="fitCenter"
+            app:layout_constraintStart_toEndOf="@id/tl_home_categoryTab"
             app:layout_constraintTop_toTopOf="@id/tl_home_categoryTab"
             app:layout_constraintBottom_toBottomOf="@id/tl_home_categoryTab"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_weight="1"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -95,80 +89,100 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_home_notice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="28dp"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginBottom="20dp"/>
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginTop="44dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/vp_home_banner"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_home_banner"
                     android:layout_width="match_parent"
-                    android:layout_height="132dp"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_height="0dp"
+                    android:layout_marginTop="44dp"
+                    app:layout_constraintDimensionRatio="360:132"
+                    app:layout_constraintTop_toBottomOf="@id/vp_home_notice"/>
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tl_home_banner_indicator"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="-8dp"
+                    android:layout_height="20dp"
+
+                    app:layout_constraintStart_toStartOf="@id/vp_home_banner"
+                    app:layout_constraintEnd_toEndOf="@id/vp_home_banner"
+                    app:layout_constraintBottom_toBottomOf="@id/vp_home_banner"
+
                     android:background="@null"
                     app:tabBackground="@drawable/banner_tab_selector_home"
                     app:tabGravity="center"
-                    app:tabIndicatorHeight="0dp"/>
+                    app:tabIndicatorHeight="0dp" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/tv_home_schedule"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginTop="46dp"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginTop="42dp"
                     android:layout_marginBottom="10dp"
                     android:text="학사일정"
                     android:textColor="@color/primary3"
                     android:textSize="20sp"
-                    style="@style/Label_Medium" />
+                    style="@style/Label_Medium"
+                    app:layout_constraintTop_toBottomOf="@id/vp_home_banner"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/fragment_home_calendar"
                     android:name="com.neverland.thinkerbell.presentation.view.home.HomeCalendarFragment"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
-                    android:layout_marginBottom="28dp"/>
+                    android:layout_marginBottom="28dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv_home_schedule"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <View
                     android:id="@+id/divider_view"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="21dp"
-                    android:layout_marginBottom="50dp"
-                    android:background="#E2E6EC" />
+                    android:background="#E2E6EC"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_home_calendar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_home_dept_phone"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginHorizontal="24dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="48dp"
                     android:background="@drawable/button_shape_home"
                     android:gravity="fill_vertical"
                     android:outlineProvider="none"
                     android:paddingHorizontal="17dp"
-
                     android:textColor="@color/primary3"
                     android:text="부서별 연락처"
-                    style="@style/Paragraph_Small" />
+                    style="@style/Paragraph_Small"
+                    app:layout_constraintTop_toBottomOf="@id/divider_view"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_home_dept_homepage"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginHorizontal="24dp"
                     android:layout_marginBottom="52dp"
                     android:background="@drawable/button_shape_home"
@@ -177,8 +191,12 @@
                     android:paddingHorizontal="17dp"
                     android:textColor="@color/primary3"
                     android:text="부서별 홈페이지"
-                    style="@style/Paragraph_Small" />
-            </LinearLayout>
+                    style="@style/Paragraph_Small"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_home_dept_phone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
