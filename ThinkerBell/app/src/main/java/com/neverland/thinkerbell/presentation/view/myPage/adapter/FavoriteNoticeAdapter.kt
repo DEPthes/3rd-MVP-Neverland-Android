@@ -54,6 +54,7 @@ class FavoriteNoticeAdapter(private val noticeType: NoticeType) : ListAdapter<No
             binding.tvJobDate.text = data.deadline
             binding.tvJobPeriod.text = data.period
             binding.tvJobTitle.text = data.jobName
+            binding.tbFavorites.isChecked = data.marked
 
             binding.tbFavorites.setOnCheckedChangeListener { _, isChecked ->
                 bookmarkClickListener.onClick(Pair(data.id, isChecked))
