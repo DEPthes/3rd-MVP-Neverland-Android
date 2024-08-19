@@ -27,12 +27,7 @@ class StartViewModel: ViewModel() {
             MyFirebaseMessagingService().getRegistrationToken { token ->
                 if (token != null) {
                     viewModelScope.launch {
-                        val androidId = Settings.Secure.getString(
-                            application.applicationContext.contentResolver,
-                            Settings.Secure.ANDROID_ID
-                        )
-
-                        postUserInfoUseCase(androidId, token)
+                        postUserInfoUseCase(application.getAndroidId() ?: "", token)
                             .onSuccess {
                                 _fcmState.value = UiState.Success(Unit)
                             }

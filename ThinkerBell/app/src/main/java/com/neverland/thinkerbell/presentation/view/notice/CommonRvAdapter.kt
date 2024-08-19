@@ -2,13 +2,16 @@ package com.neverland.thinkerbell.presentation.view.notice
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.ItemNoticeBinding
 import com.neverland.thinkerbell.databinding.ItemNoticeJobBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
+import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 
 class CommonRvAdapter(private val noticeType: NoticeType) : ListAdapter<NoticeItem, RecyclerView.ViewHolder>(noticeDiffUtil) {
 
@@ -29,6 +32,21 @@ class CommonRvAdapter(private val noticeType: NoticeType) : ListAdapter<NoticeIt
         fun bind(data: NoticeItem.CommonNotice) {
             binding.tvNoticeTitle.text = data.title
             binding.tvNoticeDate.text = data.pubDate
+            binding.tbFavorites.isChecked = data.marked
+
+            if(data.important){
+                binding.clItemNotice.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.category_bg))
+            } else {
+                binding.clItemNotice.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.primary2))
+            }
+
+            binding.tbFavorites.setOnCheckedChangeListener { _, isChecked ->
+                bookmarkClickListener.onClick(Pair(data.id, isChecked))
+            }
+
+            binding.root.setOnClickListener {
+                rvItemClickListener.onClick(data.url)
+            }
         }
     }
 
@@ -43,6 +61,10 @@ class CommonRvAdapter(private val noticeType: NoticeType) : ListAdapter<NoticeIt
             binding.tvJobDate.text = data.deadline
             binding.tvJobPeriod.text = data.period
             binding.tvJobTitle.text = data.jobName
+
+            binding.tbFavorites.setOnCheckedChangeListener { _, isChecked ->
+                bookmarkClickListener.onClick(Pair(data.id, isChecked))
+            }
         }
     }
 
@@ -71,5 +93,16 @@ class CommonRvAdapter(private val noticeType: NoticeType) : ListAdapter<NoticeIt
             is NoticeViewHolder -> holder.bind(getItem(position) as NoticeItem.CommonNotice)
             is JobNoticeViewHolder -> holder.bind(getItem(position) as NoticeItem.JobNotice)
         }
+    }
+
+    private lateinit var rvItemClickListener: OnRvItemClickListener<String>
+    private lateinit var bookmarkClickListener: OnRvItemClickListener<Pair<Int, Boolean>>
+
+    fun setRvItemClickListener(rvItemClickListener: OnRvItemClickListener<String>){
+        this.rvItemClickListener = rvItemClickListener
+    }
+
+    fun setBookmarkClickListener(bookmarkClickListener: OnRvItemClickListener<Pair<Int, Boolean>>){
+        this.bookmarkClickListener = bookmarkClickListener
     }
 }
