@@ -5,14 +5,14 @@ import retrofit2.http.DELETE
 interface BookmarkRepository {
     suspend fun postNoticeBookmark(
         category: String,
-        noticeId: String,
+        noticeId: Int,
         ssaId: String
     ): Result<Boolean>
 
     @DELETE("/api/bookmark")
     suspend fun deleteNoticeBookmark(
         category: String,
-        noticeId: String,
+        noticeId: Int,
         ssaId: String
     ): Result<Boolean>
 }
