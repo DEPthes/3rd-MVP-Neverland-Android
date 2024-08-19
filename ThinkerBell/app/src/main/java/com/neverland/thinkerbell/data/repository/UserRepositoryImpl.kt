@@ -15,7 +15,8 @@ class UserRepositoryImpl: UserRepository {
 
     override suspend fun postUserInfo(ssaId: String, fcmToken: String): Result<Boolean> {
         return try {
-            val res = service.postUserInfo(PostUserInfoReqDTO(ssaId, fcmToken))
+            val res = service.postUserInfo(PostUserInfoReqDTO(ssaId = ssaId, deviceToken = fcmToken))
+
             if(res.isSuccessful){
                 if(res.body() != null){
                     Result.success(true)
