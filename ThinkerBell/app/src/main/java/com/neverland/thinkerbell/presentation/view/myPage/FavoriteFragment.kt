@@ -1,7 +1,6 @@
 package com.neverland.thinkerbell.presentation.view.myPage
 
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentFavoriteBinding
@@ -12,14 +11,14 @@ import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.myPage.adapter.FavoriteVPAdapter
 
 class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(R.layout.fragment_favorite) {
-    private val favoriteNoticeViewModel: FavoriteNoticeViewModel by viewModels()
+    private val favoriteViewModel: FavoriteViewModel by viewModels()
     override fun initView() {
 
     }
 
     override fun setObserver() {
         super.setObserver()
-        favoriteNoticeViewModel.notices.observe(viewLifecycleOwner) {
+        favoriteViewModel.notices.observe(viewLifecycleOwner) {
             when(it) {
                 is UiState.Loading -> {
                     // Handle loading state
@@ -40,9 +39,9 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(R.layout.fragment
     private fun setupTabLayout(category: Map<NoticeType, List<NoticeItem>>) {
         val keys = category.keys.toList()
         val adapter = FavoriteVPAdapter(this, category)
-        binding.vpAlarmNotice.adapter = adapter
+        binding.vpFavoriteNotice.adapter = adapter
 
-        TabLayoutMediator(binding.tlFavoriteCategoryTab, binding.vpAlarmNotice) { tab, position ->
+        TabLayoutMediator(binding.tlFavoriteCategoryTab, binding.vpFavoriteNotice) { tab, position ->
             tab.text = keys[position].tabName
         }.attach()
     }
