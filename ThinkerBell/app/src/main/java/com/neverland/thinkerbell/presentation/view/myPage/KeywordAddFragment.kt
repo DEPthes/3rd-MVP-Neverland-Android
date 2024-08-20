@@ -1,8 +1,11 @@
 package com.neverland.thinkerbell.presentation.view.myPage
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.text.Editable
 import android.text.InputFilter
+import android.text.InputFilter.LengthFilter
 import android.text.TextWatcher
 import android.view.View.OnClickListener
 import android.widget.TextView
@@ -25,41 +28,39 @@ class KeywordAddFragment: BaseFragment<FragmentKeywordAddBinding>(R.layout.fragm
             hideBottomNavigation()
         }
 
-        // 천지인 키보드를 고려하여 자음, 모음, 숫자, 공백만 허용
-        val koreanPattern = Pattern.compile("[ㄱ-ㅎ가-힣ㅏ-ㅣa-zA-Z0-9 ]")
+        val koreanPattern = Pattern.compile("^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55]+$")
 
-        binding.etKeywordAdd.filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
-            for (i in start until end) {
-                val char = source[i].toString()
-                // 특수문자 필터링
-                if (!koreanPattern.matcher(char).matches()) {
-                    return@InputFilter ""
+        binding.etKeywordAdd.filters = arrayOf(
+            InputFilter { source, start, end, dest, dstart, dend ->
+                for (i in start until end) {
+                    val char = source[i].toString()
+                    if (!koreanPattern.matcher(char).matches()) {
+                        return@InputFilter ""
+                    }
                 }
-            }
-            null
-        })
+                null
+            },
+            LengthFilter(9)
+        )
     }
 
     override fun setObserver() {
         super.setObserver()
         viewModel.postState.observe(viewLifecycleOwner) {
             when(it) {
-                is UiState.Loading -> {
-                    // Handle loading state
-                }
-
+                is UiState.Loading -> {}
                 is UiState.Success -> {
                     showToast("키워드 등록 성공")
                     binding.etKeywordAdd.text.clear()
                 }
-
                 is UiState.Error -> {
-                    showToast("키워드 등록 실패")
+                    showToast(it.exception.message.toString())
+                    if(it.exception.message.toString() == "해당 키워드는 존재하지 않습니다.") {
+                        binding.tvMsg.text = "키워드를 정확하게 입력해주세요."
+                        binding.tvMsg.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative))
+                    }
                 }
-
-                UiState.Empty -> {
-
-                }
+                UiState.Empty -> {}
             }
         }
     }
@@ -71,27 +72,34 @@ class KeywordAddFragment: BaseFragment<FragmentKeywordAddBinding>(R.layout.fragm
         }
 
         binding.etKeywordAdd.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
                 if (s != null) {
-                    if(s.length >= 2) {
-                        binding.tvMsg.text = "2~9글자, 특수기호/이모지 X"
-                        binding.tvMsg.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_gray_800))
+                    binding.tvMsg.text = ""
+
+                    if(s.isEmpty()){
+                        binding.btnKeywordAdd.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_gray_100))
+                        binding.btnKeywordAdd.background = ColorDrawable(ContextCompat.getColor(requireContext(), R.color.red_gray_300))
+                    } else {
+                        binding.btnKeywordAdd.setTextColor(ContextCompat.getColor(requireContext(), R.color.primary2))
+                        binding.btnKeywordAdd.background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_keyword_add_button_bg)
                     }
                 }
             }
         })
 
         binding.btnKeywordAdd.setOnClickListener {
-            if(binding.etKeywordAdd.text.length >= 2) {
-                viewModel.postKeyword(binding.etKeywordAdd.text.toString())
+            if(binding.btnKeywordAdd.currentTextColor != ContextCompat.getColor(requireContext(), R.color.primary2)) return@setOnClickListener
+
+            if (binding.etKeywordAdd.text.length >= 2) {
+                if (containsChosungOrVowel(binding.etKeywordAdd.text.toString())) {
+                    binding.tvMsg.text = "키워드를 정확하게 입력해주세요."
+                    binding.tvMsg.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative))
+                } else {
+                    viewModel.postKeyword(binding.etKeywordAdd.text.toString())
+                }
             } else {
                 binding.tvMsg.text = "두 글자 이상 입력해주세요."
                 binding.tvMsg.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative))
@@ -120,5 +128,19 @@ class KeywordAddFragment: BaseFragment<FragmentKeywordAddBinding>(R.layout.fragm
         for (chip in chipIds) {
             chip.setOnClickListener(chipClickListener)
         }
+    }
+
+    private fun containsChosungOrVowel(input: String): Boolean {
+        // 초성 (받침)
+        val chosung = setOf('ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ')
+        // 모음
+        val vowels = setOf('ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ')
+
+        for (char in input) {
+            if (char in chosung || char in vowels) {
+                return true
+            }
+        }
+        return false
     }
 }
