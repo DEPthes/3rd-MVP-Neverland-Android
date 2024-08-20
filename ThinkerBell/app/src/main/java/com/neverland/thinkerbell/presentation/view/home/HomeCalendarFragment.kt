@@ -10,6 +10,7 @@ import com.neverland.thinkerbell.domain.model.univ.AcademicSchedule
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.CustomLongDividerItemDecoration
 import com.neverland.thinkerbell.presentation.utils.UiState
+import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.home.adapter.CalendarMonthAdapter
 import com.neverland.thinkerbell.presentation.view.home.adapter.CalendarScheduleAdapter
 import java.util.Calendar
@@ -20,13 +21,14 @@ class HomeCalendarFragment : BaseFragment<FragmentHomeCalendarBinding>(R.layout.
     private lateinit var scheduleAdapter: CalendarScheduleAdapter
 
     override fun initView() {
-        setupObservers()
         fetchSchedulesForCurrentMonth()
         setCalendarRv()
         setScheduleRv()
     }
 
-    private fun setupObservers() {
+    override fun setObserver() {
+        super.setObserver()
+
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
@@ -45,7 +47,19 @@ class HomeCalendarFragment : BaseFragment<FragmentHomeCalendarBinding>(R.layout.
                 }
             }
         }
+
+        viewModel.toastState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {}
+                is UiState.Error -> {}
+                is UiState.Empty -> {}
+                is UiState.Success -> {
+                    showToast(state.data)
+                }
+            }
+        }
     }
+
     private fun fetchSchedulesForCurrentMonth() {
         val calendar = Calendar.getInstance()
         val currentMonth = calendar.get(Calendar.MONTH) + 1
@@ -54,7 +68,13 @@ class HomeCalendarFragment : BaseFragment<FragmentHomeCalendarBinding>(R.layout.
 
     private fun setScheduleRv() {
         binding.rvSchedule.layoutManager = LinearLayoutManager(context)
-        scheduleAdapter = CalendarScheduleAdapter()
+        scheduleAdapter = CalendarScheduleAdapter().apply {
+            setRvItemClickListener(object : OnRvItemClickListener<Pair<Int, Boolean>>{
+                override fun onClick(item: Pair<Int, Boolean>) {
+                    if(item.second) viewModel.postBookmark(item.first) else viewModel.deleteBookmark(item.first)
+                }
+            })
+        }
         binding.rvSchedule.adapter = scheduleAdapter
 
         binding.rvSchedule.addItemDecoration(CustomLongDividerItemDecoration(requireContext()))
@@ -71,7 +91,10 @@ class HomeCalendarFragment : BaseFragment<FragmentHomeCalendarBinding>(R.layout.
             val month = calendar.get(Calendar.MONTH) + 1
             viewModel.fetchData(month)
         }
-        binding.rvCalendar.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvCalendar.layoutManager = object : LinearLayoutManager(context, HORIZONTAL, false) {
+            override fun canScrollHorizontally(): Boolean = false
+        }
+
         binding.rvCalendar.adapter = monthAdapter
 
         val position = Int.MAX_VALUE / 2

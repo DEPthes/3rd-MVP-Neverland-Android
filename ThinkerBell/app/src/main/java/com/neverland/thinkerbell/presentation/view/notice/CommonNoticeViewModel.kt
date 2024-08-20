@@ -63,8 +63,11 @@ class CommonNoticeViewModel: ViewModel() {
             NoticeType.LIBRARY_NOTICE -> libraryNotice(page)
             NoticeType.TEACHING_NOTICE -> teachingNotice(page)
             NoticeType.JOB_TRAINING_NOTICE -> jobTrainingNotice(page)
+            else -> dummyFunc()
         }
     }
+
+    private fun dummyFunc(){}
 
     private val _toastState = MutableLiveData<UiState<String>>(UiState.Loading)
     val toastState: LiveData<UiState<String>> get() = _toastState
