@@ -25,7 +25,7 @@ class AlarmNoticeAdapter : ListAdapter<Alarm, AlarmNoticeAdapter.NoticeViewHolde
 
     inner class NoticeViewHolder(private val binding: ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(notice: Alarm) {
-            binding.tvNoticeTitle.text = "[${notice.noticeType}] ${notice.title}"
+            binding.tvNoticeTitle.text = "[${notice.noticeTypeKorean}] ${notice.title}"
             binding.tvNoticeDate.text = notice.pubDate
             // 좋아요 버튼 설정 (기본적으로 false로 설정)
             binding.tbFavorites.isChecked = notice.marked
@@ -36,14 +36,14 @@ class AlarmNoticeAdapter : ListAdapter<Alarm, AlarmNoticeAdapter.NoticeViewHolde
             }
 
             binding.root.setOnClickListener{
-                if (!notice.isViewed) {
-                    notice.isViewed = true
+                if (!notice.viewed) {
+                    notice.viewed = true
                     notifyItemChanged(adapterPosition)
                 }
                 rvItemClickListener.onClick(Pair(notice.id, notice.url))
             }
             // 읽음 여부에 따라 배경색 설정
-            if (notice.isViewed) {
+            if (notice.viewed) {
                 binding.root.setBackgroundColor(Color.parseColor("#E4E9EF")) // 읽은 공지 배경색
             } else {
                 binding.root.setBackgroundColor(Color.WHITE) // 기본 배경색

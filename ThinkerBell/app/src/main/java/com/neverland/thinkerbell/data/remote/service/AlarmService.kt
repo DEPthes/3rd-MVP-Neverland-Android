@@ -12,7 +12,7 @@ interface AlarmService {
         @Query("alarmId") alarmId: Int
     ): Response<BaseResponse<String>>
 
-    @GET("/api/alarm/get")
+    @GET("/api/alarm")
     suspend fun getAlarm(
         @Query("SSAID") ssaId: String,
         @Query("keyword") keyword: String

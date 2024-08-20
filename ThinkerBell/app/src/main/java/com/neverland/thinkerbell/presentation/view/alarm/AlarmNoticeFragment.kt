@@ -48,9 +48,9 @@ class AlarmNoticeFragment : BaseFragment<FragmentAlarmNoticeBinding>(R.layout.fr
             setBookmarkClickListener(object : OnRvItemClickListener<Pair<Alarm, Boolean>>{
                 override fun onClick(item: Pair<Alarm, Boolean>) {
                     val noticeType = NoticeType.entries.find{
-                        it.enName == item.first.noticeType
+                        it.enName.lowercase() == item.first.noticeTypeEnglish.lowercase()
                     }?: NoticeType.NORMAL_NOTICE
-                    LoggerUtil.d(item.first.noticeType)
+                    LoggerUtil.d(item.first.noticeTypeEnglish)
                     if (item.second) {
                         alarmNoticeViewModel.postBookmark(noticeType, item.first.id)
                     } else {

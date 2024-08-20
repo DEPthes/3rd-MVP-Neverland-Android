@@ -36,7 +36,7 @@ class AlarmRepositoryImpl: AlarmRepository {
                 if(res.body() != null) {
                     val data = res.body()!!.data
                     if(data != null) {
-                        Result.success(res.body()!!.data.map { Alarm(id = it.id, title = it.title, noticeType = it.noticeType, isViewed = it.isViewed, pubDate = it.pubDate, url = it.url, marked = it.marked) })
+                        Result.success(res.body()!!.data.map { Alarm(id = it.id, title = it.title, noticeTypeKorean = it.noticeTypeKorean, noticeTypeEnglish = it.noticeTypeEnglish, viewed = it.viewed, pubDate = it.pubDate, url = it.url, marked = it.marked) })
                     } else {
                         Result.success(emptyList())
                     }
