@@ -136,6 +136,8 @@ CommonNoticeFragment(
     private fun showNoticePage() {
         binding.groupNoticeSearchView.visibility = View.GONE
         binding.llNoticePage.visibility = View.VISIBLE
+        if(spinnerRequiredNotices.contains(noticeType)) setCampusSpinner() else binding.spinnerCampus.visibility = View.GONE
+
         binding.tvNoticePage.text = "${viewModel.currentPage.value!!+1}/${viewModel.totalPage}"
         commonNoticeAdapter.submitList(viewModel.currentNotice)
     }
@@ -156,6 +158,7 @@ CommonNoticeFragment(
             is UiState.Error -> {}
             is UiState.Empty -> {}
             is UiState.Success -> {
+                LoggerUtil.i(state.data)
                 showToast(state.data)
             }
         }
@@ -185,6 +188,7 @@ CommonNoticeFragment(
                 commonNoticeAdapter.submitList(state.data)
                 binding.groupNoticeSearchView.visibility = View.VISIBLE
                 binding.llNoticePage.visibility = View.GONE
+                binding.spinnerCampus.visibility = View.GONE
                 binding.tvSearchNoticeResult.text = "'${binding.etSearch.text}'이(가) 포함된 공지사항 (${state.data.size}개)"
                 binding.etSearch.text.clear()
             }
@@ -192,7 +196,6 @@ CommonNoticeFragment(
     }
 
     private fun updatePageButtons(currentPage: Int) {
-        LoggerUtil.i(currentPage.toString())
         when {
             currentPage == 1 -> setClickablePageButtons(1)
             currentPage / 10 == 0 -> setClickablePageButtons(2)
@@ -210,7 +213,6 @@ CommonNoticeFragment(
             when (type) {
                 1 -> {
                     // 첫 페이지 일 때
-                    LoggerUtil.i("btn type: 1")
                     setButtonState(ibPageLeft1, grayColor)
                     setButtonState(ibPageLeft2, grayColor)
                     setButtonState(ibPageRight1, if (viewModel.totalPage >= 2) redColor else grayColor)
@@ -218,7 +220,6 @@ CommonNoticeFragment(
                 }
                 2 -> {
                     // 현재 페이지 숫자가 한 자리 일 때
-                    LoggerUtil.i("btn type: 2")
                     setButtonState(ibPageLeft1, redColor)
                     setButtonState(ibPageLeft2, grayColor)
                     setButtonState(ibPageRight1, if (viewModel.totalPage > viewModel.currentPage.value!!+1) redColor else grayColor)
@@ -226,7 +227,6 @@ CommonNoticeFragment(
                 }
                 3 -> {
                     // 현재 페이지 숫자가 두 자리 이상 일 때
-                    LoggerUtil.i("btn type: 3")
                     setButtonState(ibPageLeft1, redColor)
                     setButtonState(ibPageLeft2, if (viewModel.currentPage.value!!+1 / 11 >= 1) redColor else grayColor)
                     setButtonState(ibPageRight1, if (viewModel.totalPage > viewModel.currentPage.value!!+1) redColor else grayColor)
@@ -234,7 +234,6 @@ CommonNoticeFragment(
                 }
                 4 -> {
                     // 마지막 페이지 일 때
-                    LoggerUtil.i("btn type: 4")
                     setButtonState(ibPageLeft1, redColor)
                     setButtonState(ibPageLeft2, if (viewModel.currentPage.value!!+1 / 11 >= 1) redColor else grayColor)
                     setButtonState(ibPageRight1, grayColor)
@@ -250,19 +249,26 @@ CommonNoticeFragment(
     }
 
     private fun setCampusSpinner() {
+        binding.spinnerCampus.visibility = View.VISIBLE
         val categories = listOf("전체", "인문", "자연")
 
-        spinnerAdapter = CampusSpinnerAdapter(requireContext(), binding.spinnerCampus, R.layout.item_spinner_campus, categories)
+        spinnerAdapter = CampusSpinnerAdapter(requireContext(), R.layout.item_spinner_campus, categories)
         binding.spinnerCampus.adapter = spinnerAdapter
         binding.spinnerCampus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                spinnerAdapter.selectedPosition = position
+                spinnerAdapter.notifyDataSetChanged()
+
                 val value = binding.spinnerCampus.getItemAtPosition(position).toString()
-                LoggerUtil.i(value)
+                commonNoticeAdapter.submitList(emptyList())
+                viewModel.classificationNotice(noticeType, viewModel.currentPage.value!!, value)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-        binding.spinnerCampus.dropDownVerticalOffset = 110
-        binding.spinnerCampus.dropDownHorizontalOffset = -30
+
+        binding.spinnerCampus.dropDownHorizontalOffset = -24
+        binding.spinnerCampus.dropDownVerticalOffset = 10
     }
+
 }
