@@ -5,10 +5,10 @@ import com.neverland.thinkerbell.domain.model.PageableNotice
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 
 
-class GetDormitoryEntryNoticesUseCase() {
+class GetDormitoryEntryNoticesUseCase {
     private val repository: NoticeRepositoryImpl = NoticeRepositoryImpl()
 
-    suspend operator fun invoke(page: Int, ssaId: String): Result<PageableNotice<NoticeItem.CommonNotice>> {
-        return repository.getDormitoryEntryNotices(page = page, ssaId = ssaId)
+    suspend operator fun invoke(page: Int, ssaId: String, campus: String): Result<PageableNotice<NoticeItem.CommonNotice>> {
+        return repository.getDormitoryEntryNotices(page = page, ssaId = ssaId, campus = campus)
     }
 }
