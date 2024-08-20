@@ -43,11 +43,6 @@ class CalendarDayAdapter(
 
         // 일정이 있는 날짜 강조
         val dateString = dateFormat.format(date)
-        LoggerUtil.d(scheduleList.size.toString())
-        for (schedule in scheduleList ) {
-            LoggerUtil.d("${schedule.startDate} / ${dateString} / ${schedule.startDate==dateString}")
-
-        }
         val scheduleForTheDay = scheduleList.find { it.startDate == dateString }
         if (scheduleForTheDay != null) {
             holder.binding.tvDay.setTextColor(holder.itemView.context.getColor(R.color.primary1))

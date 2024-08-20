@@ -85,4 +85,6 @@ dependencies {
 
     // WorkManager
     implementation(libs.androidx.work.runtime.ktx)
+
+    implementation("com.nex3z:flow-layout:1.3.3")
 }

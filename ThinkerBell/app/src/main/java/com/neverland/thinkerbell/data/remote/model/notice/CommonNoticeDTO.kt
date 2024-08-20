@@ -1,6 +1,6 @@
 package com.neverland.thinkerbell.data.remote.model.notice
-import com.google.gson.annotations.SerializedName
 
+import com.google.gson.annotations.SerializedName
 
 data class CommonNoticeDTO(
     @SerializedName("id") val id: Int,

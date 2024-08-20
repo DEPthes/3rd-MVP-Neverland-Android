@@ -5,6 +5,8 @@ import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.ActivityHomeBinding
 import com.neverland.thinkerbell.presentation.base.BaseActivity
 import com.neverland.thinkerbell.presentation.view.category.CategoryFragment
+import com.neverland.thinkerbell.presentation.view.myPage.MyPageFragment
+import com.neverland.thinkerbell.presentation.view.notice.CommonNoticeFragment
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
 
@@ -23,12 +25,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
                     replaceFragment(R.id.fl_home, HomeFragment(), false)
                     true
                 }
-                R.id.navigation_dashboard -> {
+                R.id.navigation_category -> {
                     replaceFragment(R.id.fl_home, CategoryFragment(), false)
                     true
                 }
-                R.id.navigation_notifications -> {
-                    //replaceFragment(R.id.fl_home, NotificationsFragment(), false)
+                R.id.navigation_my_page -> {
+                    replaceFragment(R.id.fl_home, MyPageFragment(), false)
                     true
                 }
                 else -> false

@@ -50,9 +50,9 @@ class UnivRepositoryImpl: UnivRepository {
         }
     }
 
-    override suspend fun getMonthlyAcademicSchedule(month: Int): Result<List<AcademicSchedule>> {
+    override suspend fun getMonthlyAcademicSchedule(month: Int, ssaId: String): Result<List<AcademicSchedule>> {
         return try {
-            val res = service.getMonthlyAcademicSchedule(month)
+            val res = service.getMonthlyAcademicSchedule(month, ssaId)
             if(res.isSuccessful){
                 if(res.body() != null){
                     Result.success(res.body()!!.data.map { AcademicSchedule(id = it.id, title = it.title, univId = it.univId, startDate = it.startDate, endDate = it.endDate) })

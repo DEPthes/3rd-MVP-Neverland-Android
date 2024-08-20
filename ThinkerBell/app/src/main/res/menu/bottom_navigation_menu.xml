@@ -3,9 +3,9 @@
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_underbar_home" />
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_category"
         android:icon="@drawable/ic_underbar_menu" />
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_my_page"
         android:icon="@drawable/ic_underbar_profile_2" />
 </menu>

@@ -1,20 +1,19 @@
-package com.neverland.thinkerbell.presentation.view.notice
+package com.neverland.thinkerbell.presentation.view.myPage.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.ItemNoticeBinding
 import com.neverland.thinkerbell.databinding.ItemNoticeJobBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
+import com.neverland.thinkerbell.domain.model.notice.CommonNotice
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 
-class CommonRvAdapter(private val noticeType: NoticeType) : ListAdapter<NoticeItem, RecyclerView.ViewHolder>(noticeDiffUtil) {
-
+class FavoriteNoticeAdapter(private val noticeType: NoticeType) : ListAdapter<NoticeItem, RecyclerView.ViewHolder>(noticeDiffUtil)
+{
     companion object {
         private const val VIEW_TYPE_COMMON = 1
         private const val VIEW_TYPE_JOB = 2
@@ -33,12 +32,6 @@ class CommonRvAdapter(private val noticeType: NoticeType) : ListAdapter<NoticeIt
             binding.tvNoticeTitle.text = data.title
             binding.tvNoticeDate.text = data.pubDate
             binding.tbFavorites.isChecked = data.marked
-
-            if(data.important){
-                binding.clItemNotice.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.category_bg))
-            } else {
-                binding.clItemNotice.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.primary2))
-            }
 
             binding.tbFavorites.setOnCheckedChangeListener { _, isChecked ->
                 bookmarkClickListener.onClick(Pair(data.id, isChecked))
