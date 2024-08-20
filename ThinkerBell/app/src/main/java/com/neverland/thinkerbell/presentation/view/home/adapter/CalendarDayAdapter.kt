@@ -2,15 +2,12 @@ package com.neverland.thinkerbell.presentation.view.home.adapter
 
 import android.graphics.Typeface
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.core.utils.LoggerUtil
 import com.neverland.thinkerbell.databinding.ItemCalendarDayBinding
-import com.neverland.thinkerbell.domain.model.MjuSchedule
 import com.neverland.thinkerbell.domain.model.univ.AcademicSchedule
 import java.text.SimpleDateFormat
 import java.util.Date

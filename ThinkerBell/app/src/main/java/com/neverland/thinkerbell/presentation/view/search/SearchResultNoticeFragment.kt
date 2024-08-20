@@ -1,27 +1,42 @@
 package com.neverland.thinkerbell.presentation.view.search
 
-import android.os.Bundle
+import android.content.Intent
+import android.net.Uri
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentSearchResultNoticeBinding
-import com.neverland.thinkerbell.domain.model.notice.DummyData
+import com.neverland.thinkerbell.domain.enums.NoticeType
+import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.presentation.base.BaseFragment
+import com.neverland.thinkerbell.presentation.utils.UiState
+import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.notice.SearchResultNoticeAdapter
 
-class SearchResultNoticeFragment : BaseFragment<FragmentSearchResultNoticeBinding>(R.layout.fragment_search_result_notice) {
+class SearchResultNoticeFragment(
+    private val noticeType: NoticeType,
+    private val list: List<NoticeItem>
+) : BaseFragment<FragmentSearchResultNoticeBinding>(R.layout.fragment_search_result_notice) {
+    private val viewModel: SearchResultNoticeViewModel by viewModels()
 
-    private lateinit var category: String
-    private lateinit var searchWord: String
-    private val noticeAdapter = SearchResultNoticeAdapter()
-    private var noticesCount: Int = 0
+    private val noticeAdapter by lazy {  SearchResultNoticeAdapter(noticeType).apply {
+        setRvItemClickListener(object: OnRvItemClickListener<String>{
+            override fun onClick(item: String) {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(item)
+                }
+                startActivity(intent)
+            }
+        })
+        setBookmarkClickListener(object : OnRvItemClickListener<Pair<Int, Boolean>>{
+            override fun onClick(item: Pair<Int, Boolean>) {
+                if(item.second) viewModel.postBookmark(noticeType, item.first) else viewModel.deleteBookmark(noticeType, item.first)
+            }
+        })
+    } }
 
     override fun initView() {
-        arguments?.let {
-            category = it.getString(ARG_CATEGORY) ?: ""
-            searchWord = it.getString(ARG_SEARCH_WORD) ?: ""
-        }
         setupRecyclerView()
-        filterNotices()
     }
 
     private fun setupRecyclerView() {
@@ -29,28 +44,23 @@ class SearchResultNoticeFragment : BaseFragment<FragmentSearchResultNoticeBindin
             layoutManager = LinearLayoutManager(context)
             adapter = noticeAdapter
         }
+
+        noticeAdapter.submitList(list)
     }
 
-    private fun filterNotices() {
-        val filteredNotices = DummyData.notices.flatten().filter {
-            it.classification == category
-        }
-        noticeAdapter.submitList(filteredNotices)
-        noticesCount = filteredNotices.size
+    override fun setObserver() {
+        super.setObserver()
+
+        viewModel.toastState.observe(viewLifecycleOwner, ::handleToastState)
     }
 
-    fun getNoticesCount(): Int {
-        return noticesCount
-    }
-
-    companion object {
-        private const val ARG_CATEGORY = "category"
-        private const val ARG_SEARCH_WORD = "search_word"
-
-        fun newInstance(category: String, searchWord: String) = SearchResultNoticeFragment().apply {
-            arguments = Bundle().apply {
-                putString(ARG_CATEGORY, category)
-                putString(ARG_SEARCH_WORD, searchWord)
+    private fun handleToastState(state: UiState<String>){
+        when (state) {
+            is UiState.Loading -> {}
+            is UiState.Error -> {}
+            is UiState.Empty -> {}
+            is UiState.Success -> {
+                showToast(state.data)
             }
         }
     }

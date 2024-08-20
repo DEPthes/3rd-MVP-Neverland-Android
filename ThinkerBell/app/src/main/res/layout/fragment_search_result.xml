@@ -28,7 +28,8 @@
                 android:layout_gravity="start|center_vertical"
                 android:layout_marginStart="26dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_thinkerbell_logo" />        </androidx.appcompat.widget.Toolbar>
+                android:src="@drawable/ic_thinkerbell_logo" />
+        </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
             android:id="@+id/ll_search_result"

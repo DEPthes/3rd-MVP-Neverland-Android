@@ -1,7 +1,6 @@
 package com.neverland.thinkerbell.data.repository
 
 import com.neverland.thinkerbell.data.remote.RetrofitClient
-import com.neverland.thinkerbell.data.remote.model.user.PostUserInfoReqDTO
 import com.neverland.thinkerbell.data.remote.service.BookmarkService
 import com.neverland.thinkerbell.domain.model.notice.BookmarkNotice
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem

@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.neverland.thinkerbell.domain.model.group.Group
 import com.neverland.thinkerbell.domain.model.group.SubGroup
 import com.neverland.thinkerbell.domain.model.univ.DeptContact
-import com.neverland.thinkerbell.domain.model.univ.DeptUrl
 import com.neverland.thinkerbell.domain.usecase.univ.GetDeptContactUseCase
 import com.neverland.thinkerbell.presentation.utils.UiState
 import kotlinx.coroutines.launch

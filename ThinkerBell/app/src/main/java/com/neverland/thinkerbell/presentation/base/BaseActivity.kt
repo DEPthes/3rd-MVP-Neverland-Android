@@ -11,6 +11,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.neverland.thinkerbell.core.utils.LoggerUtil
+import com.neverland.thinkerbell.presentation.custom.CustomToast
 
 abstract class BaseActivity<T: ViewDataBinding>(@LayoutRes private val layoutId: Int): AppCompatActivity() {
     lateinit var binding: T
@@ -34,7 +35,7 @@ abstract class BaseActivity<T: ViewDataBinding>(@LayoutRes private val layoutId:
 
     protected fun showToast(msg: String) {
         currentToast?.cancel()
-        currentToast = Toast.makeText(this, msg, Toast.LENGTH_SHORT)
+        currentToast = CustomToast.makeToast(this, msg)
         currentToast?.show()
     }
 

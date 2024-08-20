@@ -1,10 +1,7 @@
 package com.neverland.thinkerbell.domain.usecase.univ
 
-import com.neverland.thinkerbell.data.repository.DataStoreRepositoryImpl
 import com.neverland.thinkerbell.data.repository.UnivRepositoryImpl
 import com.neverland.thinkerbell.domain.model.univ.DeptUrl
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 class GetDeptUrlUseCase() {

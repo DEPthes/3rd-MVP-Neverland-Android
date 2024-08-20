@@ -7,7 +7,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.R
-import com.neverland.thinkerbell.domain.model.MjuSchedule
 import com.neverland.thinkerbell.domain.model.univ.AcademicSchedule
 
 class CalendarScheduleAdapter : RecyclerView.Adapter<CalendarScheduleAdapter.ScheduleViewHolder>() {

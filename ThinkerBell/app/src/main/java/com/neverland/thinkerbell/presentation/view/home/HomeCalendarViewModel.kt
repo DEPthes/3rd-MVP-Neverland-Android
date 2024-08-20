@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neverland.thinkerbell.domain.model.group.Group
 import com.neverland.thinkerbell.domain.model.univ.AcademicSchedule
-import com.neverland.thinkerbell.domain.model.univ.DeptUrl
 import com.neverland.thinkerbell.domain.usecase.univ.GetAcademicScheduleUseCase
 import com.neverland.thinkerbell.presentation.base.ThinkerBellApplication.Companion.application
 import com.neverland.thinkerbell.presentation.utils.UiState

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
@@ -13,7 +14,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.core.utils.LoggerUtil
-import com.neverland.thinkerbell.data.repository.BookmarkRepositoryImpl
 import com.neverland.thinkerbell.databinding.FragmentCommonNoticeBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
@@ -112,6 +112,24 @@ CommonNoticeFragment(
             } else {
                 false
             }
+        }
+
+        binding.etSearch.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEndWidth = binding.etSearch.compoundDrawables[2]?.bounds?.width() ?: 0
+                val padding = binding.etSearch.paddingEnd
+
+                if (event.rawX >= (binding.etSearch.right - drawableEndWidth - padding) &&
+                    event.rawX <= (binding.etSearch.right - padding)) {
+                    val searchWord = binding.etSearch.text.toString()
+                    if (searchWord.isNotEmpty()) {
+                        viewModel.currentNotice = commonNoticeAdapter.currentList
+                        viewModel.searchNotice(noticeType, binding.etSearch.text.toString())
+                    }
+                    return@setOnTouchListener true
+                }
+            }
+            return@setOnTouchListener false
         }
     }
 
