@@ -60,7 +60,7 @@ class SearchViewModel : ViewModel() {
         viewModelScope.launch {
             searchAllNoticesByCategoryUseCase.invoke(keyword = keyword, ssaId = application.getAndroidId())
                 .onSuccess {
-                    _uiState.value = UiState.Success(Pair(keyword, it))
+                    _uiState.value = if(it.isEmpty()) UiState.Empty else UiState.Success(Pair(keyword, it))
                 }
                 .onFailure {
                     _uiState.value = UiState.Error(it)

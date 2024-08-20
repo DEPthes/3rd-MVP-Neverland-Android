@@ -1,5 +1,6 @@
 package com.neverland.thinkerbell.presentation.view.myPage
 
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neverland.thinkerbell.R
@@ -21,11 +22,26 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
     private lateinit var myPageFavoriteNoticeAdapter: MyPageFavoriteNoticeAdapter
     private lateinit var myPageKeywordAdapter: MyPageKeywordAdapter
 
+    private var lastBackPressedTime: Long = 0
+    private val onBackPressedCallback by lazy {
+        object: OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                if (System.currentTimeMillis() - lastBackPressedTime < 2000) {
+                    requireActivity().finish()
+                } else {
+                    lastBackPressedTime = System.currentTimeMillis()
+                    showToast("한 번 더 누르면 종료됩니다.")
+                }
+            }
+        }
+    }
+
     override fun initView() {
         (requireActivity() as HomeActivity).apply {
             setStatusBarColor(R.color.primary1, true)
             showBottomNavigation()
         }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
     }
 
     override fun setObserver() {
@@ -113,4 +129,8 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        onBackPressedCallback.remove()
+    }
 }

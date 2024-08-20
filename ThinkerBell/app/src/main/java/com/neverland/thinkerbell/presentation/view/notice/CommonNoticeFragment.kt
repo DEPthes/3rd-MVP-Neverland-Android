@@ -9,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ImageButton
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +22,6 @@ import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.home.HomeActivity
-import com.neverland.thinkerbell.presentation.view.home.HomeFragment
 
 @SuppressLint("SetTextI18n")
 class
@@ -30,6 +30,14 @@ CommonNoticeFragment(
 ) : BaseFragment<FragmentCommonNoticeBinding>(R.layout.fragment_common_notice) {
 
     private val viewModel: CommonNoticeViewModel by viewModels()
+    private val backPressedCallback by lazy {
+        object: OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                if(binding.tvEmptyView.visibility == View.VISIBLE) binding.btnBack.performClick()
+                else requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
+    }
     private val commonNoticeAdapter: CommonRvAdapter by lazy { CommonRvAdapter(noticeType).apply {
         setRvItemClickListener(object : OnRvItemClickListener<String>{
             override fun onClick(item: String) {
@@ -57,6 +65,9 @@ CommonNoticeFragment(
             hideBottomNavigation()
             setStatusBarColor(R.color.primary1, true)
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backPressedCallback)
+
         binding.tvNoticeTitle.text = noticeType.koName
         binding.groupNoticeSearchView.visibility = View.GONE
         setupRecyclerView()
@@ -85,12 +96,11 @@ CommonNoticeFragment(
         }
 
         binding.ibHome.setOnClickListener {
-            (requireActivity() as HomeActivity).replaceFragment(
-                frameLayoutId = R.id.fl_home,
-                fragment = HomeFragment(),
-                isAddBackStack = false,
-                isStackClear = true
-            )
+            (requireActivity() as HomeActivity).binding.bottomNavigation.selectedItemId = R.id.navigation_home
+        }
+
+        binding.ibProfile.setOnClickListener {
+            (requireActivity() as HomeActivity).binding.bottomNavigation.selectedItemId = R.id.navigation_my_page
         }
 
         binding.btnBack.setOnClickListener {
@@ -103,10 +113,11 @@ CommonNoticeFragment(
         binding.ibPageLeft2.setOnClickListener { viewModel.fetchData(noticeType, viewModel.currentPage.value!! - 10) }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupSearchListener() {
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                viewModel.currentNotice = commonNoticeAdapter.currentList
+                if(viewModel.currentNotice.isEmpty()) viewModel.currentNotice = commonNoticeAdapter.currentList
                 viewModel.searchNotice(noticeType, binding.etSearch.text.toString())
                 true
             } else {
@@ -123,7 +134,7 @@ CommonNoticeFragment(
                     event.rawX <= (binding.etSearch.right - padding)) {
                     val searchWord = binding.etSearch.text.toString()
                     if (searchWord.isNotEmpty()) {
-                        viewModel.currentNotice = commonNoticeAdapter.currentList
+                        if(viewModel.currentNotice.isEmpty()) viewModel.currentNotice = commonNoticeAdapter.currentList
                         viewModel.searchNotice(noticeType, binding.etSearch.text.toString())
                     }
                     return@setOnTouchListener true
@@ -137,9 +148,11 @@ CommonNoticeFragment(
         binding.groupNoticeSearchView.visibility = View.GONE
         binding.llNoticePage.visibility = View.VISIBLE
         if(spinnerRequiredNotices.contains(noticeType)) setCampusSpinner() else binding.spinnerCampus.visibility = View.GONE
+        binding.tvEmptyView.visibility = View.GONE
 
         binding.tvNoticePage.text = "${viewModel.currentPage.value!!+1}/${viewModel.totalPage}"
         commonNoticeAdapter.submitList(viewModel.currentNotice)
+        viewModel.currentNotice = emptyList()
     }
 
     override fun setObserver() {
@@ -183,7 +196,15 @@ CommonNoticeFragment(
         when (state) {
             is UiState.Loading -> { /* Show loading state if needed */ }
             is UiState.Error -> { /* Show error state if needed */ }
-            is UiState.Empty -> { /* Show empty state if needed */ }
+            is UiState.Empty -> {
+                binding.tvEmptyView.visibility = View.VISIBLE
+                binding.tvEmptyView.text = "'${binding.etSearch.text}'이(가) 포한된 공지사항을\n찾을 수 없습니다."
+                commonNoticeAdapter.submitList(emptyList())
+                binding.llNoticePage.visibility = View.GONE
+                binding.spinnerCampus.visibility = View.GONE
+                binding.groupNoticeSearchView.visibility = View.GONE
+                binding.etSearch.text.clear()
+            }
             is UiState.Success -> {
                 commonNoticeAdapter.submitList(state.data)
                 binding.groupNoticeSearchView.visibility = View.VISIBLE
@@ -269,6 +290,12 @@ CommonNoticeFragment(
 
         binding.spinnerCampus.dropDownHorizontalOffset = -24
         binding.spinnerCampus.dropDownVerticalOffset = 10
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        backPressedCallback.remove()
     }
 
 }

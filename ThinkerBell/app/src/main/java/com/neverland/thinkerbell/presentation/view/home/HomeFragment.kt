@@ -1,6 +1,7 @@
 package com.neverland.thinkerbell.presentation.view.home
 
 import android.os.Handler
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neverland.thinkerbell.R
@@ -22,11 +23,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private lateinit var handler: Handler
     private lateinit var runnable: Runnable
 
+    private var lastBackPressedTime: Long = 0
+    private val onBackPressedCallback by lazy {
+        object: OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                if (System.currentTimeMillis() - lastBackPressedTime < 2000) {
+                    requireActivity().finish()
+                } else {
+                    lastBackPressedTime = System.currentTimeMillis()
+                    showToast("한 번 더 누르면 종료됩니다.")
+                }
+            }
+        }
+    }
+
     override fun initView() {
         (requireActivity() as HomeActivity).apply {
             showBottomNavigation()
             setStatusBarColor(R.color.primary1, true)
         }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
         viewModel.fetchBanners()
         viewModel.fetchRecentNotices()
     }
@@ -126,5 +142,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     override fun onDestroyView() {
         super.onDestroyView()
         handler.removeCallbacks(runnable)
+        onBackPressedCallback.remove()
     }
 }
