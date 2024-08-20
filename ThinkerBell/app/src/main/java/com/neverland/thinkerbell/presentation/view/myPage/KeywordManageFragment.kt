@@ -1,7 +1,9 @@
 package com.neverland.thinkerbell.presentation.view.myPage
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neverland.thinkerbell.R
@@ -29,22 +31,14 @@ class KeywordManageFragment : BaseFragment<FragmentKeywordManageBinding>(R.layou
 
         myPageviewModel.keyword.observe(viewLifecycleOwner) {
             when (it) {
-                is UiState.Loading -> {
-                    // Handle loading state
-                }
-
+                is UiState.Loading -> {}
                 is UiState.Success -> {
                     setupKeywordRecyclerView(it.data)
                     binding.tvKeywordCount.text = "${it.data.size} / 9"
+                    updateAddBtnStyle(it.data.size)
                 }
-
-                is UiState.Error -> {
-                    // Handle error state
-                }
-
-                UiState.Empty -> {
-
-                }
+                is UiState.Error -> {}
+                UiState.Empty -> {}
             }
         }
     }
@@ -65,17 +59,34 @@ class KeywordManageFragment : BaseFragment<FragmentKeywordManageBinding>(R.layou
         keywordManagementAdapter = KeywordManagementAdapter(list).apply {
             setOnRvItemClickListener(object : OnRvItemClickListener<String>{
                 override fun onClick(item: String) {
-                    myPageviewModel.deleteKeyword(item)
-                    keywordManagementAdapter.deleteKeyword(item)
-                    binding.tvKeywordCount.text = "${keywordManagementAdapter.itemCount} / 9"
+                    KeywordDeleteDialog.newInstance(item) {
+                        myPageviewModel.deleteKeyword(item)
+                        keywordManagementAdapter.deleteKeyword(item)
+                        binding.tvKeywordCount.text = "${keywordManagementAdapter.itemCount} / 9"
+                        updateAddBtnStyle()
+                    }.show(requireActivity().supportFragmentManager, "KeywordDeleteDialog")
                 }
             })
-
         }
+
         binding.rvKeywordManagement.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = keywordManagementAdapter
+        }
+    }
+
+    private fun updateAddBtnStyle(count: Int = keywordManagementAdapter.itemCount){
+        binding.tvEmptyView.visibility = if(count == 0) View.VISIBLE else View.GONE
+
+        if(count >= 9){
+            binding.btnKeywordAdd.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_gray_100))
+            binding.btnKeywordAdd.background = ColorDrawable(ContextCompat.getColor(requireContext(), R.color.red_gray_300))
+            binding.btnKeywordAdd.isClickable = false
+        } else {
+            binding.btnKeywordAdd.setTextColor(ContextCompat.getColor(requireContext(), R.color.primary2))
+            binding.btnKeywordAdd.background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_keyword_add_button_bg)
+            binding.btnKeywordAdd.isClickable = true
         }
     }
 }

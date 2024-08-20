@@ -43,7 +43,7 @@ class CommonNoticeViewModel: ViewModel() {
     private val _searchState = MutableLiveData<UiState<List<NoticeItem>>>(UiState.Loading)
     val searchState: LiveData<UiState<List<NoticeItem>>> get() = _searchState
 
-    fun fetchData(noticeType: NoticeType, page: Int){
+    fun fetchData(noticeType: NoticeType, page: Int, campus: String = "전체"){
         if(page > totalPage || page < 0) return
 
         _currentPage.value = page
@@ -58,11 +58,28 @@ class CommonNoticeViewModel: ViewModel() {
             NoticeType.BIDDING_NOTICE -> biddingNotice(page)
             NoticeType.SAFETY_NOTICE -> safetyNotice(page)
             NoticeType.REVISION_NOTICE -> revisionNotice(page)
-            NoticeType.DORMITORY_NOTICE -> dormitoryNotice(page)
-            NoticeType.DORMITORY_ENTRY_NOTICE -> dormitoryEntryNotice(page)
-            NoticeType.LIBRARY_NOTICE -> libraryNotice(page)
+            NoticeType.DORMITORY_NOTICE -> dormitoryNotice(page, campus)
+            NoticeType.DORMITORY_ENTRY_NOTICE -> dormitoryEntryNotice(page, campus)
+            NoticeType.LIBRARY_NOTICE -> libraryNotice(page, campus)
             NoticeType.TEACHING_NOTICE -> teachingNotice(page)
             NoticeType.JOB_TRAINING_NOTICE -> jobTrainingNotice(page)
+            else -> dummyFunc()
+        }
+    }
+
+    private fun dummyFunc(){}
+
+    private var currentClass = "전체"
+    fun classificationNotice(noticeType: NoticeType, page: Int, campus: String){
+        if (currentClass != campus){
+            currentClass = campus
+            _currentPage.value = 0
+            totalPage = 0
+            currentNotice = emptyList()
+
+            fetchData(noticeType, 0, campus)
+        } else {
+            fetchData(noticeType, page, campus)
         }
     }
 
@@ -117,7 +134,7 @@ class CommonNoticeViewModel: ViewModel() {
             )
                 .onFailure { _searchState.value = UiState.Error(it) }
                 .onSuccess {
-                    _searchState.value = UiState.Success(it)
+                    _searchState.value = if(it.isEmpty()) UiState.Empty else UiState.Success(it)
                 }
         }
     }
@@ -287,13 +304,14 @@ class CommonNoticeViewModel: ViewModel() {
         }
     }
 
-    private fun dormitoryNotice(page: Int){
+    private fun dormitoryNotice(page: Int, campus: String){
         _uiState.value = UiState.Loading
 
         viewModelScope.launch {
             GetDormitoryNoticesUseCase().invoke(
                 page = page,
-                ssaId = application.getAndroidId()
+                ssaId = application.getAndroidId(),
+                campus = campus
             )
                 .onFailure {
                     _uiState.value = UiState.Error(it)
@@ -305,13 +323,14 @@ class CommonNoticeViewModel: ViewModel() {
         }
     }
 
-    private fun dormitoryEntryNotice(page: Int){
+    private fun dormitoryEntryNotice(page: Int, campus: String){
         _uiState.value = UiState.Loading
 
         viewModelScope.launch {
             GetDormitoryEntryNoticesUseCase().invoke(
                 page = page,
-                ssaId = application.getAndroidId()
+                ssaId = application.getAndroidId(),
+                campus = campus
             )
                 .onFailure {
                     _uiState.value = UiState.Error(it)
@@ -323,13 +342,14 @@ class CommonNoticeViewModel: ViewModel() {
         }
     }
 
-    private fun libraryNotice(page: Int){
+    private fun libraryNotice(page: Int, campus: String){
         _uiState.value = UiState.Loading
 
         viewModelScope.launch {
             GetLibraryNoticesUseCase().invoke(
                 page = page,
-                ssaId = application.getAndroidId()
+                ssaId = application.getAndroidId(),
+                campus = campus
             )
                 .onFailure {
                     _uiState.value = UiState.Error(it)

@@ -94,5 +94,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="53dp"/>
 
+        <TextView
+            android:id="@+id/tv_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@id/tv_keyword_management"
+            app:layout_constraintBottom_toTopOf="@id/btn_keyword_add"
+
+            android:text="알림을 받고 싶은 공지가 있다면\n키워드를 등록해놓으세요!"
+            style="@style/Paragraph_Medium"
+            android:textColor="@color/content_secondary"
+            android:gravity="center"
+
+            android:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

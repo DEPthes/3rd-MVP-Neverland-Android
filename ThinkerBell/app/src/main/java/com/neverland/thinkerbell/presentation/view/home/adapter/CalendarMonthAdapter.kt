@@ -51,7 +51,6 @@ class CalendarMonthAdapter(
 
         listLayout.layoutManager = GridLayoutManager(holder.view.context, 7)
         listLayout.adapter = CalendarDayAdapter(tempMonth, dayList, scheduleList)
-        LoggerUtil.d(scheduleList.size.toString())
         // 화살표 버튼 클릭 이벤트 처리
         val btnPrevMonth: ImageButton = holder.view.findViewById(R.id.btn_prev_month)
         val btnNextMonth: ImageButton = holder.view.findViewById(R.id.btn_next_month)

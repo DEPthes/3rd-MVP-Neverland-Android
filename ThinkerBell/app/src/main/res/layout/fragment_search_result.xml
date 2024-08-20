@@ -114,5 +114,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@id/tl_search_categoryTab"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            tools:text="'검색어'이(가) 포한된 공지사항을\n찾을 수 없습니다."
+            style="@style/Paragraph_Medium"
+            android:textColor="@color/content_secondary"
+            android:gravity="center"
+
+            android:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

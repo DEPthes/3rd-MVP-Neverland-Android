@@ -19,11 +19,11 @@ interface KeywordService {
     suspend fun postKeyword(
         @Query("keyword") keyword: String,
         @Query("userSSAID") ssaId: String
-    ): Response<BaseResponse<ResponseBody>>
+    ): Response<BaseResponse<String>>
 
     @POST("/api/keyword/delete")
     suspend fun deleteKeyword(
         @Query("keyword") keyword: String,
         @Query("userSSAID") ssaId: String
-    ): Response<BaseResponse<ResponseBody>>
+    ): Response<BaseResponse<String>>
 }

@@ -16,9 +16,10 @@ class NoticeRepositoryImpl : NoticeRepository {
     override suspend fun getDormitoryNotices(
         page: Int,
         ssaId: String,
+        campus: String
     ): Result<PageableNotice<NoticeItem.CommonNotice>> {
         return try {
-            val res = service.getDormitoryNotices(page, ssaId)
+            val res = service.getDormitoryNotices(page, ssaId, campus)
             if (res.isSuccessful) {
                 if (res.body() != null) {
                     val data = res.body()!!.data
@@ -54,10 +55,11 @@ class NoticeRepositoryImpl : NoticeRepository {
 
     override suspend fun getDormitoryEntryNotices(
         page: Int,
-        ssaId: String
+        ssaId: String,
+        campus: String
     ): Result<PageableNotice<NoticeItem.CommonNotice>> {
         return try {
-            val res = service.getDormitoryEntryNotices(page, ssaId)
+            val res = service.getDormitoryEntryNotices(page, ssaId, campus)
             if (res.isSuccessful) {
                 if (res.body() != null) {
                     val data = res.body()!!.data
@@ -135,10 +137,11 @@ class NoticeRepositoryImpl : NoticeRepository {
 
     override suspend fun getLibraryNotices(
         page: Int,
-        ssaId: String
+        ssaId: String,
+        campus: String
     ): Result<PageableNotice<NoticeItem.CommonNotice>> {
         return try {
-            val res = service.getLibraryNotices(page, ssaId)
+            val res = service.getLibraryNotices(page, ssaId, campus)
             if (res.isSuccessful) {
                 if (res.body() != null) {
                     val data = res.body()!!.data

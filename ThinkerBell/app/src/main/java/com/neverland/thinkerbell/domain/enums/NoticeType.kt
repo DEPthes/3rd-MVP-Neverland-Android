@@ -14,5 +14,6 @@ enum class NoticeType(val koName: String, val enName: String, val tabName: Strin
     DORMITORY_ENTRY_NOTICE("[생활관] 입퇴사공지사항", "DormitoryEntryNotice", "생활관 입퇴사"),
     LIBRARY_NOTICE("[도서관] 공지사항", "LibraryNotice", "도서관"),
     TEACHING_NOTICE("[교직] 공지사항", "TeachingNotice", "교직"),
-    JOB_TRAINING_NOTICE("현장실습지원 참여기업 안내", "JobTrainingNotice", "현장실습")
+    JOB_TRAINING_NOTICE("현장실습지원 참여기업 안내", "JobTrainingNotice", "현장실습"),
+    ACADEMIC_SCHEDULE("학사일정", "AcademicSchedule", "학사일정")
 }

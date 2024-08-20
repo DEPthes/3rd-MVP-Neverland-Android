@@ -9,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ImageButton
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +23,6 @@ import com.neverland.thinkerbell.presentation.custom.CustomDividerDecoration
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.home.HomeActivity
-import com.neverland.thinkerbell.presentation.view.home.HomeFragment
 
 @SuppressLint("SetTextI18n")
 class
@@ -31,6 +31,14 @@ CommonNoticeFragment(
 ) : BaseFragment<FragmentCommonNoticeBinding>(R.layout.fragment_common_notice) {
 
     private val viewModel: CommonNoticeViewModel by viewModels()
+    private val backPressedCallback by lazy {
+        object: OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                if(binding.tvEmptyView.visibility == View.VISIBLE) binding.btnBack.performClick()
+                else requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
+    }
     private val commonNoticeAdapter: CommonRvAdapter by lazy { CommonRvAdapter(noticeType).apply {
         setRvItemClickListener(object : OnRvItemClickListener<String>{
             override fun onClick(item: String) {
@@ -58,6 +66,9 @@ CommonNoticeFragment(
             hideBottomNavigation()
             setStatusBarColor(R.color.primary1, true)
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backPressedCallback)
+
         binding.tvNoticeTitle.text = noticeType.koName
         binding.groupNoticeSearchView.visibility = View.GONE
         setupRecyclerView()
@@ -87,12 +98,11 @@ CommonNoticeFragment(
         }
 
         binding.ibHome.setOnClickListener {
-            (requireActivity() as HomeActivity).replaceFragment(
-                frameLayoutId = R.id.fl_home,
-                fragment = HomeFragment(),
-                isAddBackStack = false,
-                isStackClear = true
-            )
+            (requireActivity() as HomeActivity).binding.bottomNavigation.selectedItemId = R.id.navigation_home
+        }
+
+        binding.ibProfile.setOnClickListener {
+            (requireActivity() as HomeActivity).binding.bottomNavigation.selectedItemId = R.id.navigation_my_page
         }
 
         binding.btnBack.setOnClickListener {
@@ -105,10 +115,11 @@ CommonNoticeFragment(
         binding.ibPageLeft2.setOnClickListener { viewModel.fetchData(noticeType, viewModel.currentPage.value!! - 10) }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupSearchListener() {
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                viewModel.currentNotice = commonNoticeAdapter.currentList
+                if(viewModel.currentNotice.isEmpty()) viewModel.currentNotice = commonNoticeAdapter.currentList
                 viewModel.searchNotice(noticeType, binding.etSearch.text.toString())
                 true
             } else {
@@ -125,7 +136,7 @@ CommonNoticeFragment(
                     event.rawX <= (binding.etSearch.right - padding)) {
                     val searchWord = binding.etSearch.text.toString()
                     if (searchWord.isNotEmpty()) {
-                        viewModel.currentNotice = commonNoticeAdapter.currentList
+                        if(viewModel.currentNotice.isEmpty()) viewModel.currentNotice = commonNoticeAdapter.currentList
                         viewModel.searchNotice(noticeType, binding.etSearch.text.toString())
                     }
                     return@setOnTouchListener true
@@ -138,8 +149,12 @@ CommonNoticeFragment(
     private fun showNoticePage() {
         binding.groupNoticeSearchView.visibility = View.GONE
         binding.llNoticePage.visibility = View.VISIBLE
+        if(spinnerRequiredNotices.contains(noticeType)) setCampusSpinner() else binding.spinnerCampus.visibility = View.GONE
+        binding.tvEmptyView.visibility = View.GONE
+
         binding.tvNoticePage.text = "${viewModel.currentPage.value!!+1}/${viewModel.totalPage}"
         commonNoticeAdapter.submitList(viewModel.currentNotice)
+        viewModel.currentNotice = emptyList()
     }
 
     override fun setObserver() {
@@ -158,6 +173,7 @@ CommonNoticeFragment(
             is UiState.Error -> {}
             is UiState.Empty -> {}
             is UiState.Success -> {
+                LoggerUtil.i(state.data)
                 showToast(state.data)
             }
         }
@@ -182,11 +198,20 @@ CommonNoticeFragment(
         when (state) {
             is UiState.Loading -> { /* Show loading state if needed */ }
             is UiState.Error -> { /* Show error state if needed */ }
-            is UiState.Empty -> { /* Show empty state if needed */ }
+            is UiState.Empty -> {
+                binding.tvEmptyView.visibility = View.VISIBLE
+                binding.tvEmptyView.text = "'${binding.etSearch.text}'이(가) 포한된 공지사항을\n찾을 수 없습니다."
+                commonNoticeAdapter.submitList(emptyList())
+                binding.llNoticePage.visibility = View.GONE
+                binding.spinnerCampus.visibility = View.GONE
+                binding.groupNoticeSearchView.visibility = View.GONE
+                binding.etSearch.text.clear()
+            }
             is UiState.Success -> {
                 commonNoticeAdapter.submitList(state.data)
                 binding.groupNoticeSearchView.visibility = View.VISIBLE
                 binding.llNoticePage.visibility = View.GONE
+                binding.spinnerCampus.visibility = View.GONE
                 binding.tvSearchNoticeResult.text = "'${binding.etSearch.text}'이(가) 포함된 공지사항 (${state.data.size}개)"
                 binding.etSearch.text.clear()
             }
@@ -194,7 +219,6 @@ CommonNoticeFragment(
     }
 
     private fun updatePageButtons(currentPage: Int) {
-        LoggerUtil.i(currentPage.toString())
         when {
             currentPage == 1 -> setClickablePageButtons(1)
             currentPage / 10 == 0 -> setClickablePageButtons(2)
@@ -212,7 +236,6 @@ CommonNoticeFragment(
             when (type) {
                 1 -> {
                     // 첫 페이지 일 때
-                    LoggerUtil.i("btn type: 1")
                     setButtonState(ibPageLeft1, grayColor)
                     setButtonState(ibPageLeft2, grayColor)
                     setButtonState(ibPageRight1, if (viewModel.totalPage >= 2) redColor else grayColor)
@@ -220,7 +243,6 @@ CommonNoticeFragment(
                 }
                 2 -> {
                     // 현재 페이지 숫자가 한 자리 일 때
-                    LoggerUtil.i("btn type: 2")
                     setButtonState(ibPageLeft1, redColor)
                     setButtonState(ibPageLeft2, grayColor)
                     setButtonState(ibPageRight1, if (viewModel.totalPage > viewModel.currentPage.value!!+1) redColor else grayColor)
@@ -228,7 +250,6 @@ CommonNoticeFragment(
                 }
                 3 -> {
                     // 현재 페이지 숫자가 두 자리 이상 일 때
-                    LoggerUtil.i("btn type: 3")
                     setButtonState(ibPageLeft1, redColor)
                     setButtonState(ibPageLeft2, if (viewModel.currentPage.value!!+1 / 11 >= 1) redColor else grayColor)
                     setButtonState(ibPageRight1, if (viewModel.totalPage > viewModel.currentPage.value!!+1) redColor else grayColor)
@@ -236,7 +257,6 @@ CommonNoticeFragment(
                 }
                 4 -> {
                     // 마지막 페이지 일 때
-                    LoggerUtil.i("btn type: 4")
                     setButtonState(ibPageLeft1, redColor)
                     setButtonState(ibPageLeft2, if (viewModel.currentPage.value!!+1 / 11 >= 1) redColor else grayColor)
                     setButtonState(ibPageRight1, grayColor)
@@ -252,19 +272,32 @@ CommonNoticeFragment(
     }
 
     private fun setCampusSpinner() {
+        binding.spinnerCampus.visibility = View.VISIBLE
         val categories = listOf("전체", "인문", "자연")
 
-        spinnerAdapter = CampusSpinnerAdapter(requireContext(), binding.spinnerCampus, R.layout.item_spinner_campus, categories)
+        spinnerAdapter = CampusSpinnerAdapter(requireContext(), R.layout.item_spinner_campus, categories)
         binding.spinnerCampus.adapter = spinnerAdapter
         binding.spinnerCampus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                spinnerAdapter.selectedPosition = position
+                spinnerAdapter.notifyDataSetChanged()
+
                 val value = binding.spinnerCampus.getItemAtPosition(position).toString()
-                LoggerUtil.i(value)
+                commonNoticeAdapter.submitList(emptyList())
+                viewModel.classificationNotice(noticeType, viewModel.currentPage.value!!, value)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-        binding.spinnerCampus.dropDownVerticalOffset = 110
-        binding.spinnerCampus.dropDownHorizontalOffset = -30
+
+        binding.spinnerCampus.dropDownHorizontalOffset = -24
+        binding.spinnerCampus.dropDownVerticalOffset = 10
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        backPressedCallback.remove()
+    }
+
 }
