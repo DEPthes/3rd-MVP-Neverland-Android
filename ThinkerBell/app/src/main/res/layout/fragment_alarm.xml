@@ -81,5 +81,38 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="알림을 받고 싶은 공지가 있다면\n키워드를 등록해놓으세요!"
+            android:textColor="@color/content_secondary"
+            android:gravity="center"
+            style="@style/Paragraph_Medium"
+            app:layout_constraintVertical_bias="0.4"
+            app:layout_constraintTop_toBottomOf="@id/tl_alarm_categoryTab"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_empty"
+            android:layout_width="178dp"
+            android:layout_height="56dp"
+            android:text="키워드 등록하기"
+            style="@style/Heading_Medium"
+            android:textColor="@color/primary2"
+            android:background="@drawable/shape_keyword_add_button_bg"
+            app:layout_constraintTop_toBottomOf="@id/tv_empty"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="62dp"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="tv_empty, btn_empty"
+            android:visibility="gone" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

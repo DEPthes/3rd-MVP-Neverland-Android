@@ -1,6 +1,7 @@
 package com.neverland.thinkerbell.presentation.view.home
 
 import android.os.Handler
+import androidx.core.content.ContextCompat
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
@@ -45,6 +46,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
         viewModel.fetchBanners()
         viewModel.fetchRecentNotices()
+        viewModel.checkAllAlarm()
     }
 
     override fun setObserver() {
@@ -71,6 +73,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 }
                 is UiState.Error -> {
                     showToast("최근 공지 조회 실패")
+                }
+                is UiState.Empty -> {}
+            }
+        }
+
+        viewModel.alarmState.observe(viewLifecycleOwner){
+            when (it) {
+                is UiState.Loading -> {}
+                is UiState.Success -> {
+                    binding.ivHomeNotificationIcon.setImageResource(if (it.data) R.drawable.ic_topbar_bell_badge else R.drawable.ic_topbar_bell)
+                }
+                is UiState.Error -> {
+
                 }
                 is UiState.Empty -> {}
             }

@@ -9,6 +9,7 @@ import com.neverland.thinkerbell.databinding.FragmentSearchResultNoticeBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.presentation.base.BaseFragment
+import com.neverland.thinkerbell.presentation.custom.CustomDividerDecoration
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.notice.SearchResultNoticeAdapter
@@ -42,6 +43,7 @@ class SearchResultNoticeFragment(
     private fun setupRecyclerView() {
         binding.rvNoticeList.apply {
             layoutManager = LinearLayoutManager(context)
+            addItemDecoration(CustomDividerDecoration(requireContext(), "#404040", 1f ))
             adapter = noticeAdapter
         }
 

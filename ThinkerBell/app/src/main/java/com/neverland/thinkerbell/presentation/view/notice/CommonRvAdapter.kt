@@ -30,7 +30,7 @@ class CommonRvAdapter(private val noticeType: NoticeType) : ListAdapter<NoticeIt
 
     inner class NoticeViewHolder(private val binding: ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: NoticeItem.CommonNotice) {
-            binding.tvNoticeTitle.text = data.title
+            binding.tvNoticeTitle.text = if (data.important) "[중요] ${data.title}" else data.title
             binding.tvNoticeDate.text = data.pubDate
             binding.tbFavorites.isChecked = data.marked
 
