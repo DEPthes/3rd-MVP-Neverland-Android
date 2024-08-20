@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.databinding.ItemMyPageKeywordBinding
+import com.neverland.thinkerbell.domain.model.keyword.Keyword
 
 class MyPageKeywordAdapter(
-    private val keywords: List<String>
+    private val keywords: List<Keyword>
 ) : RecyclerView.Adapter<MyPageKeywordAdapter.KeywordViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeywordViewHolder {
@@ -22,8 +23,8 @@ class MyPageKeywordAdapter(
 
     class KeywordViewHolder(private val binding: ItemMyPageKeywordBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(keyword: String) {
-            binding.tvKeyword.text = keyword
+        fun bind(keyword: Keyword) {
+            binding.tvKeyword.text = keyword.keyword
         }
     }
 }

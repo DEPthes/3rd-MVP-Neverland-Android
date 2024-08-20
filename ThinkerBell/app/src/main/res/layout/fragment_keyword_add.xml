@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary2">
+
+        <TextView
+            android:id="@+id/tv_keyword_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="키워드 등록"
+            style="@style/Label_XL"
+            android:textColor="@color/primary3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="32dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="닫기"
+            style="@style/Pretendard_Text"
+            android:textColor="@color/content_secondary"
+            android:background="@color/transparent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/et_keyword_add"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginHorizontal="40dp"
+            android:background="@drawable/shape_edittext_keyword_bg"
+            android:inputType="text"
+            android:maxLines="1"
+            android:maxLength="9"
+            android:hint="직접 입력"
+            android:textColorHint="@color/primary3"
+            android:textColor="@color/primary3"
+            style="@style/Label_Medium"
+            app:layout_constraintTop_toBottomOf="@id/tv_keyword_add"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="25dp" />
+
+        <TextView
+            android:id="@+id/tv_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2~9글자, 특수기호/이모지 X"
+            android:textColor="@color/red_gray_800"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/et_keyword_add"
+            app:layout_constraintStart_toStartOf="@id/et_keyword_add"
+            app:layout_constraintEnd_toEndOf="@id/et_keyword_add"
+            app:layout_constraintHorizontal_bias="0"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="4dp"/>
+
+        <TextView
+            android:id="@+id/tv_msg2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이런 공지를 기다리시나요?"
+            android:textColor="@color/primary3"
+            style="@style/Paragraph_Medium"
+            app:layout_constraintTop_toBottomOf="@id/tv_msg"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="26dp"
+            android:layout_marginStart="24dp"/>
+
+        <TextView
+            android:id="@+id/tv_suggestion_keyword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추천 키워드"
+            android:textColor="@color/primary3"
+            style="@style/Label_Large"
+            app:layout_constraintTop_toBottomOf="@id/tv_msg2"
+            app:layout_constraintStart_toStartOf="@id/tv_msg2"
+            android:layout_marginTop="4dp"/>
+
+        <com.nex3z.flowlayout.FlowLayout
+            android:id="@+id/fl_keyword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_suggestion_keyword"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="18dp"
+            app:flChildSpacing="auto"
+            >
+
+            <TextView
+                android:id="@+id/chip1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_keyword_bg"
+                android:text="등록금"
+                style="@style/Label_Medium"
+                android:textColor="@color/primary3"
+                />
+
+            <TextView
+                android:id="@+id/chip2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_keyword_bg"
+                android:text="입사신청"
+                style="@style/Label_Medium"
+                android:textColor="@color/primary3" />
+
+            <TextView
+                android:id="@+id/chip3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_keyword_bg"
+                android:text="수강신청"
+                style="@style/Label_Medium"
+                android:textColor="@color/primary3" />
+
+            <TextView
+                android:id="@+id/chip4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_keyword_bg"
+                android:text="계절수업"
+                style="@style/Label_Medium"
+                android:textColor="@color/primary3"
+                android:layout_marginTop="18dp"/>
+
+            <TextView
+                android:id="@+id/chip5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_keyword_bg"
+                android:text="교환학생"
+                style="@style/Label_Medium"
+                android:textColor="@color/primary3"
+                android:layout_marginTop="18dp"/>
+
+            <TextView
+                android:id="@+id/chip6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_keyword_bg"
+                android:text="장학금"
+                style="@style/Label_Medium"
+                android:textColor="@color/primary3"
+                android:layout_marginTop="18dp"/>
+
+            <TextView
+                android:id="@+id/chip7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_keyword_bg"
+                android:text="학점교류"
+                style="@style/Label_Medium"
+                android:textColor="@color/primary3"
+                android:layout_marginTop="18dp"/>
+
+            <TextView
+                android:id="@+id/chip8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_keyword_bg"
+                android:text="교직이수"
+                style="@style/Label_Medium"
+                android:textColor="@color/primary3"
+                android:layout_marginTop="18dp"/>
+
+            <TextView
+                android:id="@+id/chip9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_keyword_bg"
+                android:text="공모전"
+                style="@style/Label_Medium"
+                android:textColor="@color/primary3"
+                android:layout_marginTop="18dp"/>
+
+        </com.nex3z.flowlayout.FlowLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_keyword_add"
+            android:layout_width="178dp"
+            android:layout_height="56dp"
+            android:background="@drawable/shape_keyword_add_button_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fl_keyword"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.8"
+            android:text="등록"
+            style="@style/Heading_Medium"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

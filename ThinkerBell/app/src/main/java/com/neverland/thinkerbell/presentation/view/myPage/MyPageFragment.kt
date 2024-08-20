@@ -4,6 +4,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentMyPageBinding
+import com.neverland.thinkerbell.domain.model.keyword.Keyword
 import com.neverland.thinkerbell.domain.model.notice.CommonNotice
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.domain.model.notice.RecentBookmarkNotice
@@ -18,10 +19,13 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
 
     private val myPageviewModel: MyPageViewModel by viewModels()
     private lateinit var myPageFavoriteNoticeAdapter: MyPageFavoriteNoticeAdapter
-    private lateinit var keywordAdapter: MyPageKeywordAdapter
+    private lateinit var myPageKeywordAdapter: MyPageKeywordAdapter
 
     override fun initView() {
-
+        (requireActivity() as HomeActivity).apply {
+            setStatusBarColor(R.color.primary1, true)
+            showBottomNavigation()
+        }
     }
 
     override fun setObserver() {
@@ -34,7 +38,26 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
 
                 is UiState.Success -> {
                     setupFavoriteNoticesRecyclerView(it.data)
-                    setupKeywordRecyclerView()
+                }
+
+                is UiState.Error -> {
+                    // Handle error state
+                }
+
+                UiState.Empty -> {
+
+                }
+            }
+        }
+
+        myPageviewModel.keyword.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Loading -> {
+                    // Handle loading state
+                }
+
+                is UiState.Success -> {
+                    setupKeywordRecyclerView(it.data)
                 }
 
                 is UiState.Error -> {
@@ -48,14 +71,18 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
         }
     }
 
-    private fun setupKeywordRecyclerView() {
-        val keywords = listOf("키워드1", "키워드2", "키워드3", "키워드4", "키워드5") // 예시 데이터
+    override fun onResume() {
+        super.onResume()
+        myPageviewModel.fetchFavoriteNotices()
+        myPageviewModel.fetchKeyword()
+    }
 
-        keywordAdapter = MyPageKeywordAdapter(keywords)
+    private fun setupKeywordRecyclerView(list: List<Keyword>) {
+        myPageKeywordAdapter = MyPageKeywordAdapter(list)
         binding.rvMyPageKeyword.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = keywordAdapter
+            adapter = myPageKeywordAdapter
         }
     }
 
@@ -74,6 +101,13 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
             (requireActivity() as HomeActivity).replaceFragment(
                 R.id.fl_home,
                 FavoriteFragment(),
+                true
+            )
+        }
+        binding.ibPageRightKeyword.setOnClickListener {
+            (requireActivity() as HomeActivity).replaceFragment(
+                R.id.fl_home,
+                KeywordManageFragment(),
                 true
             )
         }

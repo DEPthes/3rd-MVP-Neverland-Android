@@ -16,7 +16,6 @@ interface BookmarkRepository {
         ssaId: String
     ): Result<Boolean>
 
-    @DELETE("/api/bookmark")
     suspend fun deleteNoticeBookmark(
         category: String,
         noticeId: Int,
