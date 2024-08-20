@@ -37,7 +37,11 @@ class KeywordRepositoryImpl: KeywordRepository {
             val res = service.postKeyword(keyword, ssaId)
             if(res.isSuccessful){
                 if(res.body() != null){
-                    Result.success(true)
+                    if(res.body()!!.code == 200){
+                        Result.success(true)
+                    } else {
+                        Result.failure(Exception(res.body()!!.data))
+                    }
                 } else {
                     Result.failure(Exception("Post Keyword failed: response is null data"))
                 }
@@ -56,7 +60,11 @@ class KeywordRepositoryImpl: KeywordRepository {
             val res = service.deleteKeyword(keyword, ssaId)
             if(res.isSuccessful){
                 if(res.body() != null){
-                    Result.success(true)
+                    if(res.body()!!.code == 200){
+                        Result.success(true)
+                    } else {
+                        Result.failure(Exception(res.body()!!.data))
+                    }
                 } else {
                     Result.failure(Exception("Delete Keyword failed: response is null data"))
                 }
