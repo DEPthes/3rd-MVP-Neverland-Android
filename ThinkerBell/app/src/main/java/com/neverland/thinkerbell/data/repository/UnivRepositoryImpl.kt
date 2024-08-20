@@ -55,7 +55,7 @@ class UnivRepositoryImpl: UnivRepository {
             val res = service.getMonthlyAcademicSchedule(month, ssaId)
             if(res.isSuccessful){
                 if(res.body() != null){
-                    Result.success(res.body()!!.data.map { AcademicSchedule(id = it.id, title = it.title, univId = it.univId, startDate = it.startDate, endDate = it.endDate) })
+                    Result.success(res.body()!!.data.map { AcademicSchedule(id = it.id, title = it.title, marked = it.marked, startDate = it.startDate, endDate = it.endDate) })
                 } else {
                     Result.failure(Exception("Get monthly academic schedule failed: response is null data"))
                 }
