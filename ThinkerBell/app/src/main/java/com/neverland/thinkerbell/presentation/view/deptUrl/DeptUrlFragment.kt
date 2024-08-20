@@ -9,6 +9,7 @@ import com.neverland.thinkerbell.databinding.FragmentDeptUrlBinding
 import com.neverland.thinkerbell.domain.model.group.Group
 import com.neverland.thinkerbell.domain.model.univ.DeptUrl
 import com.neverland.thinkerbell.presentation.base.BaseFragment
+import com.neverland.thinkerbell.presentation.custom.CustomDividerDecoration
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.home.HomeActivity
@@ -53,6 +54,7 @@ class DeptUrlFragment: BaseFragment<FragmentDeptUrlBinding>(R.layout.fragment_de
             })
         }
         binding.rvDeptUrl.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvDeptUrl.addItemDecoration(CustomDividerDecoration(requireContext(), "#404040", 1f ))
         binding.rvDeptUrl.adapter = expandableAdapter
     }
 }

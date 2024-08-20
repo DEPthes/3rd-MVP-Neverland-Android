@@ -7,6 +7,7 @@ import com.neverland.thinkerbell.databinding.FragmentContactsBinding
 import com.neverland.thinkerbell.domain.model.group.Group
 import com.neverland.thinkerbell.domain.model.univ.DeptContact
 import com.neverland.thinkerbell.presentation.base.BaseFragment
+import com.neverland.thinkerbell.presentation.custom.CustomDividerDecoration
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.home.HomeActivity
@@ -48,6 +49,7 @@ class ContactsFragment: BaseFragment<FragmentContactsBinding>(R.layout.fragment_
             })
         }
         binding.rvContacts.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvContacts.addItemDecoration(CustomDividerDecoration(requireContext(), "#404040", 1f ))
         binding.rvContacts.adapter = expandableAdapter
     }
 }

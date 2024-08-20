@@ -18,6 +18,7 @@ import com.neverland.thinkerbell.databinding.FragmentCommonNoticeBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.presentation.base.BaseFragment
+import com.neverland.thinkerbell.presentation.custom.CustomDividerDecoration
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.home.HomeActivity
@@ -67,6 +68,7 @@ CommonNoticeFragment(
     private fun setupRecyclerView() {
         binding.rvNotice.apply {
             layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(CustomDividerDecoration(requireContext(), "#404040", 1f ))
             adapter = commonNoticeAdapter
             itemAnimator = null
         }
