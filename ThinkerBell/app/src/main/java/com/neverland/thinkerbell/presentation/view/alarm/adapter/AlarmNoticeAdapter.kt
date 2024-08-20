@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.neverland.thinkerbell.databinding.ItemNoticeBinding
+import com.neverland.thinkerbell.domain.model.alarm.Alarm
 import com.neverland.thinkerbell.domain.model.notice.CommonNotice
+import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 
 
-class AlarmNoticeAdapter : ListAdapter<CommonNotice, AlarmNoticeAdapter.NoticeViewHolder>(DiffCallback())
+class AlarmNoticeAdapter : ListAdapter<Alarm, AlarmNoticeAdapter.NoticeViewHolder>(DiffCallback())
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder {
         val binding = ItemNoticeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,40 +24,52 @@ class AlarmNoticeAdapter : ListAdapter<CommonNotice, AlarmNoticeAdapter.NoticeVi
     }
 
     inner class NoticeViewHolder(private val binding: ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(notice: CommonNotice) {
-            binding.tvNoticeTitle.text = notice.title
-            binding.tvNoticeDate.text = notice.date
+        fun bind(notice: Alarm) {
+            binding.tvNoticeTitle.text = "[${notice.noticeType}] ${notice.title}"
+            binding.tvNoticeDate.text = notice.pubDate
             // 좋아요 버튼 설정 (기본적으로 false로 설정)
-            binding.tbFavorites.isChecked = notice.isImportant ?: false
+            binding.tbFavorites.isChecked = notice.marked
 
             // 좋아요 버튼 클릭 이벤트 설정
-            binding.tbFavorites.setOnCheckedChangeListener { _, isChecked ->
-                // 좋아요 상태 변경 처리 (예: 데이터 저장, UI 업데이트 등)
+            binding.tbFavorites.setOnClickListener {
+                bookmarkClickListener.onClick(Pair(notice, binding.tbFavorites.isChecked))
             }
 
+            binding.root.setOnClickListener{
+                if (!notice.isViewed) {
+                    notice.isViewed = true
+                    notifyItemChanged(adapterPosition)
+                }
+                rvItemClickListener.onClick(Pair(notice.id, notice.url))
+            }
             // 읽음 여부에 따라 배경색 설정
-            if (isNoticeRead(notice)) {
+            if (notice.isViewed) {
                 binding.root.setBackgroundColor(Color.parseColor("#E4E9EF")) // 읽은 공지 배경색
             } else {
                 binding.root.setBackgroundColor(Color.WHITE) // 기본 배경색
             }
         }
 
-        // 공지가 읽혔는지 여부를 확인하는 함수 (서버 연동 시 구현)
-        private fun isNoticeRead(notice: CommonNotice): Boolean {
-            // 서버 연동 또는 로컬 데이터 확인을 통해 읽음 여부를 판단하는 로직
-            // TODO: 서버 연동 시 구현
-            return false
-        }
-
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<CommonNotice>() {
-        override fun areItemsTheSame(oldItem: CommonNotice, newItem: CommonNotice): Boolean {
+    private lateinit var rvItemClickListener: OnRvItemClickListener<Pair<Int, String>>
+
+    fun setRvItemClickListener(rvItemClickListener: OnRvItemClickListener<Pair<Int, String>>) {
+        this.rvItemClickListener = rvItemClickListener
+    }
+
+    private lateinit var bookmarkClickListener: OnRvItemClickListener<Pair<Alarm, Boolean>>
+
+    fun setBookmarkClickListener(bookmarkClickListener: OnRvItemClickListener<Pair<Alarm, Boolean>>) {
+        this.bookmarkClickListener = bookmarkClickListener
+    }
+
+    class DiffCallback : DiffUtil.ItemCallback<Alarm>() {
+        override fun areItemsTheSame(oldItem: Alarm, newItem: Alarm): Boolean {
             return oldItem.url == newItem.url
         }
 
-        override fun areContentsTheSame(oldItem: CommonNotice, newItem: CommonNotice): Boolean {
+        override fun areContentsTheSame(oldItem: Alarm, newItem: Alarm): Boolean {
             return oldItem == newItem
         }
     }
