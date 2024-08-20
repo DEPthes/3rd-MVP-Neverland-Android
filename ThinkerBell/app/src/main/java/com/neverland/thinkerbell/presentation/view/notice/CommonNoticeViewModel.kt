@@ -134,7 +134,7 @@ class CommonNoticeViewModel: ViewModel() {
             )
                 .onFailure { _searchState.value = UiState.Error(it) }
                 .onSuccess {
-                    _searchState.value = UiState.Success(it)
+                    _searchState.value = if(it.isEmpty()) UiState.Empty else UiState.Success(it)
                 }
         }
     }

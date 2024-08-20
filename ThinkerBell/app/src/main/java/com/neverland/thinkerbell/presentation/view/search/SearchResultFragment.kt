@@ -1,9 +1,12 @@
 package com.neverland.thinkerbell.presentation.view.search
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.ColorDrawable
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.neverland.thinkerbell.R
@@ -46,6 +49,7 @@ class SearchResultFragment(
         }.attach()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initListener() {
         super.initListener()
 
@@ -95,8 +99,16 @@ class SearchResultFragment(
             when(it){
                 is UiState.Loading -> {}
                 is UiState.Error -> {}
-                is UiState.Empty -> {}
+                is UiState.Empty -> {
+                    binding.tlSearchCategoryTab.background = ColorDrawable(ContextCompat.getColor(requireContext(), R.color.primary2))
+                    binding.tvEmptyView.visibility = View.VISIBLE
+                    binding.tvSearchResultCount.text = ""
+                    binding.tvEmptyView.text = "'${binding.etSearch.text}'이(가) 포한된 공지사항을\n찾을 수 없습니다."
+                    setRecyclerView(emptyList(), emptyMap())
+                }
                 is UiState.Success -> {
+                    binding.tvEmptyView.visibility = View.GONE
+                    binding.tlSearchCategoryTab.background = ColorDrawable(ContextCompat.getColor(requireContext(), R.color.primary1))
                     binding.tvSearchResultCount.text = "검색 결과 : 총 ${it.data.second.values.sumOf { value -> value.size }}개"
                     setRecyclerView(it.data.second.keys.toList(), it.data.second)
                 }

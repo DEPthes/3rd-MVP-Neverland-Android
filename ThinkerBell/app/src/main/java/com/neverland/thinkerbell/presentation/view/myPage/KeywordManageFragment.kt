@@ -77,6 +77,8 @@ class KeywordManageFragment : BaseFragment<FragmentKeywordManageBinding>(R.layou
     }
 
     private fun updateAddBtnStyle(count: Int = keywordManagementAdapter.itemCount){
+        binding.tvEmptyView.visibility = if(count == 0) View.VISIBLE else View.GONE
+
         if(count >= 9){
             binding.btnKeywordAdd.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_gray_100))
             binding.btnKeywordAdd.background = ColorDrawable(ContextCompat.getColor(requireContext(), R.color.red_gray_300))

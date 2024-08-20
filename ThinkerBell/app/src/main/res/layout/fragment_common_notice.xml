@@ -267,5 +267,15 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
+        <TextView
+            android:id="@+id/tv_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            tools:text="'검색어'이(가) 포한된 공지사항을\n찾을 수 없습니다."
+            style="@style/Paragraph_Medium"
+            android:textColor="@color/content_secondary"
+            android:gravity="center"
+            android:visibility="gone"/>
     </LinearLayout>
 </layout>
