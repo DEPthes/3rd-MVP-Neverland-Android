@@ -23,4 +23,13 @@
         <item name="android:textColor">#BABABA</item>
     </style>
 
+    <!-- Spinner -->
+    <style name="SpinnerDivideStyle" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:divider">@color/primary1</item> <!-- divider 색 -->
+        <item name="android:dividerHeight">0.5dp</item> <!-- divider 높이 -->
+    </style>
+
+    <style name="SpinnerTheme">
+        <item name="android:dropDownListViewStyle">@style/SpinnerDivideStyle</item>
+    </style>
 </resources>

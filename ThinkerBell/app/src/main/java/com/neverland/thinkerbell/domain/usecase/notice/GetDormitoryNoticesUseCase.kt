@@ -8,7 +8,7 @@ import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 class GetDormitoryNoticesUseCase() {
     private val repository: NoticeRepositoryImpl = NoticeRepositoryImpl()
 
-    suspend operator fun invoke(page: Int, ssaId: String): Result<PageableNotice<NoticeItem.CommonNotice>> {
-        return repository.getDormitoryNotices(page = page, ssaId = ssaId)
+    suspend operator fun invoke(page: Int, ssaId: String, campus: String): Result<PageableNotice<NoticeItem.CommonNotice>> {
+        return repository.getDormitoryNotices(page = page, ssaId = ssaId, campus = campus)
     }
 }

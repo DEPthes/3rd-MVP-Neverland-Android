@@ -8,13 +8,13 @@ import com.neverland.thinkerbell.domain.model.notice.RecentNotices
 
 interface NoticeRepository {
 
-    suspend fun getDormitoryNotices(page: Int, ssaId: String): Result<PageableNotice<NoticeItem.CommonNotice>>
+    suspend fun getDormitoryNotices(page: Int, ssaId: String, campus: String): Result<PageableNotice<NoticeItem.CommonNotice>>
 
-    suspend fun getDormitoryEntryNotices(page: Int, ssaId: String): Result<PageableNotice<NoticeItem.CommonNotice>>
+    suspend fun getDormitoryEntryNotices(page: Int, ssaId: String, campus: String): Result<PageableNotice<NoticeItem.CommonNotice>>
 
     suspend fun getJobTrainingNotices(page: Int, ssaId: String): Result<PageableNotice<NoticeItem.JobNotice>>
 
-    suspend fun getLibraryNotices(page: Int, ssaId: String): Result<PageableNotice<NoticeItem.CommonNotice>>
+    suspend fun getLibraryNotices(page: Int, ssaId: String, campus: String): Result<PageableNotice<NoticeItem.CommonNotice>>
 
     suspend fun getTeachingNotices(page: Int, ssaId: String): Result<PageableNotice<NoticeItem.CommonNotice>>
 

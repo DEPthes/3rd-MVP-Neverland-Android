@@ -25,13 +25,15 @@ interface NoticeService {
     @GET("/api/dormitory/notices")
     suspend fun getDormitoryNotices(
         @Query("page") page: Int,
-        @Query("ssaid") ssaId: String
+        @Query("ssaid") ssaId: String,
+        @Query("campus") campus: String
     ): Response<BaseResponse<PageableResponse<CommonNoticeDTO>>>
 
     @GET("/api/dormitory/entry-notices")
     suspend fun getDormitoryEntryNotices(
         @Query("page") page: Int,
-        @Query("ssaid") ssaId: String
+        @Query("ssaid") ssaId: String,
+        @Query("campus") campus: String
     ): Response<BaseResponse<PageableResponse<CommonNoticeDTO>>>
 
     @GET("/api/job-training")
@@ -43,7 +45,8 @@ interface NoticeService {
     @GET("/api/library")
     suspend fun getLibraryNotices(
         @Query("page") page: Int,
-        @Query("ssaid") ssaId: String
+        @Query("ssaid") ssaId: String,
+        @Query("campus") campus: String
     ): Response<BaseResponse<PageableResponse<CommonNoticeDTO>>>
 
     // 학교 공지

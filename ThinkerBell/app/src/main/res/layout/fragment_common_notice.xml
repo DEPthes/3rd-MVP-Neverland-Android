@@ -119,23 +119,26 @@
                     android:layout_height="wrap_content"
                     app:constraint_referenced_ids="tv_search_notice_result, btn_back, divider_search"/>
 
+
                 <Spinner
                     android:id="@+id/spinner_campus"
                     android:layout_width="80dp"
                     android:layout_height="30dp"
+                    android:layout_marginVertical="12dp"
+                    android:layout_marginEnd="20dp"
+
+                    android:background="@drawable/selector_spinner_campus_bg"
+                    android:dropDownWidth="80dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="30dp"
-
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/rv_notice"
+
+                    android:overlapAnchor="false"
+                    android:theme="@style/SpinnerDivideStyle"
+
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginVertical="12dp"
-
-                    android:dropDownWidth="80dp"
-                    android:background="@drawable/selector_spinner_campus_bg"
-                    tools:listitem="@layout/item_spinner_campus"/>
-
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:listitem="@layout/item_spinner_campus" />
 
                 <TextView
                     android:id="@+id/tv_search_notice_result"
