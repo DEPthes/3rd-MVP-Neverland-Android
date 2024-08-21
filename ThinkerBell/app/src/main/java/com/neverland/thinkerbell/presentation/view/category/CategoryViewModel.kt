@@ -23,8 +23,9 @@ class CategoryViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 dataStoreRepositoryImpl.readCategoryOrder().collect { list ->
-                    if(list.isEmpty()) _uiState.value = UiState.Success(NoticeType.entries)
-                    else _uiState.value = UiState.Success(list)
+                    val result = list.ifEmpty { NoticeType.entries }.toMutableList()
+                    result.remove(NoticeType.ACADEMIC_SCHEDULE)
+                    _uiState.value = UiState.Success(result)
                 }
             } catch (e : Exception){
                 _uiState.value = UiState.Error(e)

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.neverland.thinkerbell.R
 import com.neverland.thinkerbell.databinding.FragmentCategoryBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
+import com.neverland.thinkerbell.domain.model.Notice
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
@@ -46,13 +47,16 @@ class CategoryFragment: BaseFragment<FragmentCategoryBinding>(R.layout.fragment_
         categoryRvAdapter = CategoryRvAdapter().apply {
             setRvItemClickListener(object : OnRvItemClickListener<NoticeType>{
                 override fun onClick(item: NoticeType) {
-                    viewModel.saveCategoryOrder(categoryRvAdapter.currentList.toList())
-
                     (requireActivity() as HomeActivity).replaceFragment(
                         fragment = CommonNoticeFragment(item),
                         frameLayoutId = R.id.fl_home,
                         isAddBackStack = true
                     )
+                }
+            })
+            setListOrderChangeListener(object : OnRvItemClickListener<List<NoticeType>>{
+                override fun onClick(item: List<NoticeType>) {
+                    viewModel.saveCategoryOrder(item)
                 }
             })
         }
