@@ -34,8 +34,8 @@ class SearchResultNoticeAdapter(
             binding.tvNoticeDate.text = data.pubDate
             binding.tbFavorites.isChecked = data.marked
 
-            binding.tbFavorites.setOnCheckedChangeListener { _, isChecked ->
-                bookmarkClickListener.onClick(Pair(data.id, isChecked))
+            binding.tbFavorites.setOnClickListener {
+                bookmarkClickListener.onClick(Pair(data.id, binding.tbFavorites.isChecked))
             }
 
             binding.root.setOnClickListener {
@@ -57,8 +57,8 @@ class SearchResultNoticeAdapter(
             binding.tvJobTitle.text = data.jobName
             binding.tbFavorites.isChecked = data.marked
 
-            binding.tbFavorites.setOnCheckedChangeListener { _, isChecked ->
-                bookmarkClickListener.onClick(Pair(data.id, isChecked))
+            binding.tbFavorites.setOnClickListener {
+                bookmarkClickListener.onClick(Pair(data.id, binding.tbFavorites.isChecked))
             }
         }
     }

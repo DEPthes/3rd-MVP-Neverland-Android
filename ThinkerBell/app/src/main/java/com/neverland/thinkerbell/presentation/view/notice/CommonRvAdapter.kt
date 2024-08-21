@@ -40,8 +40,8 @@ class CommonRvAdapter(private val noticeType: NoticeType) : ListAdapter<NoticeIt
                 binding.clItemNotice.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.primary2))
             }
 
-            binding.tbFavorites.setOnCheckedChangeListener { _, isChecked ->
-                bookmarkClickListener.onClick(Pair(data.id, isChecked))
+            binding.tbFavorites.setOnClickListener {
+                bookmarkClickListener.onClick(Pair(data.id, binding.tbFavorites.isChecked))
             }
 
             binding.root.setOnClickListener {
@@ -63,8 +63,8 @@ class CommonRvAdapter(private val noticeType: NoticeType) : ListAdapter<NoticeIt
             binding.tvJobTitle.text = data.jobName
             binding.tbFavorites.isChecked = data.marked
 
-            binding.tbFavorites.setOnCheckedChangeListener { _, isChecked ->
-                bookmarkClickListener.onClick(Pair(data.id, isChecked))
+            binding.tbFavorites.setOnClickListener {
+                bookmarkClickListener.onClick(Pair(data.id, binding.tbFavorites.isChecked))
             }
         }
     }
