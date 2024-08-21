@@ -11,6 +11,7 @@ import com.neverland.thinkerbell.domain.model.group.Group
 import com.neverland.thinkerbell.domain.model.univ.DeptUrl
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 
+@SuppressLint("NotifyDataSetChanged")
 class DeptUrlExpandableAdapter(private val groups: List<Group<DeptUrl>>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -57,10 +58,6 @@ class DeptUrlExpandableAdapter(private val groups: List<Group<DeptUrl>>) : Recyc
         groups.forEach { group ->
             if (position == currentPosition) {
                 (holder as GroupViewHolder).bind(group)
-                holder.itemView.setOnClickListener {
-                    group.isExpanded = !group.isExpanded
-                    notifyDataSetChanged()
-                }
                 return
             }
             currentPosition++
@@ -88,6 +85,7 @@ class DeptUrlExpandableAdapter(private val groups: List<Group<DeptUrl>>) : Recyc
     }
 
     inner class GroupViewHolder(private val binding: ItemGroupBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(group: Group<DeptUrl>) {
             binding.tvGroupTitle.text = group.name
 
@@ -95,6 +93,16 @@ class DeptUrlExpandableAdapter(private val groups: List<Group<DeptUrl>>) : Recyc
                 binding.ibGroupExpand.setImageResource(R.drawable.ic_direaction_up_1)
             } else {
                 binding.ibGroupExpand.setImageResource(R.drawable.ic_direaction_down_1)
+            }
+
+            binding.ibGroupExpand.setOnClickListener {
+                group.isExpanded = !group.isExpanded
+                notifyDataSetChanged()
+            }
+
+            itemView.setOnClickListener {
+                group.isExpanded = !group.isExpanded
+                notifyDataSetChanged()
             }
         }
     }
@@ -118,3 +126,4 @@ class DeptUrlExpandableAdapter(private val groups: List<Group<DeptUrl>>) : Recyc
         this.rvItemClickListener = rvItemClickListener
     }
 }
+

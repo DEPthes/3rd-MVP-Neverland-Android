@@ -16,6 +16,7 @@ import com.neverland.thinkerbell.domain.model.group.SubGroup
 import com.neverland.thinkerbell.domain.model.univ.DeptContact
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 
+@SuppressLint("NotifyDataSetChanged")
 class ContactsExpandableAdapter(private val groups: List<Group<DeptContact>>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -75,10 +76,6 @@ class ContactsExpandableAdapter(private val groups: List<Group<DeptContact>>) : 
         groups.forEach { group ->
             if (position == currentPosition) {
                 (holder as GroupViewHolder).bind(group)
-                holder.itemView.setOnClickListener {
-                    group.isExpanded = !group.isExpanded
-                    notifyDataSetChanged()
-                }
                 return
             }
             currentPosition++
@@ -86,10 +83,6 @@ class ContactsExpandableAdapter(private val groups: List<Group<DeptContact>>) : 
                 group.subGroups.forEach { subgroup ->
                     if (position == currentPosition) {
                         (holder as SubgroupViewHolder).bind(subgroup)
-                        holder.itemView.setOnClickListener {
-                            subgroup.isExpanded = !subgroup.isExpanded
-                            notifyDataSetChanged()
-                        }
                         return
                     }
                     currentPosition++
@@ -127,24 +120,49 @@ class ContactsExpandableAdapter(private val groups: List<Group<DeptContact>>) : 
         fun bind(group: Group<DeptContact>) {
             binding.tvGroupTitle.text = group.name
 
-            if(group.isExpanded){
+            if (group.isExpanded) {
                 binding.ibGroupExpand.setImageResource(R.drawable.ic_direaction_up_1)
             } else {
                 binding.ibGroupExpand.setImageResource(R.drawable.ic_direaction_down_1)
+            }
+
+            // 그룹 확장/축소를 ibGroupExpand 버튼 클릭으로 처리
+            binding.ibGroupExpand.setOnClickListener {
+                group.isExpanded = !group.isExpanded
+                notifyDataSetChanged() // UI를 갱신하여 확장/축소 상태를 반영
+            }
+
+            // 전체 항목 클릭 시에도 동일하게 처리
+            itemView.setOnClickListener {
+                group.isExpanded = !group.isExpanded
+                notifyDataSetChanged() // UI를 갱신하여 확장/축소 상태를 반영
             }
         }
     }
 
     inner class SubgroupViewHolder(private val binding: ItemSubGroupBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(subgroup: SubGroup<DeptContact>) {
             binding.tvSubGroupTitle.text = subgroup.name
 
-            if(subgroup.isExpanded){
+            if (subgroup.isExpanded) {
                 binding.clSubGroup.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.red_gray_100))
                 binding.ibSubGroupExpand.setImageResource(R.drawable.ic_direaction_up_1)
             } else {
                 binding.clSubGroup.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.primary2))
                 binding.ibSubGroupExpand.setImageResource(R.drawable.ic_direaction_down_1)
+            }
+
+            // 서브그룹 확장/축소를 ibSubGroupExpand 버튼 클릭으로 처리
+            binding.ibSubGroupExpand.setOnClickListener {
+                subgroup.isExpanded = !subgroup.isExpanded
+                notifyDataSetChanged() // UI를 갱신하여 확장/축소 상태를 반영
+            }
+
+            // 전체 항목 클릭 시에도 동일하게 처리
+            itemView.setOnClickListener {
+                subgroup.isExpanded = !subgroup.isExpanded
+                notifyDataSetChanged() // UI를 갱신하여 확장/축소 상태를 반영
             }
         }
     }
@@ -168,7 +186,7 @@ class ContactsExpandableAdapter(private val groups: List<Group<DeptContact>>) : 
 
     private lateinit var rvItemClickListener: OnRvItemClickListener<DeptContact>
 
-    fun setOnRvItemClickListener(rvItemClickListener: OnRvItemClickListener<DeptContact>){
+    fun setOnRvItemClickListener(rvItemClickListener: OnRvItemClickListener<DeptContact>) {
         this.rvItemClickListener = rvItemClickListener
     }
 }
