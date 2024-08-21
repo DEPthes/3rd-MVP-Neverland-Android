@@ -2,6 +2,7 @@ package com.neverland.thinkerbell.presentation.view.home.adapter
 
 import android.graphics.Typeface
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -19,9 +20,18 @@ class CalendarDayAdapter(
     val scheduleList: List<AcademicSchedule>
 ) : RecyclerView.Adapter<CalendarDayAdapter.DayView>() {
 
-    class DayView(val binding: ItemCalendarDayBinding): RecyclerView.ViewHolder(binding.root)
-
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+    inner class DayView(val binding: ItemCalendarDayBinding): RecyclerView.ViewHolder(binding.root){
+        fun bind(date: Date){
+            if(dateFormat.format(date) == dateFormat.format(Date())){
+                binding.ivDot.visibility = View.VISIBLE
+            } else {
+                binding.ivDot.visibility = View.INVISIBLE
+            }
+        }
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayView {
         val binding = ItemCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -51,6 +61,8 @@ class CalendarDayAdapter(
         } else {
             holder.binding.tvDay.setTextColor(holder.itemView.context.getColor(R.color.content_secondary))
         }
+
+        holder.bind(date)
     }
 
     override fun getItemCount(): Int {
