@@ -38,8 +38,16 @@ class SearchResultFragment(
         binding.etSearch.setText(searchWord)
         binding.tvSearchResultCount.text = "검색 결과 : 총 ${allNotices.values.sumOf { it.size }}개"
 
+        if(allNotices.isEmpty()){
+            binding.tlSearchCategoryTab.background = ColorDrawable(ContextCompat.getColor(requireContext(), R.color.primary2))
+            binding.tvEmptyView.visibility = View.VISIBLE
+            binding.tvSearchResultCount.text = ""
+            binding.tvEmptyView.text = "'${binding.etSearch.text}'이(가) 포한된 공지사항을\n찾을 수 없습니다."
+            setRecyclerView(emptyList(), emptyMap())
+        }
+
         setEditText()
-        setRecyclerView(allNotices.keys.toList(), allNotices)
+        searchViewModel.fetchData(allNotices.keys.toList())
     }
 
     private fun setEditText(){
@@ -114,6 +122,17 @@ class SearchResultFragment(
 
     override fun setObserver() {
         super.setObserver()
+
+        searchViewModel.sortState.observe(viewLifecycleOwner){
+            when(it){
+                is UiState.Loading -> {}
+                is UiState.Error -> {}
+                is UiState.Empty -> {}
+                is UiState.Success -> {
+                    setRecyclerView(it.data, allNotices)
+                }
+            }
+        }
 
         searchViewModel.uiState.observe(viewLifecycleOwner){
             when(it){

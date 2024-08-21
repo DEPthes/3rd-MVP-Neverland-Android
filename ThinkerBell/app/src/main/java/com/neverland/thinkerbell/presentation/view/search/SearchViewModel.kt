@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.neverland.thinkerbell.core.utils.LoggerUtil
 import com.neverland.thinkerbell.data.repository.DataStoreRepositoryImpl
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
@@ -63,12 +64,41 @@ class SearchViewModel : ViewModel() {
                     _uiState.value = if(it.isEmpty()) UiState.Empty else UiState.Success(Pair(keyword, it))
                 }
                 .onFailure {
-                    _uiState.value = UiState.Error(it)
+                    _uiState.value = UiState.Error(Exception(keyword))
                 }
         }
     }
 
     fun setUiStateLoading(){
         _uiState.value = UiState.Loading
+    }
+
+
+
+    private val _sortState = MutableLiveData<UiState<List<NoticeType>>>(UiState.Loading)
+    val sortState: LiveData<UiState<List<NoticeType>>> get() = _sortState
+
+    fun fetchData(originalList: List<NoticeType>) {
+        _sortState.value = UiState.Loading
+        viewModelScope.launch {
+            try {
+                dataStoreRepository.readCategoryOrder().collect { list ->
+                    val sortedNoticeTypes = list.ifEmpty { NoticeType.entries }.toMutableList()
+                    sortedNoticeTypes.remove(NoticeType.ACADEMIC_SCHEDULE)
+
+                    val orderMap = sortedNoticeTypes.mapIndexed { index, noticeType ->
+                        noticeType.enName to index
+                    }.toMap()
+
+                    val sortedOriginalList = originalList.sortedBy {
+                        orderMap[it.enName] ?: Int.MAX_VALUE
+                    }
+
+                    _sortState.value = UiState.Success(sortedOriginalList)
+                }
+            } catch (e : Exception){
+                _sortState.value = UiState.Error(e)
+            }
+        }
     }
 }

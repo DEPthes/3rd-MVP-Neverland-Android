@@ -76,8 +76,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 if (searchWord.isNotEmpty()) {
                     // 검색어를 ViewModel에 추가
                     searchViewModel.addSearchWord(searchWord)
-                    // EditText를 초기화
-                    binding.etSearch.text.clear()
                     // 검색어를 전달하며 SearchResultFragment로 이동
                     searchViewModel.searchAllNotices(searchWord)
                 }
@@ -100,8 +98,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                     if (searchWord.isNotEmpty()) {
                         // 검색어를 ViewModel에 추가
                         searchViewModel.addSearchWord(searchWord)
-                        // EditText를 초기화
-                        binding.etSearch.text.clear()
                         // 검색어를 전달하며 SearchResultFragment로 이동
                         searchViewModel.searchAllNotices(searchWord)
                     }
@@ -135,10 +131,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             when(it){
                 is UiState.Loading -> {
                 }
-                is UiState.Empty -> {}
+                is UiState.Empty -> {
+                    searchViewModel.setUiStateLoading()
+                    val fragment = SearchResultFragment(binding.etSearch.text.toString(), emptyMap())
+                    binding.etSearch.text.clear()
+                    (requireActivity() as HomeActivity).replaceFragment(R.id.fl_home, fragment, true)
+                }
                 is UiState.Success -> {
                     searchViewModel.setUiStateLoading()
                     val fragment = SearchResultFragment(it.data.first, it.data.second)
+                    binding.etSearch.text.clear()
                     (requireActivity() as HomeActivity).replaceFragment(R.id.fl_home, fragment, true)
                 }
                 is UiState.Error -> {}
