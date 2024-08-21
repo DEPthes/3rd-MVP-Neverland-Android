@@ -40,11 +40,18 @@ class CategoryRvAdapter: ListAdapter<NoticeType, RecyclerView.ViewHolder>(catego
         val newList = currentList.toMutableList()
         Collections.swap(newList, fromPosition, toPosition)
         submitList(newList)
+        listOrderChangeListener.onClick(newList)
     }
 
     private lateinit var rvItemClickListener: OnRvItemClickListener<NoticeType>
 
     fun setRvItemClickListener(rvItemClickListener: OnRvItemClickListener<NoticeType>){
         this.rvItemClickListener = rvItemClickListener
+    }
+
+    private lateinit var listOrderChangeListener: OnRvItemClickListener<List<NoticeType>>
+
+    fun setListOrderChangeListener(listOrderChangeListener: OnRvItemClickListener<List<NoticeType>>){
+        this.listOrderChangeListener = listOrderChangeListener
     }
 }
