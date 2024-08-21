@@ -52,6 +52,7 @@ class KeywordAddFragment: BaseFragment<FragmentKeywordAddBinding>(R.layout.fragm
                 is UiState.Success -> {
                     showToast("키워드 등록 성공")
                     binding.etKeywordAdd.text.clear()
+                    requireActivity().supportFragmentManager.popBackStack()
                 }
                 is UiState.Error -> {
                     showToast(it.exception.message.toString())
