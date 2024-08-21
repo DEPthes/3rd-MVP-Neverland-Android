@@ -132,7 +132,11 @@ CommonNoticeFragment(
         binding.ibPageRight1.setOnClickListener { viewModel.fetchData(noticeType, viewModel.currentPage.value!! + 1) }
         binding.ibPageRight2.setOnClickListener { viewModel.fetchData(noticeType, viewModel.currentPage.value!! + 10) }
         binding.ibPageLeft1.setOnClickListener { viewModel.fetchData(noticeType, viewModel.currentPage.value!! - 1) }
-        binding.ibPageLeft2.setOnClickListener { viewModel.fetchData(noticeType, viewModel.currentPage.value!! - 10) }
+        binding.ibPageLeft2.setOnClickListener {
+            var page = viewModel.currentPage.value!! - 10
+            if(page <= 0) page = 0
+            viewModel.fetchData(noticeType, page)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
