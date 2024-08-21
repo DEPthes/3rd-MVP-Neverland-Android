@@ -11,10 +11,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.neverland.thinkerbell.databinding.DialogContactBinding
 import com.neverland.thinkerbell.domain.model.univ.DeptContact
+import com.neverland.thinkerbell.presentation.custom.CustomToast
 import com.neverland.thinkerbell.presentation.utils.DisplayUtils
 
 class ContactDialog(
@@ -71,7 +71,7 @@ class ContactDialog(
 
         val clip = ClipData.newPlainText("${contactItem.major} 연락처", contactItem.contact)
         clipboard.setPrimaryClip(clip)
-        Toast.makeText(context, "클립보드에 복사되었습니다.", Toast.LENGTH_SHORT).show()
+        CustomToast.makeToast(requireContext(), "클립보드에 복사되었습니다.")
     }
 
     private fun callPhone(){
