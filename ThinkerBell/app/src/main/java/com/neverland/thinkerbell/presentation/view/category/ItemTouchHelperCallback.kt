@@ -8,7 +8,7 @@ class ItemTouchHelperCallback(
 ) :
     ItemTouchHelper.SimpleCallback(
         ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-        ItemTouchHelper.LEFT
+        0
     ) {
 
     override fun onMove(
