@@ -86,10 +86,12 @@ class SearchResultFragment(
                 (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
             ) {
                 val newSearchWord = binding.etSearch.text.toString()
-                if (newSearchWord.isNotEmpty()) {
+                if (newSearchWord.length >= 2) {
                     // 검색어를 ViewModel에 추가
                     searchViewModel.addSearchWord(newSearchWord)
                     searchViewModel.searchAllNotices(newSearchWord)
+                } else {
+                    showToast("2글자 이상 입력해주세요")
                 }
                 true
             } else {
@@ -108,10 +110,12 @@ class SearchResultFragment(
                     event.rawX <= (binding.etSearch.right - padding)
                 ) {
                     val newSearchWord = binding.etSearch.text.toString()
-                    if (newSearchWord.isNotEmpty()) {
+                    if (newSearchWord.length >= 2) {
                         // 검색어를 ViewModel에 추가
                         searchViewModel.addSearchWord(newSearchWord)
                         searchViewModel.searchAllNotices(newSearchWord)
+                    } else {
+                        showToast("2글자 이상 입력해주세요")
                     }
                     return@setOnTouchListener true
                 }

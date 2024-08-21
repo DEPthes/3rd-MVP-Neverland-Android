@@ -73,11 +73,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                 (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
                 val searchWord = binding.etSearch.text.toString()
-                if (searchWord.isNotEmpty()) {
+                if (searchWord.length >= 2) {
                     // 검색어를 ViewModel에 추가
                     searchViewModel.addSearchWord(searchWord)
                     // 검색어를 전달하며 SearchResultFragment로 이동
                     searchViewModel.searchAllNotices(searchWord)
+                } else {
+                    showToast("2글자 이상 입력해주세요")
                 }
                 true
             } else {
@@ -95,11 +97,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 if (event.rawX >= (binding.etSearch.right - drawableEndWidth - padding) &&
                     event.rawX <= (binding.etSearch.right - padding)) {
                     val searchWord = binding.etSearch.text.toString()
-                    if (searchWord.isNotEmpty()) {
+                    if (searchWord.length >= 2) {
                         // 검색어를 ViewModel에 추가
                         searchViewModel.addSearchWord(searchWord)
                         // 검색어를 전달하며 SearchResultFragment로 이동
                         searchViewModel.searchAllNotices(searchWord)
+                    } else {
+                        showToast("2글자 이상 입력해주세요")
                     }
                     return@setOnTouchListener true
                 }

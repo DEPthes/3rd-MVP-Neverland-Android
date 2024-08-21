@@ -143,8 +143,12 @@ CommonNoticeFragment(
     private fun setupSearchListener() {
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                if(viewModel.currentNotice.isEmpty()) viewModel.currentNotice = commonNoticeAdapter.currentList
-                viewModel.searchNotice(noticeType, binding.etSearch.text.toString())
+                if(binding.etSearch.text.length >= 2){
+                    if(viewModel.currentNotice.isEmpty()) viewModel.currentNotice = commonNoticeAdapter.currentList
+                    viewModel.searchNotice(noticeType, binding.etSearch.text.toString())
+                } else {
+                    showToast("2글자 이상 입력해주세요")
+                }
                 true
             } else {
                 false
@@ -159,9 +163,11 @@ CommonNoticeFragment(
                 if (event.rawX >= (binding.etSearch.right - drawableEndWidth - padding) &&
                     event.rawX <= (binding.etSearch.right - padding)) {
                     val searchWord = binding.etSearch.text.toString()
-                    if (searchWord.isNotEmpty()) {
+                    if (searchWord.length >= 2) {
                         if(viewModel.currentNotice.isEmpty()) viewModel.currentNotice = commonNoticeAdapter.currentList
                         viewModel.searchNotice(noticeType, binding.etSearch.text.toString())
+                    } else {
+                        showToast("2글자 이상 입력해주세요")
                     }
                     return@setOnTouchListener true
                 }
