@@ -2,6 +2,7 @@ package com.neverland.thinkerbell.presentation.view.search
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.ColorDrawable
+import android.text.InputFilter
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -17,6 +18,7 @@ import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.home.HomeActivity
 import com.neverland.thinkerbell.presentation.view.search.adapter.SearchResultVPAdapter
+import java.util.regex.Pattern
 
 class SearchResultFragment(
     private val searchWord: String,
@@ -36,7 +38,25 @@ class SearchResultFragment(
         binding.etSearch.setText(searchWord)
         binding.tvSearchResultCount.text = "검색 결과 : 총 ${allNotices.values.sumOf { it.size }}개"
 
+        setEditText()
         setRecyclerView(allNotices.keys.toList(), allNotices)
+    }
+
+    private fun setEditText(){
+        val koreanPattern = Pattern.compile("^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55]+$")
+
+        binding.etSearch.filters = arrayOf(
+            InputFilter { source, start, end, dest, dstart, dend ->
+                for (i in start until end) {
+                    val char = source[i].toString()
+                    if (!koreanPattern.matcher(char).matches()) {
+                        return@InputFilter ""
+                    }
+                }
+                null
+            },
+            InputFilter.LengthFilter(12)
+        )
     }
 
     private fun setRecyclerView(categories: List<NoticeType>, allNotices: Map<NoticeType, List<NoticeItem>>){

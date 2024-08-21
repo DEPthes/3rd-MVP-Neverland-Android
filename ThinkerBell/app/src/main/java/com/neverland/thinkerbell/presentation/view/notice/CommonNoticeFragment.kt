@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
+import android.text.InputFilter
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -23,6 +24,7 @@ import com.neverland.thinkerbell.presentation.custom.CustomDividerDecoration
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.home.HomeActivity
+import java.util.regex.Pattern
 
 @SuppressLint("SetTextI18n")
 class
@@ -67,6 +69,7 @@ CommonNoticeFragment(
             setStatusBarColor(R.color.primary1, true)
         }
 
+        setEditText()
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backPressedCallback)
 
         binding.tvNoticeTitle.text = noticeType.koName
@@ -74,6 +77,23 @@ CommonNoticeFragment(
         setupRecyclerView()
 
         if(spinnerRequiredNotices.contains(noticeType)) setCampusSpinner() else binding.spinnerCampus.visibility = View.GONE
+    }
+
+    private fun setEditText(){
+        val koreanPattern = Pattern.compile("^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55]+$")
+
+        binding.etSearch.filters = arrayOf(
+            InputFilter { source, start, end, dest, dstart, dend ->
+                for (i in start until end) {
+                    val char = source[i].toString()
+                    if (!koreanPattern.matcher(char).matches()) {
+                        return@InputFilter ""
+                    }
+                }
+                null
+            },
+            InputFilter.LengthFilter(12)
+        )
     }
 
     private fun setupRecyclerView() {

@@ -1,6 +1,7 @@
 package com.neverland.thinkerbell.presentation.view.search
 
 import android.annotation.SuppressLint
+import android.text.InputFilter
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
@@ -11,6 +12,7 @@ import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.home.HomeActivity
 import com.neverland.thinkerbell.presentation.view.search.adapter.SearchRecentWordAdapter
+import java.util.regex.Pattern
 
 @SuppressLint("SetTextI18n")
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
@@ -24,7 +26,25 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             setStatusBarColor(R.color.primary2, false)
         }
 
+        setEditText()
         setRecyclerView()
+    }
+
+    private fun setEditText(){
+        val koreanPattern = Pattern.compile("^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55]+$")
+
+        binding.etSearch.filters = arrayOf(
+            InputFilter { source, start, end, dest, dstart, dend ->
+                for (i in start until end) {
+                    val char = source[i].toString()
+                    if (!koreanPattern.matcher(char).matches()) {
+                        return@InputFilter ""
+                    }
+                }
+                null
+            },
+            InputFilter.LengthFilter(12)
+        )
     }
 
     private fun setRecyclerView(){
@@ -41,6 +61,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         binding.rvRecentSearchWord.adapter = adapter
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initListener() {
         super.initListener()
 
