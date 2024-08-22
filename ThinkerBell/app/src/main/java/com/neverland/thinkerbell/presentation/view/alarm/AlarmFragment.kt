@@ -64,7 +64,6 @@ class AlarmFragment : BaseFragment<FragmentAlarmBinding>(R.layout.fragment_alarm
         }
 
         alarmViewModel.unCheckedList.observe(viewLifecycleOwner) {
-            LoggerUtil.d("${alarmViewModel.keywordSize} ${it.size}")
             if (alarmViewModel.keywordSize <= alarmViewModel.count) {
                 setupTabLayout(it.toList())
             }

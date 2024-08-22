@@ -12,6 +12,8 @@ import com.neverland.thinkerbell.databinding.FragmentFavoriteNoticeBinding
 import com.neverland.thinkerbell.domain.enums.NoticeType
 import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.presentation.base.BaseFragment
+import com.neverland.thinkerbell.presentation.custom.CustomDividerDecoration
+import com.neverland.thinkerbell.presentation.utils.CustomDividerItemDecoration
 import com.neverland.thinkerbell.presentation.utils.UiState
 import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.myPage.adapter.FavoriteNoticeAdapter
@@ -70,6 +72,7 @@ class FavoriteNoticeFragment(
         binding.rvNoticeList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = noticeAdapter
+            addItemDecoration(CustomDividerDecoration(requireContext(), "#898989", 0.8f))
         }
         noticeAdapter.submitList(list.toMutableList())
     }
