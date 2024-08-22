@@ -1,5 +1,7 @@
 package com.neverland.thinkerbell.presentation.view.myPage
 
+import android.content.Intent
+import android.net.Uri
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,10 +13,12 @@ import com.neverland.thinkerbell.domain.model.notice.NoticeItem
 import com.neverland.thinkerbell.domain.model.notice.RecentBookmarkNotice
 import com.neverland.thinkerbell.presentation.base.BaseFragment
 import com.neverland.thinkerbell.presentation.utils.UiState
+import com.neverland.thinkerbell.presentation.view.OnRvItemClickListener
 import com.neverland.thinkerbell.presentation.view.home.HomeActivity
 import com.neverland.thinkerbell.presentation.view.myPage.adapter.FavoriteNoticeAdapter
 import com.neverland.thinkerbell.presentation.view.myPage.adapter.MyPageFavoriteNoticeAdapter
 import com.neverland.thinkerbell.presentation.view.myPage.adapter.MyPageKeywordAdapter
+import com.neverland.thinkerbell.presentation.view.notice.CommonNoticeFragment
 
 class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
 
@@ -104,7 +108,16 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
 
     private fun setupFavoriteNoticesRecyclerView(list: List<RecentBookmarkNotice>) {
         myPageFavoriteNoticeAdapter =
-            MyPageFavoriteNoticeAdapter(if (list.size >= 3) list.subList(0, 3) else list)
+            MyPageFavoriteNoticeAdapter(if (list.size >= 3) list.subList(0, 3) else list).apply {
+                setRvItemClickListener(object : OnRvItemClickListener<RecentBookmarkNotice>{
+                    override fun onClick(item: RecentBookmarkNotice) {
+                        val intent = Intent(Intent.ACTION_VIEW).apply {
+                            data = Uri.parse(item.url)
+                        }
+                        startActivity(intent)
+                    }
+                })
+            }
         binding.rvMyPageFavorite.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = myPageFavoriteNoticeAdapter
