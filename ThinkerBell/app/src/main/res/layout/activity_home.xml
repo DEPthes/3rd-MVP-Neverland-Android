@@ -36,6 +36,7 @@
             app:itemActiveIndicatorStyle="@color/transparent"
             app:itemIconTint="@color/bottom_nav_color_selector"
             app:itemTextColor="@color/bottom_nav_color_selector"
+            app:itemPaddingTop="18dp"
             app:menu="@menu/bottom_navigation_menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
